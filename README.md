@@ -1,6 +1,6 @@
 # 電影小幫手 Movie Helper
 
-一個使用 HTML/CSS/JavaScript 製作的響應式電影介紹網站，支援資料動態載入與手機顯示，內容由 JSON 控管，用 Canva 結合 ChatGPT 生成。
+一個使用 HTML/CSS/JavaScript 製作的響應式電影介紹網站，支援資料動態載入與手機顯示，內容由 JSON 控管，用 Canva 結合 ChatGPT ，與 VScode GitHub Copilot 協作生成。
 
 ## 💡 功能
 
@@ -41,4 +41,5 @@ movie-helper-site/
 2. 開啟 `http://localhost:8000/index.html` 進行瀏覽。
 
 https://rubyf2e.github.io/movie-helper-site/
+https://rubyrubyruby.my.canva.site/dagqiedp8k8
 
