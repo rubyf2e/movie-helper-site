@@ -40,4 +40,5 @@ movie-helper-site/
      ```
 2. 開啟 `http://localhost:8000/index.html` 進行瀏覽。
 
+https://rubyf2e.github.io/movie-helper-site/
 
