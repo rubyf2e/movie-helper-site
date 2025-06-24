@@ -1,6 +1,25 @@
 # 電影小幫手 Movie Helper
 
-一個使用 HTML/CSS/JavaScript 製作的響應式電影介紹網站，支援資料動態載入與手機顯示，內容由 JSON 控管，用 Canva 結合 ChatGPT ，與 VScode GitHub Copilot 協作生成。
+### 線上網址
+<https://rubyf2e.github.io/movie-helper-site/> 
+
+<https://rubyrubyruby.my.canva.site/dagqiedp8k8>
+
+#### 2025.06.24 靜態頁完成心得
+##### 完成工時：兩天
+這是第一次用生成式AI協作生成的網站，也是將慣用工具從 Sublime Text 轉 VScode 中產生的作品。在協作過程中，發現生成式AI比較適合雛形開發，Canva AI 可以幫工程師先行設計畫面和文案，但其網站為壓縮編寫的程式碼不可直接套用，但可透過瀏覽器開發者工具觀看其樣式重新雕刻，ChatGPT 及 VScode GitHub Copilot 可以使用上傳截圖分析產生雛形程式碼和專案規格，完成率可以達到50%，剩餘的50%就是需要工程師進行微調修改。
+
+結論：生成式AI的出現讓工程師在前端頁面刻板可以有快速的雛形，並且在查詢相關語法時可以節省大量時間，甚至可以透過生成式AI的回覆間接學習到最新的程式寫法，越使用生成式AI，程式能力會跟著提升，但如果要完成可商用的專案，還是非常需要工程師的基礎功和實力。
+
+
+
+## 📦 特點
+
+- RWD
+- 支援資料動態載入
+- 使用 Google NotebookLM 產生商業價值提案報告，再將報告轉貼至Canva AI 設計網頁及文案產生雛形網站
+- 與 ChatGPT 及 VScode GitHub Copilot 協作生成
+
 
 ## 💡 功能
 
@@ -15,7 +34,7 @@
 - HTML5 + CSS3
 - JavaScript ES6
 - JSON 資料驅動
-- 無框架、無伺服器需求
+- GitHub Pages 部署
 
 ## 🗂 專案結構
 
@@ -39,7 +58,3 @@ movie-helper-site/
      python3 -m http.server
      ```
 2. 開啟 `http://localhost:8000/index.html` 進行瀏覽。
-
-https://rubyf2e.github.io/movie-helper-site/
-https://rubyrubyruby.my.canva.site/dagqiedp8k8
-
