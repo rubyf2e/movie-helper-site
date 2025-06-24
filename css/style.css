@@ -36,8 +36,12 @@ header {
 }
 
 footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     text-align: center;
-    padding: 2.5rem 1rem 1.5rem 1rem;
+    padding: 2.5rem 2.5rem 1.5rem 2.5rem;
     font-size: 0.95rem;
     color: #94a3b8;
     margin-top: 2rem;
@@ -533,24 +537,39 @@ h2 {
     }
 }
 
+#about{
+    padding: 1.5rem 0.5rem;
+}
+
 /* 11. 關於我們區塊 */
-#about {
-    background: #1e293b;
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem auto;
-    max-width: 1000px;
+.about-box {
+    background-color: rgb(51 65 85 / var(--tw-bg-opacity, 1));
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem auto 2rem auto;
+    max-width: 48rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+}
+
+
+.about-card{
+    padding: 0 0 1.5rem 0
+}
+
+
+.about-card h3{
+    font-size: 1.5rem;
+    line-height: 2rem;
 }
 
 #about p,
 #about li {
     color: #cbd5e1;
+    padding: 0.5rem 0 0 0;
 }
 
 #about ul {
     list-style: disc;
-    padding-left: 2rem;
     margin-top: 1rem;
 }
 
@@ -587,9 +606,7 @@ h2 {
 .about-list li {
     display: flex;
     align-items: center;
-    /* 讓 SVG 與文字垂直置中 */
-    margin-bottom: 1.1rem;
-    font-size: 1.08rem;
+    font-size: 16px;
     color: #cbd5e1;
 }
 
@@ -603,11 +620,10 @@ h2 {
 }
 
 .about-list .li-icon svg {
-    width: 1.35em;
-    /* 跟隨字體大小縮放 */
-    height: 1.35em;
-    min-width: 1.35em;
-    min-height: 1.35em;
+    width: 1.5rem;
+    height: 1.5rem;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
     vertical-align: middle;
     color: #EAA13B;
     display: block;
@@ -633,6 +649,7 @@ h2 {
     font-weight: bold;
     color: #f1f5f9;
     letter-spacing: 1px;
+    max-width: 800px;
 }
 
 .logo-icon {
@@ -656,6 +673,24 @@ h2 {
     color: #fff;
     letter-spacing: 1px;
     line-height: 1;
+}
+
+footer .logo-text{
+    font-size: 1.2rem;
+}
+
+footer .logo-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+footer .logo-icon{
+    margin-right: 0.3rem;
+}
+
+
+.footer-right{
+    max-width: 120px;
 }
 
 /* 導覽列樣式 */

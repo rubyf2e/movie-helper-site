@@ -14,10 +14,11 @@
       <div class="logo">
         <span class="logo-icon">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500 mr-2" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h18M3 16h18"></path>
-        </svg>
-      </span>
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h18M3 16h18">
+            </path>
+          </svg>
+        </span>
         <span class="logo-text">電影小幫手</span>
       </div>
       <nav>
@@ -75,8 +76,10 @@
     <div class="search-box">
       <div class="search-input-wrap">
         <span class="search-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="28" height="28">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="28"
+            height="28">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
           </svg>
         </span>
         <input type="text" placeholder="輸入電影名稱、演員或導演..." />
@@ -88,55 +91,87 @@
 
   <section id="about">
     <h2>關於我們</h2>
-    <p>電影小幫手是您的個人觀影決策專家，我們整合了來自 OMDb API 的豐富電影資料，為您提供全面且即時的電影資訊。</p>
-    <ul class="about-list">
-      <li>
-        <span class="li-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </span>
-        全面的電影資料庫，包含超過10,000部電影
-      </li>
-      <li>
-        <span class="li-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </span>
-        即時更新的熱門電影和即將上映資訊
-      </li>
-      <li>
-        <span class="li-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </span>
-        多維度的電影搜尋功能，可按名稱、演員、導演或類型篩選
-      </li>
-      <li>
-        <span class="li-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </span>
-        個性化的電影推薦系統，根據您的喜好提供建議
-      </li>
-      <li>
-        <span class="li-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-        </span>
-        電影評分和評論功能，幫助您做出觀影決策
-      </li>
-    </ul>
+    <div class="about-box">
+      <div class="about-card">
+        <h3>電影小幫手是什麼？</h3>
+        <p>
+          電影小幫手是您的個人觀影決策專家，我們整合了來自 OMDb API 的豐富電影資料，為您提供全面且即時的電影資訊。
+        </p>
+        <p>
+          無論您是在尋找最新上映的電影、查詢經典作品的詳細資料，還是想要根據自己的喜好獲得個性化的電影推薦，電影小幫手都能滿足您的需求。
+        </p>
+      </div>
+      <div class="about-card">
+      <h3>我們的功能</h3>
+      <ul class="about-list">
+        <li>
+          <span class="li-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </span>
+          全面的電影資料庫，包含超過10,000部電影
+        </li>
+        <li>
+          <span class="li-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </span>
+          即時更新的熱門電影和即將上映資訊
+        </li>
+        <li>
+          <span class="li-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </span>
+          多維度的電影搜尋功能，可按名稱、演員、導演或類型篩選
+        </li>
+        <li>
+          <span class="li-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </span>
+          個性化的電影推薦系統，根據您的喜好提供建議
+        </li>
+        <li>
+          <span class="li-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 mr-2 flex-shrink-0" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </span>
+          電影評分和評論功能，幫助您做出觀影決策
+        </li>
+      </ul>
+    </div>
+    </div>
   </section>
 
   <footer>
-    <h2>電影小幫手</h2>
-    <p>您的個人觀影決策專家</p>
-    <small>© 2024 電影小幫手. 保留所有權利。隱私政策｜使用條款</small>
+    <div class="logo">
+      <span class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-500 mr-2" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h18M3 16h18">
+          </path>
+        </svg>
+      </span>
+      <span class="logo-text">電影小幫手</span>
+    </div>
+    
+    <div class="footer-right"><small>© 2024 電影小幫手</small></div>
   </footer>
 
   <script src="js/data.js"></script>
