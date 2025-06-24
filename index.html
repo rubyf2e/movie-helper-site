@@ -72,11 +72,18 @@
 
   <section id="search">
     <h2>電影搜尋</h2>
-    <input type="text" placeholder="輸入電影名稱、演員或導演..." />
-    <div class="tags">
-      <span>動作</span><span>喜劇</span><span>科幻</span><span>恐怖</span>
+    <div class="search-box">
+      <div class="search-input-wrap">
+        <span class="search-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="28" height="28">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"/>
+          </svg>
+        </span>
+        <input type="text" placeholder="輸入電影名稱、演員或導演..." />
+      </div>
+      <div class="tags" id="search-tags"></div>
+      <button class="search-btn">搜尋電影</button>
     </div>
-    <button>搜尋電影</button>
   </section>
 
   <section id="about">
@@ -124,11 +131,6 @@
         電影評分和評論功能，幫助您做出觀影決策
       </li>
     </ul>
-    <div class="social-icons">
-      <a href="#">Facebook</a>
-      <a href="#">Instagram</a>
-      <a href="#">Twitter</a>
-    </div>
   </section>
 
   <footer>

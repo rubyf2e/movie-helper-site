@@ -56,4 +56,23 @@ fetch('data/content.json')
         </div>
       `;
     });
+
+    // 電影搜尋 tags 動態渲染
+    const tags = ['動作', '喜劇', '科幻', '恐怖'];
+    const tagsEl = document.getElementById('search-tags');
+    let activeTag = 1; // 預設第二個(喜劇)為 active
+
+    function renderTags() {
+      tagsEl.innerHTML = tags.map((tag, idx) =>
+        `<span class="${idx === activeTag ? 'active' : ''}" data-idx="${idx}">${tag}</span>`
+      ).join('');
+      // 綁定點擊事件
+      tagsEl.querySelectorAll('span').forEach(span => {
+        span.onclick = function() {
+          activeTag = Number(this.dataset.idx);
+          renderTags();
+        };
+      });
+    }
+    renderTags();
   });
