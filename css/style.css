@@ -165,35 +165,120 @@ h2 {
 #coming-soon-movies {
     display: flex;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 2.8rem;
     justify-content: center;
     margin-bottom: 2rem;
+    padding: 2rem 0.3rem;
 }
 
 .movie.upcoming {
-    background: #1e293b;
+    background: #232b3b;
     color: #f1f5f9;
-    border-radius: 16px;
+    border-radius: 8px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
     position: relative;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    min-width: 0px;
+    max-width: 608px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.movie.upcoming h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    color: #fff;
 }
 
 .movie.upcoming .badge {
     position: absolute;
-    top: 1.2rem;
-    right: 1.2rem;
+    top: 1.8rem;
+    right: 1.5rem;
     background: #ef4444;
     color: #fff;
-    padding: 0.3rem 0.8rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-weight: bold;
+    padding: 2.5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
     letter-spacing: 1px;
 }
 
+.movie.upcoming .meta {
+    color: #cbd5e1;
+    font-size: 1.0rem;
+    margin-bottom: 1.1rem;
+    line-height: 1.6;
+}
+
+.movie.upcoming p {
+    color: #f1f5f9;
+    margin-bottom: 1.7rem;
+    font-size: 1.0rem;
+    line-height: 1.7;
+}
+
+.movie.upcoming .remind-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    width: 100%;
+    gap: 1rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.movie.upcoming button {
+    background: transparent;
+    color: rgb(245, 158, 11);
+    border: 1px solid rgb(245, 158, 11);
+    padding: 0.6rem 0rem;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    box-shadow: none;
+    white-space: nowrap;
+    min-width: 120px;
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    display: inline-block;
+}
+
+.movie.upcoming button:hover {
+    background: #facc15;
+    color: #1e293b;
+    border-color: #facc15;
+}
+
+.movie.upcoming .expect {
+    color: #cbd5e1;
+    font-size: 1.08rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
 .movie.upcoming .stars {
-    margin-top: 0.5rem;
-    color: rgb(245 158 11 / var(--tw-bg-opacity, 1));
+    font-size: 1.15rem;
+    margin-left: 0.3rem;
+    letter-spacing: 1px;
+}
+
+.movie.upcoming .stars .star {
+    color: #facc15;
+}
+
+.movie.upcoming .stars .star.gray {
+    color: #64748b;
 }
 
 /* 9. 按鈕樣式 */
@@ -321,7 +406,8 @@ h2 {
 
 .about-list li {
     display: flex;
-    align-items: center;   /* 讓 SVG 與文字垂直置中 */
+    align-items: center;
+    /* 讓 SVG 與文字垂直置中 */
     margin-bottom: 1.1rem;
     font-size: 1.08rem;
     color: #cbd5e1;
@@ -332,11 +418,13 @@ h2 {
     align-items: center;
     margin-right: 0.5rem;
     flex-shrink: 0;
-    margin-top: 0;         /* 移除多餘的上邊距 */
+    margin-top: 0;
+    /* 移除多餘的上邊距 */
 }
 
 .about-list .li-icon svg {
-    width: 1.35em;         /* 跟隨字體大小縮放 */
+    width: 1.35em;
+    /* 跟隨字體大小縮放 */
     height: 1.35em;
     min-width: 1.35em;
     min-height: 1.35em;
@@ -517,6 +605,18 @@ nav ul li a.active::after {
     }
 }
 
+@media (max-width: 500px) {
+    .movie.upcoming .remind-row {
+        gap: 0.7rem;
+    }
+
+    .movie.upcoming button {
+        width: 100px;
+        min-width: 0;
+        text-align: center;
+    }
+}
+
 /* Hero 區塊 */
 .hero {
     text-align: center;
@@ -583,6 +683,18 @@ nav ul li a.active::after {
 @media (min-width: 600px) {
     .explore-cards {
         flex-direction: row;
+    }
+
+}
+
+@media (min-width: 760px) {
+    .movie.upcoming {
+        min-width: 320px;
+        max-width: 350px;
+    }
+
+    #coming-soon-movies {
+        gap: 1.5rem;
     }
 }
 

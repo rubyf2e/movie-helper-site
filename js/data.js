@@ -27,14 +27,26 @@ fetch('data/content.json')
     });
 
     data.comingSoon.forEach(movie => {
+      // 星星評分（預設4顆黃1顆灰，可根據資料調整）
+      let stars = '';
+      const score = movie.expectScore || 4; // 若資料有 expectScore 屬性
+      for (let i = 1; i <= 5; i++) {
+        stars += `<span class="star${i > score ? ' gray' : ''}">★</span>`;
+      }
+
       comingEl.innerHTML += `
         <div class="movie upcoming">
           <span class="badge">即將上映</span>
           <h3>${movie.title}</h3>
-          <p>上映日期: ${movie.releaseDate}｜${movie.genre}</p>
+          <div class="meta">
+            上映日期: ${movie.releaseDate || ''}<br>
+            類型: ${movie.genre || ''}
+          </div>
           <p>${movie.description}</p>
-          <div class="stars">★★★★★</div>
-          <button>設定提醒</button>
+          <div class="remind-row">
+            <button>設定提醒</button>
+            <span class="expect">期待度：<span class="stars">${stars}</span></span>
+          </div>
         </div>
       `;
     });
