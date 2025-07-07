@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MovieIcon } from "./Icons";
+import { MovieIcon, HamburgerIcon } from "./Icons";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -122,9 +122,7 @@ function Header() {
           aria-label="開啟選單"
           onClick={toggleMenu}
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <HamburgerIcon isOpen={menuOpen} />
         </button>
       </div>
     </header>

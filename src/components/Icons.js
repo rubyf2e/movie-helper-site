@@ -80,12 +80,44 @@ export function StarIcon({
   );
 }
 
+// 漢堡選單圖標組件
+export function HamburgerIcon({ className = "h-6 w-6", isOpen = false }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      {isOpen ? (
+        // X 圖標（關閉狀態）
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      ) : (
+        // 漢堡選單圖標（開啟狀態）
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M4 6h16M4 12h16m-7 6h7"
+        />
+      )}
+    </svg>
+  );
+}
+
 // 預設匯出所有圖標
 const Icons = {
   CheckIcon,
   MovieIcon,
   SearchIcon,
   StarIcon,
+  HamburgerIcon,
 };
 
 export default Icons;
