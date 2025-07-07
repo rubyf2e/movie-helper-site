@@ -41,9 +41,15 @@
   - 更新 git 後重新檢視正式站頁面，確保整體一致性與功能穩定。
 
 - **3️⃣ 調整版面**
+
   - 微調版面，發現還是直接改比較快
   - 手動加上各 section 背景
   - 請 Copilot 幫忙將選擇區塊加上淡出動畫並請它將動畫調快一點
+
+- **4️⃣ 生成可愛用圖**
+  - 登入 https://iconscout.com/ai/illustration-generator
+  - 使用 Copilot 幫忙寫 prompt，使用 3D Illustration Generator，AI 生圖
+  - 在 lottiefiles 找到可愛 AI 客服用圖 https://app.lottiefiles.com/share/f6aeb9d1-afbc-42c0-83e7-5ba8e4543e35
 
 </details>
 
