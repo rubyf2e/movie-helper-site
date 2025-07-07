@@ -500,7 +500,7 @@ nav {
     }
 
     @media (max-width: 480px) {
-      flex-direction: column;
+      flex-direction: row;
       gap: 1rem;
 
       .mobile-robot-image {
@@ -1160,32 +1160,47 @@ nav {
 // Floating AI Bot
 .floating-ai-bot {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  width: 100%;
+  max-width: 150px;
+  bottom: 0;
+  right: 0;
   z-index: 1000;
   opacity: 0;
   animation: fadeInScale 0.5s ease-out forwards;
 
   .ai-bot-container {
     position: relative;
+    right: 1rem;
+  }
+
+  .ai-bot-chat-container {
+    position: relative;
+    width: 250px;
+    max-width: 250px;
   }
 
   .ai-bot-button {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, $primary-color, $primary-light);
-    border-radius: 50%;
+    width: 200px;
+    height: 200px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
     transition: all 0.3s ease;
-    border: 3px solid rgba(255, 255, 255, 0.2);
+
+    &.background {
+      background: linear-gradient(135deg, $primary-color, $primary-light);
+      border-radius: 50%;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
 
     &:hover {
       transform: scale(1.1);
-      box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4);
+
+      &.background {
+        box-shadow: 0 6px 30px rgba(245, 158, 11, 0.4);
+      }
     }
 
     &:active {
@@ -1202,9 +1217,9 @@ nav {
 
   .ai-bot-chat {
     position: absolute;
-    bottom: 70px;
-    right: 0;
-    width: 320px;
+    bottom: 3rem;
+    right: 16.5rem;
+    width: 20rem;
     background: $card-background;
     border-radius: 1rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -1294,12 +1309,28 @@ nav {
 
   // 響應式設計
   @media (max-width: 640px) {
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 0rem;
+    right: 0rem;
+    max-width: 100%;
+    flex-direction: row-reverse;
+    display: flex;
+
+    .ai-bot-chat-container {
+      position: relative;
+      width: 240px;
+      max-width: 240px;
+    }
+
+    .ai-bot-container {
+      width: 100%;
+      max-width: 150px;
+      float: right;
+      right: 0;
+    }
 
     .ai-bot-button {
-      width: 50px;
-      height: 50px;
+      width: 150px;
+      height: 150px;
 
       .ai-bot-fallback .ai-bot-icon {
         font-size: 1.5rem;
@@ -1309,7 +1340,7 @@ nav {
     .ai-bot-chat {
       width: calc(100vw - 2rem);
       right: -1rem;
-      bottom: 60px;
+      bottom: 2.5rem;
     }
   }
 }

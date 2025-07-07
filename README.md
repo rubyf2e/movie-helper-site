@@ -17,7 +17,7 @@
 為了不讓經驗變成框架，我選擇用「初學者的方式」去與 AI 協作，並調整心態，讓自己站在和初學者一樣的角度去使用 AI 撰寫這個專案。
 
 <details>
-<summary><strong> 🌱 2025.07.08 專案引入 ENV 和 CSS 改成 Sass 完成心得</strong></summary>
+<summary><strong> 🌱 2025.07.08 專案導入 ENV、Sass、AI客服介面 完成心得</strong></summary>
 
 ##### 完成工時：一天
 
@@ -51,9 +51,11 @@
   - 登入 https://iconscout.com/ai/illustration-generator
   - 使用 Copilot 幫忙寫 prompt，使用 3D Illustration Generator，AI 生圖
 
-    <img src="https://github.com/rubyf2e/movie-helper-site/raw/main/public/images/ai_1.jpg" alt="AI 客服用圖" width="150" />
+    <img src="https://github.com/rubyf2e/movie-helper-site/raw/main/public/images/ai_robot_chair_png_optimized.png" alt="AI 生成圖" width="150" />
 
-  - 在 lottiefiles 找到可愛 AI 客服用圖 https://app.lottiefiles.com/share/f6aeb9d1-afbc-42c0-83e7-5ba8e4543e35
+  - 在 lottiefiles 找到可愛 AI 客服用圖
+    https://app.lottiefiles.com/share/f6aeb9d1-afbc-42c0-83e7-5ba8e4543e35
+  - 在 lottiefiles 介面開啟 AI 客服圖下載對話框 png，用 Figma 置換文字，再回 lottiefiles 更新對話框 png，下載 json 和 lottie 檔
 
 - **5️⃣ 將 AI 客服圖片置入**
   - 請 Copilot 幫忙把原有的 Lottie 動畫添加為浮動 AI 客服顯示
@@ -62,6 +64,7 @@
   - 結果 Copilot 自己加上 emoji Bot 圖當錯誤提示圖幫我置入，重新手動調整
   - 請 Copilot 幫忙把圖片壓縮，使用 ImageMagick 壓縮圖片，使用兩倍大圖
   - 請 Copilot 幫我調整 robot-image 的自適應美觀點，因應不同的顯示模式對談校正
+  - 調整機器人選單樣式
 
 </details>
 
