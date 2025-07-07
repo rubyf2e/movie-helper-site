@@ -1,15 +1,12 @@
 {
   "files": {
-    "main.css": "/movie-helper-site/static/css/main.40d512b2.css",
-    "main.js": "/movie-helper-site/static/js/main.65c49c2f.js",
-    "static/js/453.839205e4.chunk.js": "/movie-helper-site/static/js/453.839205e4.chunk.js",
-    "index.html": "/movie-helper-site/index.html",
-    "main.40d512b2.css.map": "/movie-helper-site/static/css/main.40d512b2.css.map",
-    "main.65c49c2f.js.map": "/movie-helper-site/static/js/main.65c49c2f.js.map",
-    "453.839205e4.chunk.js.map": "/movie-helper-site/static/js/453.839205e4.chunk.js.map"
+    "main.css": "https://rubyf2e.github.io/movie-helper-site/static/css/main.a49324f0.css",
+    "main.js": "https://rubyf2e.github.io/movie-helper-site/static/js/main.5bba6a3e.js",
+    "static/js/206.0437e59f.chunk.js": "https://rubyf2e.github.io/movie-helper-site/static/js/206.0437e59f.chunk.js",
+    "index.html": "https://rubyf2e.github.io/movie-helper-site/index.html"
   },
   "entrypoints": [
-    "static/css/main.40d512b2.css",
-    "static/js/main.65c49c2f.js"
+    "static/css/main.a49324f0.css",
+    "static/js/main.5bba6a3e.js"
   ]
 }
