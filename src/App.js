@@ -5,11 +5,14 @@ import SearchBox from "./components/SearchBox";
 import MovieList from "./components/MovieList";
 import About from "./components/About";
 import Explore from "./components/Explore";
+import FloatingAIBot from "./components/FloatingAIBot";
 import "./scss/style.scss";
 
 function App() {
   const [movies, setMovies] = useState([]);
   const [comingSoon, setComingSoon] = useState([]);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     // 使用環境變數設定頁面標題
@@ -37,7 +40,24 @@ function App() {
       <div id="home" className="hero">
         <h1>電影小幫手</h1>
         <p className="subtitle">您的個人觀影決策專家</p>
-        <button className="hero-btn">探索電影世界</button>
+        <div className="hero-mobile-robot">
+          <button className="hero-btn">探索電影世界</button>
+          <img
+            src={`${
+              process.env.PUBLIC_URL || ""
+            }/images/ai_robot_chair_png_optimized.png`}
+            alt="AI 機器人客服助手"
+            className={`mobile-robot-image ${imageLoaded ? "loaded" : ""}`}
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setImageError(true)}
+            loading="lazy"
+          />
+          {imageError && (
+            <div className="robot-fallback">
+              <span className="robot-emoji">🤖</span>
+            </div>
+          )}
+        </div>
       </div>
 
       <Explore />
@@ -59,6 +79,7 @@ function App() {
 
       <About />
       <Footer />
+      <FloatingAIBot />
     </div>
   );
 }

@@ -55,6 +55,14 @@
 
   - 在 lottiefiles 找到可愛 AI 客服用圖 https://app.lottiefiles.com/share/f6aeb9d1-afbc-42c0-83e7-5ba8e4543e35
 
+- **5️⃣ 將 AI 客服圖片置入**
+  - 請 Copilot 幫忙把原有的 Lottie 動畫添加為浮動 AI 客服顯示
+  - 結果 Copilot 自己生成自己的 Lottie Bot 圖加上去還幫我加選單，重新手動調整
+  - 請 Copilot 幫忙在 section #explore 的右下置入 AI 生成的 3D 圖片 robot-image
+  - 結果 Copilot 又自己生成自己的圖片幫我置入，重新手動調整
+  - 請 Copilot 幫忙把圖片壓縮，使用 ImageMagick 壓縮圖片，使用兩倍大圖
+  - 請 Copilot 幫我調整 robot-image 的自適應美觀點，因應不同的顯示模式對談校正
+
 </details>
 
 <details>

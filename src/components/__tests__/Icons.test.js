@@ -1,5 +1,11 @@
 import { render } from "@testing-library/react";
-import { CheckIcon, MovieIcon, SearchIcon, StarIcon, HamburgerIcon } from "../Icons";
+import {
+  CheckIcon,
+  MovieIcon,
+  SearchIcon,
+  StarIcon,
+  HamburgerIcon,
+} from "../Icons";
 
 describe("Icons Components", () => {
   test("CheckIcon renders without crashing", () => {
