@@ -1,0 +1,987 @@
+// Variables
+$primary-color: rgb(245 158 11);
+$primary-hover: rgb(217 119 6);
+$primary-light: #fde047;
+$primary-glow: rgba(250, 204, 21, 0.5);
+$primary-shadow: rgba(250, 204, 21, 0.1);
+
+$secondary-dark: #1e293b;
+$background-dark: #0f172a;
+$background-gradient-end: #1e293b;
+$card-background: #1e293b;
+$card-dark: #232b3b;
+$header-footer-bg: #101729;
+$search-box-bg: #374151;
+$explore-card-bg: #192133;
+$about-box-bg: rgb(51 65 85);
+
+$text-primary: #f1f5f9;
+$text-secondary: #cbd5e1;
+$text-muted: #94a3b8;
+$text-placeholder: rgb(156 163 175);
+
+$border-primary: $primary-color;
+$border-dark: #334155;
+
+$success-color: #4ade80;
+$warning-color: #facc15;
+$error-color: #ef4444;
+$info-color: #818cf8;
+
+$header-height: 72px;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 16px;
+$border-radius-xl: 2rem;
+$border-radius-full: 999px;
+
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.18);
+$shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.22);
+
+$font-family-base: "Segoe UI", sans-serif;
+$font-size-xs: 0.95rem;
+$font-size-sm: 1rem;
+$font-size-base: 1.1rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.5rem;
+$font-size-2xl: 2.2rem;
+$font-size-3xl: 3rem;
+$font-size-4xl: 3.75rem;
+
+$transition-base: all 0.2s ease;
+$transition-transform: transform 0.15s ease;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin card-hover {
+  transition: $transition-transform;
+
+  &:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: $shadow-xl;
+  }
+}
+
+@mixin button-primary {
+  background: $primary-color;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  transition: $transition-base;
+  box-shadow: $shadow-sm;
+
+  &:hover {
+    background: $primary-hover;
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(250, 204, 21, 0.18);
+  }
+}
+
+@mixin button-outline {
+  background: transparent;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  font-weight: 400;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $primary-color;
+    color: #ffffff;
+    border-color: $primary-color;
+  }
+}
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family-base;
+  background: linear-gradient(
+    180deg,
+    $background-dark 0%,
+    $background-gradient-end 100%
+  );
+  color: $text-primary;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-top: $header-height;
+}
+
+// Header & Footer
+header,
+footer {
+  background: $header-footer-bg;
+  box-shadow: $shadow-md;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: $header-height;
+  z-index: 100;
+  @include flex-center;
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    @include flex-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
+  }
+}
+
+footer {
+  @include flex-between;
+  text-align: center;
+  padding: 2.5rem 2.5rem 1.5rem 2.5rem;
+  font-size: $font-size-xs;
+  color: $text-muted;
+  margin-top: 2rem;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    color: $text-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-right {
+    max-width: 120px;
+  }
+}
+
+// Typography
+h1 {
+  font-size: $font-size-3xl;
+  margin-bottom: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+h2 {
+  text-align: center;
+  font-size: $font-size-2xl;
+  margin: 3rem 0 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+// Logo styles
+.logo {
+  @include flex-center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: $text-primary;
+  letter-spacing: 1px;
+  max-width: 800px;
+
+  &-icon {
+    @include flex-center;
+    margin-right: 0.5rem;
+
+    svg {
+      width: 2.2rem;
+      height: 2.2rem;
+      color: #eaa13b;
+      display: block;
+    }
+  }
+
+  &-text {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+}
+
+footer .logo {
+  &-text {
+    font-size: 1.2rem;
+  }
+
+  &-icon {
+    margin-right: 0.3rem;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+}
+
+// Navigation
+nav {
+  ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+
+    li a {
+      color: $text-primary;
+      text-decoration: none;
+      font-size: 1.08rem;
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.2s;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0%;
+        height: 2.5px;
+        background: #eaa13b;
+        transition: width 0.3s;
+        border-radius: 2px;
+      }
+
+      &:hover,
+      &.active {
+        color: #ffffff;
+        background: rgba(250, 204, 21, 0.06);
+        border-radius: 4px 4px 0 0;
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Mobile menu toggle
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 1rem;
+
+  span {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background: $text-primary;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+}
+
+// Hero section
+.hero {
+  text-align: center;
+  margin: 0 auto 2.5rem auto;
+  padding: 3.5rem 1rem 2rem 1rem;
+
+  h1 {
+    font-size: $font-size-4xl;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 0.7rem;
+    letter-spacing: 1px;
+  }
+
+  .subtitle {
+    font-size: $font-size-lg;
+    color: $text-secondary;
+    margin-bottom: 2rem;
+  }
+
+  &-btn {
+    @include button-primary;
+    padding: 1rem 2.5rem;
+    font-size: 1.15rem;
+    border-radius: $border-radius-xl;
+    animation: pulse 1s infinite;
+
+    &:hover {
+      transform: scale(1.08);
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Explore section
+#explore {
+  ul {
+    @include flex-center;
+    gap: 2rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    list-style: none;
+    text-align: center;
+
+    li {
+      background: transparent;
+      color: $text-primary;
+      font-size: $font-size-base;
+
+      strong {
+        font-size: 2rem;
+        color: $primary-color;
+        display: block;
+      }
+    }
+  }
+}
+
+.explore-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 700px;
+  margin: 0 auto 2.5rem auto;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+  }
+}
+
+.explore-card {
+  background: $explore-card-bg;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 2.2rem 1.5rem 1.5rem 1.5rem;
+  text-align: center;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.explore-number {
+  color: $primary-color;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.explore-label {
+  color: $text-secondary;
+  font-size: $font-size-base;
+  margin-bottom: 1rem;
+}
+
+// Movie cards
+#popular-movies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+#coming-soon-movies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.8rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 2rem 0.3rem;
+}
+
+.movie {
+  border-radius: $border-radius-lg;
+  padding: 1.8rem 1.5rem 1.5rem 1.5rem;
+  width: 300px;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  background: $card-background;
+  @include card-hover;
+
+  .icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    @include flex-center;
+    font-size: 2.2rem;
+    color: $text-primary;
+  }
+
+  .rating-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: #ffffff;
+    background: $primary-color;
+    padding: 0.2rem 0.7rem;
+    border-radius: $border-radius-md;
+    font-size: $font-size-xs;
+    font-weight: 900;
+  }
+
+  button {
+    @include button-primary;
+    padding: 0.7rem 1.8rem;
+    font-size: $font-size-sm;
+    margin-top: 1rem;
+  }
+
+  // Theme variations
+  &.yellow {
+    background: $warning-color;
+    color: $secondary-dark;
+  }
+
+  &.blue {
+    background: $info-color;
+    color: $secondary-dark;
+  }
+
+  &.red {
+    background: #f87171;
+    color: $secondary-dark;
+  }
+
+  &.green {
+    background: $success-color;
+    color: $secondary-dark;
+  }
+
+  // Upcoming movie styles
+  &.upcoming {
+    background: $card-dark;
+    color: $text-primary;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-lg;
+    position: relative;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    min-width: 0px;
+    max-width: 608px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+      color: #fff;
+    }
+
+    .badge {
+      position: absolute;
+      top: 1.8rem;
+      right: 1.5rem;
+      background: $error-color;
+      color: #fff;
+      padding: 2.5px 8px;
+      border-radius: $border-radius-sm;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .meta {
+      color: $text-secondary;
+      font-size: $font-size-sm;
+      margin-bottom: 1.1rem;
+      line-height: 1.6;
+    }
+
+    p {
+      color: $text-primary;
+      margin-bottom: 1.7rem;
+      font-size: $font-size-sm;
+      line-height: 1.7;
+    }
+
+    .remind-row {
+      @include flex-between;
+      margin-top: auto;
+      width: 100%;
+      gap: 1rem;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+
+    button {
+      @include button-outline;
+      padding: 0.6rem 0rem;
+      font-size: 16px;
+      white-space: nowrap;
+      min-width: 120px;
+      max-width: 100%;
+      margin-top: 0;
+      margin-bottom: 0;
+      display: inline-block;
+    }
+
+    .expect {
+      color: $text-secondary;
+      font-size: 1.08rem;
+      @include flex-center;
+    }
+
+    .stars {
+      @include flex-center;
+      gap: 0.18em;
+      font-size: 1.15rem;
+      margin-left: 0;
+      letter-spacing: 0;
+
+      .star {
+        @include flex-center;
+        padding: 0;
+        margin: 0;
+
+        svg {
+          width: 1.25em;
+          height: 1.25em;
+          fill: $warning-color;
+          display: block;
+        }
+
+        &.gray svg {
+          fill: #64748b;
+        }
+      }
+    }
+  }
+}
+
+// Search section
+#search {
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  margin: 3.5rem auto 0 auto;
+  max-width: 100vw;
+  text-align: center;
+  box-shadow: none;
+
+  h2 {
+    text-align: center;
+    font-size: 2.25rem;
+    margin: 1.5rem 0;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+
+  button {
+    @include button-primary;
+    padding: 0.7rem 1.8rem;
+    font-size: $font-size-sm;
+    border-radius: $border-radius-full;
+  }
+}
+
+.search-box {
+  background: $search-box-bg;
+  border-radius: $border-radius-md;
+  padding: 1.8rem 1.8rem;
+  max-width: 768px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
+}
+
+.search-input-wrap {
+  @include flex-center;
+  background: $card-dark;
+  border: 2px solid $border-primary;
+  border-radius: 60px;
+  padding: 0.1rem 1rem;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  &:focus-within {
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px $primary-glow;
+  }
+
+  input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: $text-primary;
+    font-size: 16px;
+    flex: 1;
+    padding: 0.7rem 0;
+    font-weight: normal;
+    letter-spacing: 1px;
+
+    &::placeholder {
+      color: $text-placeholder;
+      opacity: 1;
+      font-weight: 500;
+    }
+  }
+}
+
+.search-icon {
+  @include flex-center;
+  margin-right: 1rem;
+  color: $border-primary;
+
+  svg {
+    width: 20px;
+  }
+}
+
+.tags {
+  @include flex-between;
+  flex-wrap: nowrap;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 0;
+
+  span {
+    background: $card-dark;
+    width: 25%;
+    min-width: 160px;
+    max-width: 168px;
+    border-radius: $border-radius-full;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s;
+    box-shadow: none;
+    border: none;
+    text-align: center;
+    margin-bottom: 0;
+    display: inline-block;
+    margin-right: 0;
+    font-size: $font-size-sm;
+    padding: 0.5rem 1.2rem;
+
+    &:not(:last-child) {
+      margin-right: 0;
+    }
+
+    &.active,
+    &:hover {
+      background: $primary-color;
+      color: #fff;
+      box-shadow: 0 4px 24px #facc1533;
+    }
+  }
+}
+
+.search-btn {
+  background: $warning-color;
+  color: #fff;
+  border: none;
+  padding: 1.2rem 4.5rem;
+  font-size: 2.2rem;
+  font-weight: bold;
+  border-radius: $border-radius-full;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  box-shadow: 0 8px 32px #facc1533;
+  transition: background 0.2s, color 0.2s, transform 0.18s;
+  letter-spacing: 2px;
+  display: inline-block;
+
+  &:hover {
+    background: $primary-light;
+    color: $secondary-dark;
+    transform: scale(1.06);
+  }
+}
+
+// About section
+#about {
+  padding: 1.5rem 0.5rem;
+
+  p,
+  li {
+    color: $text-secondary;
+    padding: 0.5rem 0 0 0;
+  }
+
+  ul {
+    list-style: disc;
+    margin-top: 1rem;
+  }
+}
+
+.about-box {
+  background-color: $about-box-bg;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 1rem auto 2rem auto;
+  max-width: 48rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.about-card {
+  padding: 0 0 1.5rem 0;
+
+  h3 {
+    font-size: $font-size-xl;
+    line-height: 2rem;
+  }
+}
+
+.social-icons {
+  @include flex-center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  a {
+    background: $border-dark;
+    color: $text-primary;
+    padding: 0.7rem 1.2rem;
+    border-radius: $border-radius-md;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    transition: background 0.3s, color 0.3s;
+    margin: 0 0.2rem;
+
+    &:hover {
+      background: $warning-color;
+      color: $secondary-dark;
+      box-shadow: $shadow-sm;
+    }
+  }
+}
+
+.about-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 1.5rem 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: $text-secondary;
+  }
+
+  .li-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+    margin-top: 0;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      min-width: 1.5rem;
+      min-height: 1.5rem;
+      color: #eaa13b;
+      display: block;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 900px) {
+  .tags {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+
+    span {
+      width: auto;
+      min-width: 140px;
+      font-size: 1.2rem;
+      padding: 0.7rem 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .search-box {
+    padding: 2rem 0.5rem 2rem 0.5rem;
+  }
+
+  .search-input-wrap input,
+  .tags span,
+  .search-btn {
+    font-size: 16px;
+  }
+
+  .tags span {
+    padding: 0.7rem 1.5rem;
+  }
+
+  .search-btn {
+    padding: 1rem 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 0 1rem;
+  }
+
+  nav {
+    @include flex-center;
+
+    ul {
+      display: none;
+      position: absolute;
+      top: $header-height;
+      right: 0;
+      left: 0;
+      background: $header-footer-bg;
+      flex-direction: column;
+      gap: 0;
+      z-index: 99;
+      box-shadow: $shadow-md;
+      margin: 0;
+      padding: 1rem 0;
+
+      &.show {
+        display: flex;
+      }
+
+      li {
+        border-bottom: 0px solid $border-dark;
+        text-align: center;
+        padding: 0.75rem 0;
+      }
+    }
+  }
+
+  .menu-toggle {
+    display: flex !important;
+    z-index: 100;
+    position: relative;
+  }
+}
+
+@media (min-width: 760px) {
+  .movie.upcoming {
+    min-width: 320px;
+    max-width: 480px;
+  }
+
+  #coming-soon-movies {
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 0 auto 2rem auto;
+  }
+}
+
+@media (max-width: 600px) {
+  #search h2 {
+    font-size: 2rem;
+    margin: 1.2rem 0 1.2rem 0;
+  }
+
+  .search-box {
+    padding: 1.5rem 1rem;
+  }
+
+  .search-input-wrap {
+    padding: 0.3rem 0.7rem;
+  }
+
+  .tags {
+    gap: 0.7rem;
+
+    span {
+      font-size: $font-size-sm;
+      padding: 0.5rem 1.2rem;
+    }
+  }
+
+  .search-btn {
+    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .movie.upcoming {
+    .remind-row {
+      gap: 0.7rem;
+    }
+
+    button {
+      width: 100px;
+      min-width: 0;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .movie {
+    width: 90vw;
+    max-width: 350px;
+  }
+
+  #popular-movies,
+  #coming-soon-movies {
+    gap: 1.2rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .movie {
+    width: 95vw;
+    max-width: 98vw;
+  }
+
+  #search {
+    padding: 1.5rem 0.5rem;
+  }
+}

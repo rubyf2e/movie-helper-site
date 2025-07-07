@@ -5,7 +5,7 @@ import SearchBox from "./components/SearchBox";
 import MovieList from "./components/MovieList";
 import About from "./components/About";
 import Explore from "./components/Explore";
-import "./css/style.css";
+import "./scss/style.scss";
 
 function App() {
   const [movies, setMovies] = useState([]);
