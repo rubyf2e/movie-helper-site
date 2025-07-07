@@ -127,6 +127,9 @@ body {
 *::before,
 *::after {
   max-width: 100%;
+  --tw-gradient-from-position: ;
+  --tw-gradient-via-position: ;
+  --tw-gradient-to-position: ;
 }
 
 // Remove default focus and active states
@@ -512,6 +515,23 @@ nav {
   font-size: $font-size-base;
   margin-bottom: 1rem;
 }
+#popular {
+  --tw-bg-opacity: 1;
+  background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+
+#coming-soon {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+}
 
 // Movie cards
 #popular-movies {
@@ -702,14 +722,21 @@ nav {
 
 // Search section
 #search {
-  background: transparent;
   border-radius: 0;
   padding: 0;
-  margin: 3.5rem auto 0 auto;
+  margin: 0 auto;
   max-width: 100%;
   width: 100%;
   text-align: center;
   box-shadow: none;
+  --tw-gradient-to: #0f172a var(--tw-gradient-to-position);
+  --tw-gradient-from: #1e293b var(--tw-gradient-from-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
 
   h2 {
     text-align: center;
@@ -802,7 +829,6 @@ nav {
     border-radius: $border-radius-full;
     cursor: pointer;
     color: #fff;
-    font-weight: 600;
     transition: background 0.3s, color 0.3s;
     box-shadow: none;
     border: none;
@@ -1115,7 +1141,8 @@ nav {
   }
 
   #search {
-    padding: 1.5rem 0.5rem;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
   }
 }
 
