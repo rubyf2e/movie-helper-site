@@ -12,7 +12,12 @@ function App() {
   const [comingSoon, setComingSoon] = useState([]);
 
   useEffect(() => {
-    fetch(process.env.PUBLIC_URL + "/data/content.json")
+    // 使用環境變數設定頁面標題
+    document.title = process.env.REACT_APP_TITLE || "電影小幫手";
+
+    // 使用環境變數中的 API URL
+    const apiUrl = process.env.REACT_APP_API_URL || "/data/content.json";
+    fetch(apiUrl)
       .then((res) => res.json())
       .then((data) => {
         setMovies(data.popular || []);

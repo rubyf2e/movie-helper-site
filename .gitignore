@@ -1,3 +1,5 @@
+# .env.development
+
 .vscode/
 
 /node_modules

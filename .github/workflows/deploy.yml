@@ -15,6 +15,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,6 +28,23 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Create production environment file
+        run: |
+          cat > .env.production << EOF
+          REACT_APP_TITLE=${{ vars.REACT_APP_TITLE || '電影小幫手' }}
+          PUBLIC_URL=${{ vars.PUBLIC_URL || 'https://rubyf2e.github.io/movie-helper-site' }}
+          GENERATE_SOURCEMAP=false
+          EOF
+
+          # 只有在 secrets 存在時才添加機密變數
+          if [ -n "${{ secrets.REACT_APP_API_URL }}" ]; then
+            echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL || '/data/content.json' }}" >> .env.production
+          fi
+
+          if [ -n "${{ secrets.REACT_APP_DATABASE_URL }}" ]; then
+            echo "REACT_APP_DATABASE_URL=${{ secrets.REACT_APP_DATABASE_URL }}" >> .env.production
+          fi
 
       - name: Build
         run: npm run build

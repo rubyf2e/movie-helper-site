@@ -6,6 +6,9 @@ function Header() {
   const [activeLink, setActiveLink] = useState(0);
   const headerRef = useRef(null);
 
+  // 從環境變數獲取應用標題
+  const appTitle = process.env.REACT_APP_TITLE || "電影小幫手";
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -63,7 +66,7 @@ function Header() {
           <span className="logo-icon">
             <MovieIcon />
           </span>
-          <span className="logo-text">電影小幫手</span>
+          <span className="logo-text">{appTitle}</span>
         </div>
         <nav>
           <ul className={menuOpen ? "show" : ""}>
