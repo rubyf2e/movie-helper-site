@@ -47,8 +47,12 @@
   - 請 Copilot 幫忙將選擇區塊加上淡出動畫並請它將動畫調快一點
 
 - **4️⃣ 生成可愛用圖**
+
   - 登入 https://iconscout.com/ai/illustration-generator
   - 使用 Copilot 幫忙寫 prompt，使用 3D Illustration Generator，AI 生圖
+
+    <img src="https://github.com/rubyf2e/movie-helper-site/raw/main/public/images/ai_1.jpg" alt="AI 客服用圖" width="150" />
+
   - 在 lottiefiles 找到可愛 AI 客服用圖 https://app.lottiefiles.com/share/f6aeb9d1-afbc-42c0-83e7-5ba8e4543e35
 
 </details>
