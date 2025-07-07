@@ -71,11 +71,21 @@
   - 重新檢視所有檔案，確保整體一致性與功能穩定。
 
 - **1️⃣1️⃣ 更新專案結構與文件**
+
   - 請 Copilot 幫忙產生專案結構
   - Copilot 主動協助修改了 `README.md`，從功能標題以下內容主動更新。
   - 請 Copilot 幫忙改寫本地部署方式
   - 詢問 Copilot 使用其他靜態伺服器這個項目目前是用 react 這樣可以實作嗎
   - Copilot 直接進行測試並在 Vscode 開啟瀏覽器顯示正常
+
+- **1️⃣2️⃣ GitHub Pages 部署**
+
+  - 請 Copilot 協助更新 package.json 和 package-lock.json，新增 gh-pages 依賴
+  - 請 Copilot 幫忙生成 .github/workflows/deploy.yml
+  - GitHub Pages 設定 Deploy from a branch 改為 GitHub Actions
+
+- **1️⃣3️⃣ 檢察正式站是否正常**
+  - 重新檢視正式站頁面，確保整體一致性與功能穩定。
 
 ---
 
