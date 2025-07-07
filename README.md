@@ -20,12 +20,22 @@
 <summary><strong> 🌱 2025.07.08 專案引入 ENV 和 CSS 改成 Sass 完成心得</strong></summary>
 
 - **1️⃣ 新增 ENV 請 Copilot 改寫程式**
+
   - 新增環境配置的 .env
   - 請 Copilot 依照 .env 的參數去改寫相關檔案
   - 校對檔案是否有符合預期，確保環境變數在所有組件中正確使用
   - 測試重啟開發伺服器後環境變數是否生效
   - 在 GitHub Repository Settings 中設置 Secrets
   - 更新上線
+
+- **2️⃣ 將 CSS 轉換 SCSS**
+  - 將 style.css 和 style.scss 丟給 Copilot 請他改寫
+  - 將原本的引用改寫
+  - 檢查 UI/功能一致性。
+  - 發現有跑版請 Copilot 調整，調了六次還改不好，直接把要改的程式貼給它請它改好
+  - 檢查 UI/功能一致性。
+  - 移除原本的 style.css
+  - 更新 git 後重新檢視正式站頁面，確保整體一致性與功能穩定。
 
 </details>
 
@@ -98,7 +108,7 @@
   - 請 Copilot 幫忙生成 .github/workflows/deploy.yml
   - GitHub Pages 設定 Deploy from a branch 改為 GitHub Actions
 
-- **1️⃣3️⃣ 檢察正式站是否正常**
+- **1️⃣3️⃣ 檢查正式站是否正常**
   - 重新檢視正式站頁面，確保整體一致性與功能穩定。
 
 ---
