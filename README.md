@@ -303,3 +303,10 @@ cd build && http-server -p 8000
 
 - **開發模式**：`http://localhost:3000`
 - **生產模式**：`http://localhost:8000` 或 `http://localhost:5000`（依使用的伺服器而定）
+
+### 手動觸發部署
+
+```bash
+git commit -m "Update content"
+git push origin main
+```
