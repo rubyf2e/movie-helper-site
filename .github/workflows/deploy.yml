@@ -3,6 +3,7 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_dispatch:  # 允許手動觸發
 
 permissions:
   contents: read
@@ -44,6 +45,23 @@ jobs:
 
           if [ -n "${{ secrets.REACT_APP_DATABASE_URL }}" ]; then
             echo "REACT_APP_DATABASE_URL=${{ secrets.REACT_APP_DATABASE_URL }}" >> .env.production
+          fi
+
+          # TMDB API 相關環境變數
+          if [ -n "${{ secrets.REACT_APP_TMDB_API_KEY }}" ]; then
+            echo "REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }}" >> .env.production
+          fi
+
+          if [ -n "${{ secrets.REACT_APP_TMDB_BASE_URL }}" ]; then
+            echo "REACT_APP_TMDB_BASE_URL=${{ secrets.REACT_APP_TMDB_BASE_URL }}" >> .env.production
+          fi
+
+          if [ -n "${{ secrets.REACT_APP_TMDB_IMG_URL }}" ]; then
+            echo "REACT_APP_TMDB_IMG_URL=${{ secrets.REACT_APP_TMDB_IMG_URL }}" >> .env.production
+          fi
+
+          if [ -n "${{ secrets.REACT_APP_TMDB_MOVIE_LANGUAGE }}" ]; then
+            echo "REACT_APP_TMDB_MOVIE_LANGUAGE=${{ secrets.REACT_APP_TMDB_MOVIE_LANGUAGE }}" >> .env.production
           fi
 
       - name: Build
