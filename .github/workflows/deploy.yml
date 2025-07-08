@@ -3,7 +3,7 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches: [main]
-  workflow_dispatch:  # 允許手動觸發
+  workflow_dispatch: # 允許手動觸發
 
 permissions:
   contents: read
@@ -60,8 +60,10 @@ jobs:
             echo "REACT_APP_TMDB_IMG_URL=${{ secrets.REACT_APP_TMDB_IMG_URL }}" >> .env.production
           fi
 
-          if [ -n "${{ secrets.REACT_APP_TMDB_MOVIE_LANGUAGE }}" ]; then
-            echo "REACT_APP_TMDB_MOVIE_LANGUAGE=${{ secrets.REACT_APP_TMDB_MOVIE_LANGUAGE }}" >> .env.production
+          if [ -n "${{ vars.REACT_APP_TMDB_MOVIE_LANGUAGE }}" ]; then
+            echo "REACT_APP_TMDB_MOVIE_LANGUAGE=${{ vars.REACT_APP_TMDB_MOVIE_LANGUAGE }}" >> .env.production
+          else
+            echo "REACT_APP_TMDB_MOVIE_LANGUAGE=zh-tw" >> .env.production
           fi
 
       - name: Build
