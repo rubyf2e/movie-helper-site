@@ -36,7 +36,7 @@
   - [**專案企劃書**]  
     用 prompt 請 Gemini 擔任資深專案顧問，告訴 Gemini 我是來自台灣的頂尖策略顧問並提供企劃大綱，請他幫我寫專案企劃書
   - [**專案任務規劃與儀表板**]  
-    用 prompt 請 Gemini 擔任資深專案顧問，告訴 Gemini 我是初階專案經理，提供專案章程、user story、需求分析報告、WBS（工作分解結構）與 RBS（資源分解結構）給 Gemini，請 Gemini 生成階段性規劃與待辦任務清單，並在 Canvas 介面點擊建立網站產生 [專案儀表板.html](https://rubyf2e.github.io/movie-helper-site/專案儀表板.html)
+    用 prompt 請 Gemini 擔任資深專案顧問，告訴 Gemini 我是初階專案經理，提供專案章程、user story、需求分析報告、WBS（工作分解結構）與 RBS（資源分解結構）給 Gemini，請 Gemini 生成階段性規劃與待辦任務清單，並在 Canvas 介面點擊建立網站產生 [專案儀表板.html](https://rubyf2e.github.io/movie-helper-site/public/專案儀表板.html)
   - [**專案功能規格書**]  
     用 prompt 請 Gemini 擔任產品經理助理，生出專案規格
   - [**互動系統雛形網站**]  
@@ -45,10 +45,8 @@
 - **2️⃣ 使用 napkin AI 生成 AI 專案管理流程圖**
 
   - **將前一步驟的資料貼到 napkin AI 生成流程圖**  
-    <img src="doc/images/napkin_1.png" alt="napkin 生成流程圖" width="100%" />
-
-    <img src="doc/images/napkin_2.png" alt="napkin 生成流程圖" width="100%" />
-
+  <img src="doc/images/napkin_1.svg" alt="napkin 生成流程圖" width="500px">
+  <img src="doc/images/napkin_2.svg" alt="napkin 生成流程圖" width="500px">
   </details>
 
 <details>
@@ -205,21 +203,27 @@
 
 - **響應式設計**: 支援桌面版、平板、手機等各種裝置
 - **動態資料載入**: 從 JSON 檔案動態載入電影資料
+- **TMDB API 整合**: 真實電影資料搜尋、類型篩選、詳情查看
+- **智能搜尋**: 支援電影名稱關鍵字搜尋，即時結果顯示
+- **類型篩選**: 動態載入電影類型，一鍵篩選特定類型電影
+- **電影詳情彈窗**: 顯示完整電影資訊（導演、演員、劇情、評分）
 - **互動式搜尋**: 搜尋框與標籤篩選功能
 - **平滑導航**: 錨點連結與平滑滾動效果
 - **組件化架構**: 高度模組化的 React 組件設計
 - **完整測試**: Jest + React Testing Library 單元測試
 - **PWA 支援**: 漸進式網頁應用配置
 - **SEO 優化**: 語意化 HTML 與 meta 標籤優化
+- **浮動 AI 客服**: 智能客服介面與互動體驗
 
 ## 🛠 技術架構
 
 - **前端框架**：React 18
-- **樣式**：CSS3 + Responsive Design
+- **樣式**：SCSS + Responsive Design
 - **開發工具**：Create React App
+- **API 整合**：TMDB (The Movie Database) API v3
 - **測試**：Jest + React Testing Library
 - **部署**：GitHub Pages
-- **資料來源**：JSON 檔案驅動
+- **資料來源**：JSON 檔案驅動 + 真實電影 API
 
 ## 🗂 專案結構
 
@@ -237,24 +241,34 @@ movie-helper-site/
 │   ├── components/                 # React 組件
 │   │   ├── About.js               # 關於我們組件
 │   │   ├── Explore.js             # 探索數據組件
+│   │   ├── FloatingAIBot.js       # 浮動 AI 客服組件
 │   │   ├── Footer.js              # 頁尾組件
+│   │   ├── GenreFilter.js         # TMDB 類型篩選組件
 │   │   ├── Header.js              # 頁首與導航組件
 │   │   ├── Icons.js               # SVG 圖標集合
 │   │   ├── MovieCard.js           # 電影卡片組件
 │   │   ├── MovieList.js           # 電影列表組件
+│   │   ├── MovieModal.js          # TMDB 電影詳情彈窗組件
+│   │   ├── MovieSearch.js         # TMDB 電影搜尋主組件
 │   │   ├── MovieTags.js           # 電影標籤組件
 │   │   ├── SearchBox.js           # 搜尋框組件
+│   │   ├── TMDBMovieCard.js       # TMDB 電影卡片組件
 │   │   └── __tests__/             # 組件測試
 │   │       ├── About.test.js
 │   │       ├── Explore.test.js
+│   │       ├── FloatingAIBot.test.js
 │   │       ├── Footer.test.js
 │   │       ├── Header.test.js
 │   │       ├── Icons.test.js
 │   │       ├── MovieCard.test.js
+│   │       ├── MovieSearch.test.js
 │   │       ├── MovieTags.test.js
-│   │       └── SearchBox.test.js
-│   ├── css/
-│   │   └── style.css              # 全域樣式
+│   │       ├── SearchBox.test.js
+│   │       └── TMDBMovieCard.test.js
+│   ├── services/                   # API 服務層
+│   │   └── movieAPI.js            # TMDB API 整合服務
+│   ├── scss/
+│   │   └── style.scss             # 全域樣式 (SCSS)
 │   ├── App.js                     # 主應用組件
 │   ├── App.test.js                # 主應用測試
 │   ├── index.js                   # 應用入口點
