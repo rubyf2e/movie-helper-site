@@ -64,7 +64,7 @@
   - 檢視正式站頁面是否有載入參數，並在 /actions/runs 頁面按 Re-run all jobs 重新測試
 
 - **5️⃣ Css 元件化**
-  - 請 Copilot 重新整理 style.scss，將硬編碼顏色都整理成 VARIABLES
+  - 請 Copilot 重新整理 style.scss，將硬編碼顏色都整理成 VARIABLES、優化 mixin 使用、優化變數命名、建立主題色彩系統
   - 請 Copilot 將 style.scss 元件化
 
 </details>

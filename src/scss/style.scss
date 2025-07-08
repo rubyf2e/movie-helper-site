@@ -108,12 +108,41 @@ $transition-transform: transform 0.15s ease;
   justify-content: space-between;
 }
 
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 @mixin card-hover {
   transition: $transition-transform;
 
   &:hover {
     transform: translateY(-6px) scale(1.03);
     box-shadow: $shadow-xl;
+  }
+}
+
+@mixin simple-hover($scale: 1.05) {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+@mixin slide-up-hover($distance: -8px) {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY($distance);
+    box-shadow: 0 20px 40px $card-hover-shadow;
   }
 }
 
@@ -169,6 +198,126 @@ $transition-transform: transform 0.15s ease;
   }
 }
 
+@mixin button-rounded {
+  border-radius: $border-radius-full;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+@mixin card-base {
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+@mixin section-padding {
+  padding: 1.5rem 0.5rem;
+}
+
+@mixin container-center($max-width: 1200px) {
+  max-width: $max-width;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@mixin text-truncate($lines: 1) {
+  @if $lines == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@mixin gradient-background($start: $background-dark, $end: $background-gradient-end) {
+  background: linear-gradient(180deg, $start 0%, $end 100%);
+}
+
+@mixin modal-base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  @include flex-center;
+  background: $modal-backdrop-bg;
+  padding: 1rem;
+}
+
+@mixin input-focus-glow($color: $primary-color) {
+  &:focus-within {
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba($color, 0.5);
+  }
+}
+
+@mixin grid-responsive($min-width: 200px, $gap: 1.5rem) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin badge-style($bg-color: $primary-color, $text-color: $white) {
+  background: $bg-color;
+  color: $text-color;
+  padding: 0.2rem 0.7rem;
+  border-radius: $border-radius-md;
+  font-size: $font-size-xs;
+  font-weight: 900;
+}
+
+@mixin icon-container($size: 60px) {
+  width: $size;
+  height: $size;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  @include flex-center;
+  font-size: 2.2rem;
+  color: $text-primary;
+}
+
+@mixin animation-fade-in-up($delay: 0s) {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out $delay forwards;
+}
+
+@mixin reset-focus-styles {
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+  }
+}
+
+@mixin no-select {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 // ============================================================================
 // BASE STYLES & RESET
 // ============================================================================
@@ -203,23 +352,12 @@ a,
 input,
 select,
 textarea {
-  &:focus,
-  &:active {
-    outline: none;
-    box-shadow: none;
-    background: transparent;
-  }
+  @include reset-focus-styles;
 }
 
 // Remove blue highlight on touch devices and default focus styles
 * {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  @include no-select;
 }
 
 // Allow text selection for specific elements
@@ -279,11 +417,7 @@ html {
 
 body {
   font-family: $font-family-base;
-  background: linear-gradient(
-    180deg,
-    $background-dark 0%,
-    $background-gradient-end 100%
-  );
+  @include gradient-background;
   color: $text-primary;
   line-height: 1.6;
   min-height: 100vh;
@@ -312,10 +446,8 @@ header {
   @include flex-center;
 
   .header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
+    @include container-center(1200px);
     @include flex-between;
-    width: 100%;
     height: 100%;
     padding: 0 1rem;
   }
@@ -454,7 +586,7 @@ nav {
 // Mobile menu toggle
 .menu-toggle {
   display: none;
-  flex-direction: column;
+  @include flex-column;
   justify-content: center;
   align-items: center;
   width: 36px;
@@ -557,16 +689,14 @@ nav {
     color: $text-primary;
     margin-bottom: 0.7rem;
     letter-spacing: 1px;
-    opacity: 0;
-    animation: fadeInUp 0.5s ease-out 0.1s forwards;
+    @include animation-fade-in-up(0.1s);
   }
 
   .subtitle {
     font-size: $font-size-lg;
     color: $text-secondary;
     margin-bottom: 2rem;
-    opacity: 0;
-    animation: fadeInUp 0.5s ease-out 0.3s forwards;
+    @include animation-fade-in-up(0.3s);
   }
 
   &-btn,
@@ -585,8 +715,7 @@ nav {
 
   // Mobile robot image container
   .hero-mobile-robot {
-    display: flex;
-    flex-direction: column;
+    @include flex-column;
     align-items: center;
     gap: 1.5rem;
 
@@ -611,7 +740,7 @@ nav {
       .mobile-robot-image {
         width: 120px;
         height: auto;
-        transition: all 0.3s ease;
+        @include simple-hover;
         opacity: 0;
         flex-shrink: 0;
 
@@ -625,9 +754,7 @@ nav {
       }
 
       .robot-fallback {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         width: 120px;
         height: 120px;
 
@@ -658,8 +785,7 @@ nav {
 // ============================================================================
 
 #explore {
-  opacity: 0;
-  animation: fadeInUp 0.5s ease-out 0.7s forwards;
+  @include animation-fade-in-up(0.7s);
   position: relative;
 
   .explore-content {
@@ -678,7 +804,7 @@ nav {
     .robot-image {
       width: 300px;
       height: auto;
-      transition: all 0.3s ease;
+      @include simple-hover;
       opacity: 0;
 
       &.loaded {
@@ -753,14 +879,12 @@ nav {
 }
 
 .explore-cards {
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   gap: 2rem;
-  max-width: 700px;
-  margin: 0 auto 2.5rem auto;
+  @include container-center(700px);
+  margin-bottom: 2.5rem;
   padding: 0 0.5rem;
-  opacity: 0;
-  animation: fadeInUp 0.5s ease-out 1.2s forwards;
+  @include animation-fade-in-up(1.2s);
   position: relative;
   z-index: 5;
 
@@ -780,10 +904,7 @@ nav {
   padding: 2.2rem 1.5rem 1.5rem 1.5rem;
   text-align: center;
   flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include flex-column-center;
   opacity: 0;
   animation: fadeInScale 0.4s ease-out calc(1.4s + var(--card-delay, 0s))
     forwards;
@@ -864,37 +985,24 @@ nav {
 // ============================================================================
 
 .movie {
-  border-radius: $border-radius-lg;
+  @include card-base;
   padding: 1.8rem 1.5rem 1.5rem 1.5rem;
   width: 300px;
-  box-shadow: $shadow-lg;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   justify-content: space-between;
   position: relative;
   background: $card-background;
   @include card-hover;
 
   .icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    @include flex-center;
-    font-size: 2.2rem;
-    color: $text-primary;
+    @include icon-container;
   }
 
   .rating-badge {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    color: $white;
-    background: $primary-color;
-    padding: 0.2rem 0.7rem;
-    border-radius: $border-radius-md;
-    font-size: $font-size-xs;
-    font-weight: 900;
+    @include badge-style;
   }
 
   button {
@@ -953,10 +1061,8 @@ nav {
       position: absolute;
       top: 1.8rem;
       right: 1.5rem;
-      background: $error-color;
-      color: $white;
+      @include badge-style($error-color, $white);
       padding: 2.5px 8px;
-      border-radius: $border-radius-sm;
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 1px;
@@ -1102,22 +1208,15 @@ nav {
 
       &.genre-btn {
         @include button-secondary;
+        @include button-rounded;
         background: $card-dark;
         color: $white;
         padding: 0.5rem 1rem;
         font-size: $font-size-sm;
         font-weight: 400;
         min-width: 100px;
-        border-radius: $border-radius-full;
-        border: none;
         box-shadow: none;
-        text-align: center;
-        white-space: nowrap;
-        flex-shrink: 0;
         margin-bottom: 0.5rem;
-        display: inline-block;
-        cursor: pointer;
-        transition: background 0.3s, color 0.3s;
 
         &.active,
         &:hover {
@@ -1129,18 +1228,11 @@ nav {
 
       &.search-btn {
         @include button-primary;
+        @include button-rounded;
         padding: 0.7rem 1.8rem;
-        white-space: nowrap;
-        color: $white;
-        border: none;
-        font-weight: bold;
-        border-radius: $border-radius-full;
-        cursor: pointer;
         margin-top: 1.5rem;
         box-shadow: 0 8px 32px #facc1533;
-        transition: background 0.2s, color 0.2s, transform 0.18s;
         letter-spacing: 2px;
-        display: inline-block;
 
         &:hover {
           transform: scale(1.06);
@@ -1160,11 +1252,7 @@ nav {
   max-width: 100%;
   position: relative;
   margin-bottom: 1.5rem;
-
-  &:focus-within {
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px $primary-glow;
-  }
+  @include input-focus-glow;
 
   input {
     background: transparent;
@@ -1208,16 +1296,9 @@ nav {
     width: 25%;
     min-width: 160px;
     max-width: 168px;
-    border-radius: $border-radius-full;
-    cursor: pointer;
+    @include button-rounded;
     color: $white;
     transition: background 0.3s, color 0.3s;
-    box-shadow: none;
-    border: none;
-    text-align: center;
-    margin-bottom: 0;
-    display: inline-block;
-    margin-right: 0;
     font-size: $font-size-sm;
     padding: 0.5rem 1.2rem;
 
@@ -1239,7 +1320,7 @@ nav {
 // ============================================================================
 
 #about {
-  padding: 1.5rem 0.5rem;
+  @include section-padding;
 
   p,
   li {
@@ -1257,8 +1338,8 @@ nav {
   background-color: $about-box-bg;
   border-radius: 0.5rem;
   padding: 1.5rem;
+  @include container-center(48rem);
   margin: 1rem auto 2rem auto;
-  max-width: 48rem;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
 }
 
@@ -1353,9 +1434,7 @@ nav {
     width: 200px;
     height: 200px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     transition: all 0.3s ease;
 
     &.background {
@@ -1403,9 +1482,7 @@ nav {
       background: linear-gradient(135deg, $primary-color, $primary-light);
       color: $secondary-dark;
       padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      @include flex-between;
 
       h4 {
         margin: 0;
@@ -1422,9 +1499,7 @@ nav {
         width: 30px;
         height: 30px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         transition: background 0.2s ease;
 
         &:hover {
@@ -1451,8 +1526,7 @@ nav {
       }
 
       .chat-options {
-        display: flex;
-        flex-direction: column;
+        @include flex-column;
         gap: 0.5rem;
 
         .chat-option {
@@ -1521,8 +1595,7 @@ nav {
 
 .movie-search-container {
   padding: 2rem 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  @include container-center;
 }
 
 .search-section {
@@ -1530,8 +1603,7 @@ nav {
 }
 
 .search-form {
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   gap: 1rem;
   margin-bottom: 1.5rem;
   width: 100%;
@@ -1567,28 +1639,19 @@ nav {
 }
 
 .tmdb-movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
+  @include grid-responsive(200px, 1.5rem);
   margin-bottom: 2rem;
 
   @media (min-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    @include grid-responsive(250px, 1.5rem);
   }
 }
 
 .tmdb-movie-card {
   background: $tmdb-card-bg;
-  border-radius: $border-radius-lg;
-  overflow: hidden;
-  box-shadow: $shadow-lg;
+  @include card-base;
   cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px $card-hover-shadow;
-  }
+  @include slide-up-hover;
 
   img {
     width: 100%;
@@ -1605,11 +1668,7 @@ nav {
       margin-bottom: 0.5rem;
       font-size: 0.9rem;
       line-height: 1.3;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      @include text-truncate(2);
     }
 
     .rating {
@@ -1624,24 +1683,13 @@ nav {
 // ============================================================================
 
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: $modal-backdrop-bg;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
+  @include modal-base;
 }
 
 .movie-modal {
   background: $card-background;
   border-radius: $border-radius-lg;
-  max-width: 800px;
-  width: 100%;
+  @include container-center(800px);
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
@@ -1660,20 +1708,18 @@ button.modal-close {
   font-size: 2rem;
   cursor: pointer;
   z-index: 10;
-  transition: all 0.3s ease;
+  @include simple-hover(1.1);
   box-shadow: none !important;
   background: transparent !important;
 
   &:hover {
     box-shadow: none !important;
     background: transparent !important;
-    transform: scale(1.1);
   }
 }
 
 .modal-content {
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -1708,8 +1754,7 @@ button.modal-close {
   }
 
   .movie-meta {
-    display: flex;
-    align-items: center;
+    @include flex-center;
     gap: 0.5rem;
     margin-bottom: 1rem;
     color: $text-secondary;
@@ -1809,28 +1854,19 @@ button.modal-close {
   }
 
   .tmdb-movie-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
+    @include grid-responsive(200px, 1.5rem);
     margin-bottom: 2rem;
 
     @media (min-width: 768px) {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      @include grid-responsive(250px, 1.5rem);
     }
   }
 
   .tmdb-movie-card {
     background: $tmdb-card-bg;
-    border-radius: $border-radius-lg;
-    overflow: hidden;
-    box-shadow: $shadow-lg;
+    @include card-base;
     cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px $card-hover-shadow;
-    }
+    @include slide-up-hover;
 
     img {
       width: 100%;
@@ -1847,11 +1883,7 @@ button.modal-close {
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
         line-height: 1.3;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        @include text-truncate(2);
       }
 
       .rating {
