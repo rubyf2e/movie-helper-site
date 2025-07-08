@@ -194,15 +194,6 @@ textarea,
   }
 }
 
-// Ensure buttons and interactive elements maintain their intended styles
-.search-btn,
-.tags span {
-  &:focus,
-  &:active {
-    background-color: transparent !important;
-  }
-}
-
 // Specific rules for movie cards and interactive elements
 .movie,
 .explore-card {
