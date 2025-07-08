@@ -45,9 +45,17 @@
 - **2️⃣ 使用 napkin AI 生成 AI 專案管理流程圖**
 
   - **將前一步驟的資料貼到 napkin AI 生成流程圖**  
-  <img src="doc/images/napkin_1.svg" alt="napkin 生成流程圖" width="500px">
-  <img src="doc/images/napkin_2.svg" alt="napkin 生成流程圖" width="500px">
-  </details>
+    <img src="doc/images/napkin_1.svg" alt="napkin 生成流程圖" width="500px">
+    <img src="doc/images/napkin_2.svg" alt="napkin 生成流程圖" width="500px">
+
+- **3️⃣ 將雛形網站產生的 JS 和功能與目前的專案整合**
+  - 啟用 Copilot Agent 模式，複製 Gemini Canvas 程式碼的局部 JS 程式碼區塊，請 Copilot 把功能整合在一起，整合 TMDB API
+  - 調整 .env 和 Code review
+  - 將功能重複的組件一起給 Copilot，請 Copilot 整合，刪除不需要的組件
+  - Copilot 會聯同 Css、Readme、測試一起更新
+  - 檢視頁面並請 Copilot 將部分區塊回復原本的樣式
+
+</details>
 
 <details>
 <summary><strong> 🌱 2025.07.08 專案導入 ENV、Sass、AI客服介面 完成心得</strong></summary>
