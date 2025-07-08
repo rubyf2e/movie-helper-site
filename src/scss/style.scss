@@ -1,4 +1,12 @@
-// Variables
+// ============================================================================
+// MOVIE HELPER SITE - MAIN STYLESHEET
+// ============================================================================
+
+// ============================================================================
+// VARIABLES
+// ============================================================================
+
+// Color Palette
 $primary-color: rgb(245 158 11);
 $primary-hover: rgb(217 119 6);
 $primary-light: #fde047;
@@ -7,9 +15,9 @@ $primary-shadow: rgba(250, 204, 21, 0.1);
 
 $tag-dark: #232b3b;
 $tag-light: #f59e0b;
-
 $secondary-dark: #1e293b;
 
+// Background Colors
 $background-dark: #0f172a;
 $background-gradient-end: #1e293b;
 $card-background: #1e293b;
@@ -19,31 +27,39 @@ $search-box-bg: #374151;
 $explore-card-bg: #192133;
 $about-box-bg: rgb(51 65 85);
 
+// Text Colors
 $text-primary: #f1f5f9;
 $text-secondary: #cbd5e1;
 $text-muted: #94a3b8;
 $text-placeholder: rgb(156 163 175);
 
+// Border Colors
 $border-primary: $primary-color;
 $border-dark: #334155;
 
+// Status Colors
 $success-color: #4ade80;
 $warning-color: #facc15;
 $error-color: #ef4444;
 $info-color: #818cf8;
 
+// Layout Dimensions
 $header-height: 56px;
+
+// Border Radius
 $border-radius-sm: 4px;
 $border-radius-md: 8px;
 $border-radius-lg: 16px;
 $border-radius-xl: 2rem;
 $border-radius-full: 999px;
 
+// Shadows
 $shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
 $shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
 $shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.18);
 $shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.22);
 
+// Typography
 $font-family-base: "Segoe UI", sans-serif;
 $font-size-xs: 0.95rem;
 $font-size-sm: 1rem;
@@ -54,10 +70,14 @@ $font-size-2xl: 2.2rem;
 $font-size-3xl: 3rem;
 $font-size-4xl: 3.75rem;
 
+// Transitions
 $transition-base: all 0.2s ease;
 $transition-transform: transform 0.15s ease;
 
-// Mixins
+// ============================================================================
+// MIXINS
+// ============================================================================
+
 @mixin flex-center {
   display: flex;
   align-items: center;
@@ -131,7 +151,10 @@ $transition-transform: transform 0.15s ease;
   }
 }
 
-// Base styles
+// ============================================================================
+// BASE STYLES & RESET
+// ============================================================================
+
 * {
   margin: 0;
   padding: 0;
@@ -227,6 +250,10 @@ textarea,
   }
 }
 
+// ============================================================================
+// MAIN LAYOUT
+// ============================================================================
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -247,7 +274,10 @@ body {
   max-width: 100vw;
 }
 
-// Header & Footer
+// ============================================================================
+// HEADER & FOOTER
+// ============================================================================
+
 header,
 footer {
   background: $header-footer-bg;
@@ -292,7 +322,10 @@ footer {
   }
 }
 
-// Typography
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+
 h1 {
   font-size: $font-size-3xl;
   margin-bottom: 0.7rem;
@@ -308,7 +341,10 @@ h2 {
   letter-spacing: 1px;
 }
 
-// Logo styles
+// ============================================================================
+// LOGO STYLES
+// ============================================================================
+
 .logo {
   @include flex-center;
   font-size: 1.3rem;
@@ -353,7 +389,10 @@ footer .logo {
   }
 }
 
-// Navigation
+// ============================================================================
+// NAVIGATION
+// ============================================================================
+
 nav {
   ul {
     display: flex;
@@ -420,7 +459,75 @@ nav {
   }
 }
 
-// Hero section
+// ============================================================================
+// ANIMATIONS
+// ============================================================================
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes chatSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-3px);
+  }
+  60% {
+    transform: translateY(-1px);
+  }
+}
+
+// ============================================================================
+// HERO SECTION
+// ============================================================================
+
 .hero {
   text-align: center;
   margin: 0 auto 2.5rem auto;
@@ -458,7 +565,7 @@ nav {
     }
   }
 
-  // 手機版專用的 robot-image 容器
+  // Mobile robot image container
   .hero-mobile-robot {
     display: flex;
     flex-direction: column;
@@ -466,7 +573,6 @@ nav {
     gap: 1.5rem;
 
     @media (min-width: 769px) {
-      // 桌面版：隱藏圖片，只顯示按鈕
       .mobile-robot-image,
       .robot-fallback {
         display: none;
@@ -474,7 +580,6 @@ nav {
     }
 
     @media (max-width: 768px) {
-      // 手機版：按鈕和圖片並排
       flex-direction: row;
       justify-content: center;
       flex-wrap: wrap;
@@ -530,42 +635,10 @@ nav {
   }
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+// ============================================================================
+// EXPLORE SECTION
+// ============================================================================
 
-// Fade-in animations
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-// Explore section
 #explore {
   opacity: 0;
   animation: fadeInUp 0.5s ease-out 0.7s forwards;
@@ -617,7 +690,7 @@ nav {
     }
 
     @media (max-width: 768px) {
-      display: none; // 在手機版隱藏原本的位置
+      display: none;
     }
 
     @media (max-width: 480px) {
@@ -726,6 +799,11 @@ nav {
   opacity: 0;
   animation: fadeInUp 0.3s ease-out calc(1.7s + var(--card-delay, 0s)) forwards;
 }
+
+// ============================================================================
+// MOVIE SECTIONS
+// ============================================================================
+
 #popular {
   --tw-bg-opacity: 1;
   background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
@@ -744,7 +822,7 @@ nav {
   background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
 }
 
-// Movie cards
+// Movie grids
 #popular-movies {
   display: flex;
   flex-wrap: wrap;
@@ -762,6 +840,10 @@ nav {
   margin-bottom: 2rem;
   padding: 2rem 0.3rem;
 }
+
+// ============================================================================
+// MOVIE CARDS
+// ============================================================================
 
 .movie {
   border-radius: $border-radius-lg;
@@ -931,7 +1013,10 @@ nav {
   }
 }
 
-// Search section
+// ============================================================================
+// SEARCH SECTION
+// ============================================================================
+
 #search {
   border-radius: 0;
   padding: 3rem 1rem;
@@ -1131,7 +1216,10 @@ nav {
   }
 }
 
-// About section
+// ============================================================================
+// ABOUT SECTION
+// ============================================================================
+
 #about {
   padding: 1.5rem 0.5rem;
 
@@ -1218,7 +1306,10 @@ nav {
   }
 }
 
-// Floating AI Bot
+// ============================================================================
+// FLOATING AI BOT
+// ============================================================================
+
 .floating-ai-bot {
   position: fixed;
   width: 100%;
@@ -1368,7 +1459,7 @@ nav {
     }
   }
 
-  // 響應式設計
+  // Responsive design
   @media (max-width: 640px) {
     bottom: 0rem;
     right: 0rem;
@@ -1406,35 +1497,10 @@ nav {
   }
 }
 
-// 動畫效果
-@keyframes chatSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
+// ============================================================================
+// TMDB MOVIE SEARCH STYLES
+// ============================================================================
 
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-3px);
-  }
-  60% {
-    transform: translateY(-1px);
-  }
-}
-
-// TMDB Movie Search Styles
 .movie-search-container {
   padding: 2rem 1rem;
   max-width: 1200px;
@@ -1457,8 +1523,6 @@ nav {
     align-items: center;
   }
 }
-
-// Genre Filter Styles
 
 .movie-grid-title {
   font-size: 1.5rem;
@@ -1484,7 +1548,6 @@ nav {
   margin: 1rem 0;
 }
 
-// TMDB Movie Grid
 .tmdb-movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -1538,7 +1601,10 @@ nav {
   }
 }
 
-// Movie Modal Styles
+// ============================================================================
+// MOVIE MODAL STYLES
+// ============================================================================
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -1688,282 +1754,10 @@ button.modal-close {
   color: $error-color;
 }
 
-// Responsive design
-@media (max-width: 900px) {
-  .tags {
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
+// ============================================================================
+// SEARCH BOX CONTAINER
+// ============================================================================
 
-    span {
-      width: auto;
-      min-width: 140px;
-      font-size: 1.2rem;
-      padding: 0.7rem 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .genre-filters {
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-    }
-  }
-
-  .genre-btn {
-    min-width: 90px;
-    font-size: 1rem;
-    padding: 0.7rem 1.2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .search-box {
-    padding: 2rem 0.5rem 2rem 0.5rem;
-  }
-
-  .search-input-wrap input,
-  .tags span,
-  .search-btn {
-    font-size: 16px;
-  }
-
-  .tags span {
-    padding: 0.7rem 1.5rem;
-  }
-
-  .search-btn {
-    padding: 1rem 2.5rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .header-inner {
-    padding: 0 1rem;
-  }
-
-  nav {
-    @include flex-center;
-
-    ul {
-      display: none;
-      position: absolute;
-      top: $header-height;
-      right: 0;
-      left: 0;
-      background: $header-footer-bg;
-      flex-direction: column;
-      gap: 0;
-      z-index: 99;
-      box-shadow: $shadow-md;
-      margin: 0;
-      padding: 1rem 0;
-
-      &.show {
-        display: flex;
-      }
-
-      li {
-        border-bottom: 0px solid $border-dark;
-        text-align: center;
-        padding: 0.75rem 0;
-      }
-    }
-  }
-
-  .menu-toggle {
-    display: flex !important;
-    z-index: 100;
-    position: relative;
-  }
-
-  // Movie cards styling for mobile
-  .movie {
-    width: 90%;
-  }
-
-  #popular-movies,
-  #coming-soon-movies {
-    gap: 1.2rem;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 0.5rem;
-  }
-
-  .movie {
-    width: 100%;
-  }
-
-  #search {
-    padding: 1.5rem 0.5rem;
-  }
-}
-
-@media (min-width: 760px) {
-  .movie.upcoming {
-    min-width: 320px;
-    max-width: 480px;
-  }
-
-  #coming-soon-movies {
-    gap: 1.5rem;
-    justify-content: center;
-    margin: 0 auto 2rem auto;
-  }
-}
-
-@media (max-width: 600px) {
-  #search h2 {
-    font-size: 2rem;
-    margin: 1.2rem 0 1.2rem 0;
-  }
-
-  .search-box {
-    padding: 1.5rem 1rem;
-  }
-
-  .search-input-wrap {
-    padding: 0.3rem 0.7rem;
-  }
-
-  .tags {
-    gap: 0.7rem;
-
-    span {
-      font-size: $font-size-sm;
-      padding: 0.5rem 1.2rem;
-    }
-
-    .genre-filters {
-      gap: 0.5rem;
-    }
-  }
-
-  .genre-btn {
-    font-size: $font-size-sm;
-    padding: 0.5rem 1rem;
-    min-width: 80px;
-  }
-
-  .search-btn {
-    font-size: 1.1rem;
-    padding: 0.7rem 1.5rem;
-    margin-top: 1rem;
-  }
-}
-
-@media (max-width: 500px) {
-  .movie.upcoming {
-    .remind-row {
-      gap: 0.7rem;
-    }
-
-    button {
-      width: 100px;
-      min-width: 0;
-      text-align: center;
-    }
-  }
-}
-
-@media (min-width: 1025px) and (max-width: 1400px) {
-  // Popular movies: 4 cards per row for medium-large screens
-  #popular-movies {
-    gap: 1rem;
-    padding: 0 1rem;
-
-    .movie {
-      width: calc(25% - 0.75rem);
-      min-width: 220px;
-      max-width: 260px;
-    }
-  }
-
-  // Coming soon movies: 3 cards per row
-  #coming-soon-movies {
-    gap: 1.2rem;
-    padding: 0 1rem;
-
-    .movie.upcoming {
-      width: calc(33.333% - 0.8rem);
-      min-width: 280px;
-      max-width: 350px;
-    }
-  }
-
-  #search {
-    padding-top: 2rem;
-    padding-bottom: 4rem;
-  }
-}
-
-@media (max-width: 1024px) and (min-width: 641px) {
-  // Popular movies: 2 cards per row in 2 columns
-  #popular-movies {
-    gap: 1.5rem;
-    padding: 0 1rem;
-
-    .movie {
-      width: calc(50% - 0.75rem);
-      min-width: 280px;
-      max-width: 400px;
-    }
-  }
-
-  // Coming soon movies: maintain single column for better readability
-  #coming-soon-movies {
-    gap: 1.5rem;
-    padding: 0 1rem;
-    flex-direction: column;
-    align-items: center;
-
-    .movie.upcoming {
-      width: 90%;
-      min-width: 350px;
-      max-width: 500px;
-    }
-  }
-
-  #search {
-    padding: 1.5rem 0.5rem;
-  }
-}
-
-// Responsive design for larger screens
-@media (min-width: 1025px) {
-  #popular-movies {
-    .movie {
-      width: 300px;
-      flex: 0 0 auto;
-      max-width: 300px;
-    }
-  }
-
-  #coming-soon-movies {
-    .movie.upcoming {
-      width: 100%;
-      max-width: 400px;
-      flex: 0 0 auto;
-    }
-  }
-}
-
-// Respect user's preference for reduced motion
-@media (prefers-reduced-motion: reduce) {
-  .hero h1,
-  .hero .subtitle,
-  .hero-btn,
-  #explore,
-  #explore ul li,
-  .explore-cards,
-  .explore-card,
-  .explore-number,
-  .explore-label {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-// SearchBox 整合 TMDB API 樣式
 .search-box-container {
   width: 100%;
 
@@ -1996,7 +1790,6 @@ button.modal-close {
     margin: 1rem 0;
   }
 
-  // 確保 TMDB 電影網格樣式在 SearchBox 容器中正常工作
   .tmdb-movie-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -2048,5 +1841,289 @@ button.modal-close {
         font-weight: 600;
       }
     }
+  }
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+// Large screens (1025px+)
+@media (min-width: 1025px) {
+  #popular-movies {
+    .movie {
+      width: 300px;
+      flex: 0 0 auto;
+      max-width: 300px;
+    }
+  }
+
+  #coming-soon-movies {
+    .movie.upcoming {
+      width: 100%;
+      max-width: 400px;
+      flex: 0 0 auto;
+    }
+  }
+}
+
+// Medium-Large screens (1025px - 1400px)
+@media (min-width: 1025px) and (max-width: 1400px) {
+  #popular-movies {
+    gap: 1rem;
+    padding: 0 1rem;
+
+    .movie {
+      width: calc(25% - 0.75rem);
+      min-width: 220px;
+      max-width: 260px;
+    }
+  }
+
+  #coming-soon-movies {
+    gap: 1.2rem;
+    padding: 0 1rem;
+
+    .movie.upcoming {
+      width: calc(33.333% - 0.8rem);
+      min-width: 280px;
+      max-width: 350px;
+    }
+  }
+
+  #search {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+}
+
+// Medium screens (641px - 1024px)
+@media (max-width: 1024px) and (min-width: 641px) {
+  #popular-movies {
+    gap: 1.5rem;
+    padding: 0 1rem;
+
+    .movie {
+      width: calc(50% - 0.75rem);
+      min-width: 280px;
+      max-width: 400px;
+    }
+  }
+
+  #coming-soon-movies {
+    gap: 1.5rem;
+    padding: 0 1rem;
+    flex-direction: column;
+    align-items: center;
+
+    .movie.upcoming {
+      width: 90%;
+      min-width: 350px;
+      max-width: 500px;
+    }
+  }
+
+  #search {
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+// Small-Medium screens (900px and below)
+@media (max-width: 900px) {
+  .tags {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+
+    span {
+      width: auto;
+      min-width: 140px;
+      font-size: 1.2rem;
+      padding: 0.7rem 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .genre-filters {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+  }
+
+  .genre-btn {
+    min-width: 90px;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-box {
+    padding: 2rem 0.5rem 2rem 0.5rem;
+  }
+
+  .search-input-wrap input,
+  .tags span,
+  .search-btn {
+    font-size: 16px;
+  }
+
+  .tags span {
+    padding: 0.7rem 1.5rem;
+  }
+
+  .search-btn {
+    padding: 1rem 2.5rem;
+  }
+}
+
+// Medium screens (760px+)
+@media (min-width: 760px) {
+  .movie.upcoming {
+    min-width: 320px;
+    max-width: 480px;
+  }
+
+  #coming-soon-movies {
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 0 auto 2rem auto;
+  }
+}
+
+// Small screens (640px and below)
+@media (max-width: 640px) {
+  .header-inner {
+    padding: 0 1rem;
+  }
+
+  nav {
+    @include flex-center;
+
+    ul {
+      display: none;
+      position: absolute;
+      top: $header-height;
+      right: 0;
+      left: 0;
+      background: $header-footer-bg;
+      flex-direction: column;
+      gap: 0;
+      z-index: 99;
+      box-shadow: $shadow-md;
+      margin: 0;
+      padding: 1rem 0;
+
+      &.show {
+        display: flex;
+      }
+
+      li {
+        border-bottom: 0px solid $border-dark;
+        text-align: center;
+        padding: 0.75rem 0;
+      }
+    }
+  }
+
+  .menu-toggle {
+    display: flex !important;
+    z-index: 100;
+    position: relative;
+  }
+
+  .movie {
+    width: 90%;
+  }
+
+  #popular-movies,
+  #coming-soon-movies {
+    gap: 1.2rem;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0.5rem;
+  }
+
+  .movie {
+    width: 100%;
+  }
+
+  #search {
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+// Extra small screens (600px and below)
+@media (max-width: 600px) {
+  #search h2 {
+    font-size: 2rem;
+    margin: 1.2rem 0 1.2rem 0;
+  }
+
+  .search-box {
+    padding: 1.5rem 1rem;
+  }
+
+  .search-input-wrap {
+    padding: 0.3rem 0.7rem;
+  }
+
+  .tags {
+    gap: 0.7rem;
+
+    span {
+      font-size: $font-size-sm;
+      padding: 0.5rem 1.2rem;
+    }
+
+    .genre-filters {
+      gap: 0.5rem;
+    }
+  }
+
+  .genre-btn {
+    font-size: $font-size-sm;
+    padding: 0.5rem 1rem;
+    min-width: 80px;
+  }
+
+  .search-btn {
+    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
+    margin-top: 1rem;
+  }
+}
+
+// Very small screens (500px and below)
+@media (max-width: 500px) {
+  .movie.upcoming {
+    .remind-row {
+      gap: 0.7rem;
+    }
+
+    button {
+      width: 100px;
+      min-width: 0;
+      text-align: center;
+    }
+  }
+}
+
+// ============================================================================
+// ACCESSIBILITY
+// ============================================================================
+
+// Respect user's preference for reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .hero h1,
+  .hero .subtitle,
+  .hero-btn,
+  #explore,
+  #explore ul li,
+  .explore-cards,
+  .explore-card,
+  .explore-number,
+  .explore-label {
+    animation: none;
+    opacity: 1;
   }
 }
