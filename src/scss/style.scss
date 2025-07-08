@@ -96,6 +96,25 @@ $transition-transform: transform 0.15s ease;
   }
 }
 
+@mixin button-secondary {
+  background: $tag-dark;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  transition: $transition-base;
+  box-shadow: $shadow-sm;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: $tag-light;
+    color: #ffffff;
+    box-shadow: 0 4px 24px #facc1533;
+  }
+}
+
 @mixin button-outline {
   background: transparent;
   color: $primary-color;
@@ -938,35 +957,56 @@ nav {
     color: #fff;
   }
 
-  button {
-    @include button-primary;
-    padding: 0.7rem 1.8rem;
-    font-size: $font-size-sm;
-    border-radius: $border-radius-full;
-  }
-}
-
-.search-box {
-  background: $search-box-bg;
-  border-radius: $border-radius-md;
-  padding: 1.8rem 1.8rem;
-  max-width: 768px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
-
-  button.genre-btn {
-    padding: 0.7rem 0;
+  button.modal-close {
+    font-size: 2rem;
+    top: 0rem;
+    right: 0.5rem;
   }
 
-  button {
-    @include button-primary;
-    padding: 0.7rem 1.8rem;
-    font-size: $font-size-sm;
-    border-radius: $border-radius-full;
+  .search-box {
+    background: $search-box-bg;
+    border-radius: $border-radius-md;
+    padding: 1.8rem 1.8rem;
+    max-width: 768px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
+
+    button {
+      padding: 0.7rem 1.8rem;
+      font-size: $font-size-sm;
+      border-radius: $border-radius-full;
+
+      &.genre-btn {
+        @include button-secondary;
+        padding: 0.7rem 0;
+        border-radius: $border-radius-full;
+        font-weight: 400;
+      }
+
+      &.search-btn {
+        @include button-primary;
+        padding: 0.7rem 1.8rem;
+        white-space: nowrap;
+        color: #fff;
+        border: none;
+        font-weight: bold;
+        border-radius: $border-radius-full;
+        cursor: pointer;
+        margin-top: 1.5rem;
+        box-shadow: 0 8px 32px #facc1533;
+        transition: background 0.2s, color 0.2s, transform 0.18s;
+        letter-spacing: 2px;
+        display: inline-block;
+
+        &:hover {
+          transform: scale(1.06);
+        }
+      }
+    }
   }
 }
 
@@ -1051,28 +1091,6 @@ nav {
       color: #fff;
       box-shadow: 0 4px 24px #facc1533;
     }
-  }
-}
-
-.search-btn {
-  background: $warning-color;
-  color: #fff;
-  border: none;
-  padding: 1.2rem 4.5rem;
-  font-size: 2.2rem;
-  font-weight: bold;
-  border-radius: $border-radius-full;
-  cursor: pointer;
-  margin-top: 1.5rem;
-  box-shadow: 0 8px 32px #facc1533;
-  transition: background 0.2s, color 0.2s, transform 0.18s;
-  letter-spacing: 2px;
-  display: inline-block;
-
-  &:hover {
-    background: $primary-light;
-    color: $secondary-dark;
-    transform: scale(1.06);
   }
 }
 
@@ -1403,41 +1421,21 @@ nav {
   }
 }
 
-.search-btn {
-  @include button-primary;
-  padding: 0.75rem 1.5rem;
-  white-space: nowrap;
-}
-
 // Genre Filter Styles
 .genre-filters {
-  @include flex-between;
-  flex-wrap: nowrap;
-  gap: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   width: 100%;
   max-width: 100%;
   margin-bottom: 0;
-  overflow-x: auto;
-  padding: 0.5rem 0;
-
-  &::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-  }
+  justify-content: center;
+  align-items: center;
 }
 
 .genre-btn {
   background: $card-dark;
-  min-width: 100px;
-  max-width: 120px;
+  min-width: 80px;
   border-radius: $border-radius-full;
   cursor: pointer;
   color: #fff;
@@ -1445,16 +1443,12 @@ nav {
   box-shadow: none;
   border: none;
   text-align: center;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   display: inline-block;
-  margin-right: 0.5rem;
   font-size: $font-size-sm;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1rem;
   white-space: nowrap;
-
-  &:last-child {
-    margin-right: 0;
-  }
+  flex-shrink: 0;
 
   &.active,
   &:hover {
@@ -1568,23 +1562,25 @@ nav {
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
 }
 
-.modal-close {
+button.modal-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: transparent;
   border: none;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   color: $text-primary;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
   z-index: 10;
   transition: all 0.3s ease;
+  box-shadow: none !important;
+  background: transparent !important;
 
   &:hover {
-    background: transparent;
+    box-shadow: none !important;
+    background: transparent !important;
     transform: scale(1.1);
   }
 }
@@ -1669,6 +1665,7 @@ nav {
       margin-bottom: 0.5rem;
       color: $text-secondary;
       font-size: 0.9rem;
+      text-align: left;
 
       strong {
         color: $text-primary;
@@ -1712,12 +1709,10 @@ nav {
   }
 
   .genre-btn {
-    width: auto;
-    min-width: 120px;
+    min-width: 90px;
     font-size: 1rem;
-    padding: 0.7rem 1.5rem;
+    padding: 0.7rem 1.2rem;
     margin-bottom: 0.5rem;
-    margin-right: 0.5rem;
   }
 
   .search-box {
