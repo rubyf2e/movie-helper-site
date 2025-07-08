@@ -49,13 +49,23 @@
     <img src="doc/images/napkin_2.svg" alt="napkin 生成流程圖" width="500px">
 
 - **3️⃣ 將雛形網站產生的 JS 和功能與目前的專案整合**
+
   - 啟用 Copilot Agent 模式，複製 Gemini Canvas 程式碼的局部 JS 程式碼區塊，請 Copilot 把功能整合在一起，整合 TMDB API
   - 調整 .env 和 Code review
   - 將功能重複的組件一起給 Copilot，請 Copilot 整合，刪除不需要的組件
   - Copilot 會聯同 Css、Readme、測試一起更新
   - 請 Copilot 移除電影搜尋分類的卷軸，它不但幫我移除還幫我調自適應
   - 檢視頁面並請 Copilot 將部分區塊回復原本的樣式，並手動細調
+
+- **4️⃣ 調整 github action 流程參數**
+
+  - 請 Copilot 修改 .github/workflows/deploy.yml
+  - 在 Environments / Configure github-pages 新增 Environment secrets 和 Environment variables
+  - 檢視正式站頁面是否有載入參數，並在 /actions/runs 頁面按 Re-run all jobs 重新測試
+
+- **5️⃣ Css 元件化**
   - 請 Copilot 重新整理 style.scss，將硬編碼顏色都整理成 VARIABLES
+  - 請 Copilot 將 style.scss 元件化
 
 </details>
 
