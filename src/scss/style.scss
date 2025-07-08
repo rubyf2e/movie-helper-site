@@ -934,16 +934,21 @@ nav {
 // Search section
 #search {
   border-radius: 0;
-  padding: 0;
+  padding: 3rem 1rem;
   margin: 0 auto;
   max-width: 100%;
   width: 100%;
+  min-height: 100vh;
   text-align: center;
   box-shadow: none;
   --tw-gradient-to: #0f172a var(--tw-gradient-to-position);
   --tw-gradient-from: #1e293b var(--tw-gradient-from-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  background: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
