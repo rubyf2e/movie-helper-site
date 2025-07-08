@@ -43,6 +43,24 @@ $warning-color: #facc15;
 $error-color: #ef4444;
 $info-color: #818cf8;
 
+// Additional Colors
+$white: #ffffff;
+$logo-icon-color: #eaa13b;
+$star-gray-color: #64748b;
+$movie-red-theme: #f87171;
+$border-default: #e5e7eb;
+$section-popular-bg: rgb(30 41 59);
+$section-coming-soon-bg: rgb(15 23 42);
+
+// Transparent Colors
+$tmdb-card-bg: rgba(15, 23, 42, 0.8);
+$genre-tag-bg: rgba(71, 85, 105, 0.8);
+$modal-backdrop-bg: rgba(0, 0, 0, 0.8);
+$modal-shadow: rgba(0, 0, 0, 0.5);
+$ai-bot-shadow: rgba(0, 0, 0, 0.3);
+$white-border: rgba(255, 255, 255, 0.2);
+$card-hover-shadow: rgba(0, 0, 0, 0.3);
+
 // Layout Dimensions
 $header-height: 56px;
 
@@ -101,7 +119,7 @@ $transition-transform: transform 0.15s ease;
 
 @mixin button-primary {
   background: $primary-color;
-  color: #ffffff;
+  color: $white;
   border: none;
   font-weight: bold;
   border-radius: $border-radius-md;
@@ -111,14 +129,14 @@ $transition-transform: transform 0.15s ease;
 
   &:hover {
     background: $primary-hover;
-    color: #ffffff;
+    color: $white;
     box-shadow: 0 4px 16px rgba(250, 204, 21, 0.18);
   }
 }
 
 @mixin button-secondary {
   background: $tag-dark;
-  color: #ffffff;
+  color: $white;
   border: none;
   font-weight: bold;
   border-radius: $border-radius-md;
@@ -130,7 +148,7 @@ $transition-transform: transform 0.15s ease;
   &:focus,
   &:active {
     background: $tag-light;
-    color: #ffffff;
+    color: $white;
     box-shadow: 0 4px 24px #facc1533;
   }
 }
@@ -146,7 +164,7 @@ $transition-transform: transform 0.15s ease;
 
   &:hover {
     background: $primary-color;
-    color: #ffffff;
+    color: $white;
     border-color: $primary-color;
   }
 }
@@ -360,7 +378,7 @@ h2 {
     svg {
       width: 2rem;
       height: 2rem;
-      color: #eaa13b;
+      color: $logo-icon-color;
       display: block;
     }
   }
@@ -368,7 +386,7 @@ h2 {
   &-text {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #fff;
+    color: $white;
     letter-spacing: 1px;
     line-height: 1;
   }
@@ -414,14 +432,14 @@ nav {
         bottom: 0;
         width: 0%;
         height: 2.5px;
-        background: #eaa13b;
+        background: $logo-icon-color;
         transition: width 0.3s;
         border-radius: 2px;
       }
 
       &:hover,
       &.active {
-        color: #ffffff;
+        color: $white;
         background: rgba(250, 204, 21, 0.06);
         border-radius: 4px 4px 0 0;
 
@@ -806,20 +824,20 @@ nav {
 
 #popular {
   --tw-bg-opacity: 1;
-  background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
+  background-color: $section-popular-bg / var(--tw-bg-opacity, 1);
   padding-top: 1rem;
   padding-bottom: 4rem;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
-  border-color: #e5e7eb;
+  border-color: $border-default;
 }
 
 #coming-soon {
   padding-top: 1rem;
   padding-bottom: 2rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
+  background-color: $section-coming-soon-bg / var(--tw-bg-opacity, 1);
 }
 
 // Movie grids
@@ -871,7 +889,7 @@ nav {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    color: #ffffff;
+    color: $white;
     background: $primary-color;
     padding: 0.2rem 0.7rem;
     border-radius: $border-radius-md;
@@ -898,7 +916,7 @@ nav {
   }
 
   &.red {
-    background: #f87171;
+    background: $movie-red-theme;
     color: $secondary-dark;
   }
 
@@ -928,7 +946,7 @@ nav {
       font-weight: 700;
       margin-bottom: 1rem;
       margin-top: 1rem;
-      color: #fff;
+      color: $white;
     }
 
     .badge {
@@ -936,7 +954,7 @@ nav {
       top: 1.8rem;
       right: 1.5rem;
       background: $error-color;
-      color: #fff;
+      color: $white;
       padding: 2.5px 8px;
       border-radius: $border-radius-sm;
       font-size: 12px;
@@ -1006,7 +1024,7 @@ nav {
         }
 
         &.gray svg {
-          fill: #64748b;
+          fill: $star-gray-color;
         }
       }
     }
@@ -1037,7 +1055,7 @@ nav {
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
-  border-color: #e5e7eb;
+  border-color: $border-default;
 
   h2 {
     text-align: center;
@@ -1045,7 +1063,7 @@ nav {
     margin: 1.5rem 0;
     font-weight: 800;
     letter-spacing: 2px;
-    color: #fff;
+    color: $white;
   }
 
   button.modal-close {
@@ -1085,7 +1103,7 @@ nav {
       &.genre-btn {
         @include button-secondary;
         background: $card-dark;
-        color: #fff;
+        color: $white;
         padding: 0.5rem 1rem;
         font-size: $font-size-sm;
         font-weight: 400;
@@ -1104,7 +1122,7 @@ nav {
         &.active,
         &:hover {
           background: $primary-color;
-          color: #fff;
+          color: $white;
           box-shadow: 0 4px 24px #facc1533;
         }
       }
@@ -1113,7 +1131,7 @@ nav {
         @include button-primary;
         padding: 0.7rem 1.8rem;
         white-space: nowrap;
-        color: #fff;
+        color: $white;
         border: none;
         font-weight: bold;
         border-radius: $border-radius-full;
@@ -1192,7 +1210,7 @@ nav {
     max-width: 168px;
     border-radius: $border-radius-full;
     cursor: pointer;
-    color: #fff;
+    color: $white;
     transition: background 0.3s, color 0.3s;
     box-shadow: none;
     border: none;
@@ -1210,7 +1228,7 @@ nav {
     &.active,
     &:hover {
       background: $primary-color;
-      color: #fff;
+      color: $white;
       box-shadow: 0 4px 24px #facc1533;
     }
   }
@@ -1300,7 +1318,7 @@ nav {
       height: 1.5rem;
       min-width: 1.5rem;
       min-height: 1.5rem;
-      color: #eaa13b;
+      color: $logo-icon-color;
       display: block;
     }
   }
@@ -1344,7 +1362,7 @@ nav {
       background: linear-gradient(135deg, $primary-color, $primary-light);
       border-radius: 50%;
       box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
-      border: 3px solid rgba(255, 255, 255, 0.2);
+      border: 3px solid $white-border;
     }
 
     &:hover {
@@ -1374,7 +1392,7 @@ nav {
     width: 20rem;
     background: $card-background;
     border-radius: 1rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px $ai-bot-shadow;
     border: 1px solid $border-dark;
     overflow: hidden;
     opacity: 0;
@@ -1543,7 +1561,7 @@ nav {
   text-align: center;
   padding: 2rem;
   color: $text-secondary;
-  background: rgba(15, 23, 42, 0.8);
+  background: $tmdb-card-bg;
   border-radius: $border-radius-md;
   margin: 1rem 0;
 }
@@ -1560,7 +1578,7 @@ nav {
 }
 
 .tmdb-movie-card {
-  background: rgba(15, 23, 42, 0.8);
+  background: $tmdb-card-bg;
   border-radius: $border-radius-lg;
   overflow: hidden;
   box-shadow: $shadow-lg;
@@ -1569,7 +1587,7 @@ nav {
 
   &:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 40px $card-hover-shadow;
   }
 
   img {
@@ -1611,7 +1629,7 @@ nav {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: $modal-backdrop-bg;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1627,7 +1645,7 @@ nav {
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px $modal-shadow;
 }
 
 button.modal-close {
@@ -1713,7 +1731,7 @@ button.modal-close {
     margin-bottom: 1.5rem;
 
     .genre-tag {
-      background: rgba(71, 85, 105, 0.8);
+      background: $genre-tag-bg;
       color: $text-primary;
       padding: 0.25rem 0.75rem;
       border-radius: $border-radius-full;
@@ -1785,7 +1803,7 @@ button.modal-close {
     text-align: center;
     padding: 2rem;
     color: $text-secondary;
-    background: rgba(15, 23, 42, 0.8);
+    background: $tmdb-card-bg;
     border-radius: $border-radius-md;
     margin: 1rem 0;
   }
@@ -1802,7 +1820,7 @@ button.modal-close {
   }
 
   .tmdb-movie-card {
-    background: rgba(15, 23, 42, 0.8);
+    background: $tmdb-card-bg;
     border-radius: $border-radius-lg;
     overflow: hidden;
     box-shadow: $shadow-lg;
@@ -1811,7 +1829,7 @@ button.modal-close {
 
     &:hover {
       transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 20px 40px $card-hover-shadow;
     }
 
     img {

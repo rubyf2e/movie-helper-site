@@ -55,7 +55,7 @@
   - Copilot 會聯同 Css、Readme、測試一起更新
   - 請 Copilot 移除電影搜尋分類的卷軸，它不但幫我移除還幫我調自適應
   - 檢視頁面並請 Copilot 將部分區塊回復原本的樣式，並手動細調
-  - 請 Copilot 重新整理 style.scss
+  - 請 Copilot 重新整理 style.scss，將硬編碼顏色都整理成 VARIABLES
 
 </details>
 
