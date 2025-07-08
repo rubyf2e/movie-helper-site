@@ -17,6 +17,39 @@
 為了不讓經驗變成框架，我選擇用「初學者的方式」去與 AI 協作，並調整心態，讓自己站在和初學者一樣的角度去使用 AI 撰寫這個專案。
 
 <details>
+<summary><strong> 🌱 2025.07.09 整合 Gemini 專案企劃書雛形程式</strong></summary>
+
+- **1️⃣ 使用 Gemini Canvas 生成系統雛形**
+
+  - [**生出各種 prompt**]  
+    跟 Gemini 和 ChatGPT 互相討論怎麼寫 prompt 才可以請另一位 AI 模型助理乖乖做事
+  - [**專案章程文件**]  
+    用 prompt 請 ChatGPT 擔任資深專案經理，生出專案章程
+  - [**常見用戶需求清單**]  
+    用 prompt 請 Gemini 擔任產品經理助理，列出 20 條最常見的客戶需求（以 user story 形式）
+  - [**專案分析報告**]  
+    用 prompt 請 Gemini 擔任產品策略顧問，生出專案分析報告
+  - [**工作與資源分解表**]  
+    用 prompt 請 Gemini 擔任資深專案經理，生出 WBS（工作分解結構）與 RBS（資源分解結構）表單
+  - [**專案企劃書**]  
+    用 prompt 請 Gemini 擔任資深專案顧問，告訴 Gemini 我是來自台灣的頂尖策略顧問並提供企劃大綱，請他幫我寫專案企劃書
+  - [**專案任務規劃與儀表板**]  
+    用 prompt 請 Gemini 擔任資深專案顧問，告訴 Gemini 我是初階專案經理，提供專案章程、user story、需求分析報告、WBS（工作分解結構）與 RBS（資源分解結構）給 Gemini，請 Gemini 生成階段性規劃與待辦任務清單，並在 Canvas 介面點擊建立網站產生 專案儀表板.html
+  - [**專案功能規格書**]  
+    用 prompt 請 Gemini 擔任產品經理助理，生出專案規格
+  - [**互動系統雛形網站**]  
+    用 prompt 請 Gemini 擔任前端工程師，提供階段性規劃與待辦任務清單、專案企劃書和規格給 Gemini 做網頁版互動系統雛形網站
+
+- **2️⃣ 使用 napkin AI 生成 AI 專案管理流程圖**
+
+  - **將前一步驟的資料貼到 napkin AI 生成流程圖**  
+    <img src="doc/images/napkin_1.png" alt="napkin 生成流程圖" width="100%" />
+
+    <img src="doc/images/napkin_2.png" alt="napkin 生成流程圖" width="100%" />
+
+  </details>
+
+<details>
 <summary><strong> 🌱 2025.07.08 專案導入 ENV、Sass、AI客服介面 完成心得</strong></summary>
 
 ##### 完成工時：一天
