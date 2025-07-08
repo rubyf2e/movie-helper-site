@@ -444,7 +444,8 @@ nav {
     animation: fadeInUp 0.5s ease-out 0.3s forwards;
   }
 
-  &-btn {
+  &-btn,
+  button {
     @include button-primary;
     padding: 1rem 2.5rem;
     font-size: 1.15rem;
