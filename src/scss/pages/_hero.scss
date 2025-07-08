@@ -1,0 +1,105 @@
+// ============================================================================
+// HERO SECTION
+// ============================================================================
+
+.hero {
+  text-align: center;
+  margin: 0 auto 2.5rem auto;
+  padding: 3.5rem $spacing-md $spacing-xl $spacing-md;
+
+  h1 {
+    font-size: $font-size-4xl;
+    font-weight: $font-weight-bold;
+    color: $color-text-primary;
+    margin-bottom: 0.7rem;
+    letter-spacing: $letter-spacing-wide;
+    @include animation-fade-in-up(0.1s);
+  }
+
+  .subtitle {
+    font-size: $font-size-lg;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-xl;
+    @include animation-fade-in-up(0.3s);
+  }
+
+  &-btn,
+  button {
+    @include button-primary;
+    padding: $spacing-md 2.5rem;
+    font-size: 1.15rem;
+    border-radius: $radius-xl;
+    opacity: 0;
+    animation: fadeInScale 0.5s ease-out 0.5s forwards, pulse 2s infinite 0.8s;
+
+    &:hover {
+      transform: scale(1.08);
+    }
+  }
+
+  // Mobile robot image container
+  .hero-mobile-robot {
+    @include flex-column;
+    align-items: center;
+    gap: $spacing-lg;
+
+    @media (min-width: 769px) {
+      .mobile-robot-image,
+      .robot-fallback {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: $spacing-md;
+
+      .hero-btn {
+        margin: 0;
+        flex-shrink: 0;
+      }
+
+      .mobile-robot-image {
+        width: 120px;
+        height: auto;
+        @include simple-hover;
+        opacity: 0;
+        flex-shrink: 0;
+
+        &.loaded {
+          opacity: 1;
+        }
+
+        &:hover {
+          transform: scale(1.05) rotate(2deg);
+        }
+      }
+
+      .robot-fallback {
+        @include flex-center;
+        width: 120px;
+        height: 120px;
+
+        .robot-emoji {
+          font-size: 3rem;
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      flex-direction: row;
+      gap: $spacing-md;
+
+      .mobile-robot-image {
+        width: 100px;
+      }
+
+      .robot-fallback {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }
+}

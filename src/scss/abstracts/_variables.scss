@@ -1,0 +1,184 @@
+// ============================================================================
+// THEME COLOR SYSTEM
+// ============================================================================
+
+// Primary Brand Colors
+$color-primary: #f59e0b; // 主要品牌色 - 金黃色
+$color-primary-hover: #d97706; // 主要色懸停狀態
+$color-primary-light: #fde047; // 主要色淺色變化
+$color-primary-glow: rgba(250, 204, 21, 0.5); // 主要色光暈效果
+$color-primary-shadow: rgba(250, 204, 21, 0.1); // 主要色陰影
+
+// Secondary Colors
+$color-secondary-dark: #1e293b; // 次要深色
+$color-secondary-accent: #f59e0b; // 次要強調色
+
+// Neutral Colors
+$color-neutral-white: #ffffff; // 純白色
+$color-neutral-black: #000000; // 純黑色
+$color-neutral-gray-light: #e5e7eb; // 淺灰色
+$color-neutral-gray-medium: #64748b; // 中灰色
+$color-neutral-gray-dark: #334155; // 深灰色
+
+// Background Colors
+$color-bg-primary: #0f172a; // 主要背景色 - 深藍黑
+$color-bg-secondary: #1e293b; // 次要背景色 - 深藍灰
+$color-bg-tertiary: #232b3b; // 第三背景色 - 深灰藍
+$color-bg-quaternary: #374151; // 第四背景色 - 中灰
+$color-bg-gradient-start: #0f172a; // 漸變起始色
+$color-bg-gradient-end: #1e293b; // 漸變結束色
+
+// Component Background Colors
+$color-bg-card: #1e293b; // 卡片背景色
+$color-bg-card-dark: #232b3b; // 深色卡片背景
+$color-bg-header: #101729; // 頁首背景色
+$color-bg-footer: #101729; // 頁尾背景色
+$color-bg-search: #374151; // 搜尋框背景色
+$color-bg-explore: #192133; // 探索卡片背景色
+$color-bg-about: #334155; // 關於區塊背景色
+$color-bg-popular: #1e293b; // 熱門電影區塊背景色
+$color-bg-coming-soon: #0f172a; // 即將上映區塊背景色
+
+// Text Colors
+$color-text-primary: #f1f5f9; // 主要文字色
+$color-text-secondary: #cbd5e1; // 次要文字色
+$color-text-muted: #94a3b8; // 弱化文字色
+$color-text-placeholder: #9ca3af; // 佔位符文字色
+
+// Border Colors
+$color-border-primary: $color-primary; // 主要邊框色
+$color-border-secondary: #334155; // 次要邊框色
+$color-border-light: #e5e7eb; // 淺色邊框
+$color-border-transparent: rgba(255, 255, 255, 0.2); // 透明邊框
+
+// Status Colors
+$color-status-success: #4ade80; // 成功狀態色
+$color-status-warning: #facc15; // 警告狀態色
+$color-status-error: #ef4444; // 錯誤狀態色
+$color-status-info: #818cf8; // 資訊狀態色
+
+// Special Colors
+$color-accent-logo: #eaa13b; // Logo 強調色
+$color-accent-star: #facc15; // 星級評分色
+$color-accent-star-inactive: #64748b; // 未激活星級色
+$color-accent-movie-theme: #f87171; // 電影主題色
+
+// Transparent Colors
+$color-overlay-modal: rgba(0, 0, 0, 0.8); // 模態框遮罩
+$color-overlay-tmdb-card: rgba(15, 23, 42, 0.8); // TMDB卡片背景
+$color-overlay-genre-tag: rgba(71, 85, 105, 0.8); // 類型標籤背景
+$color-overlay-ai-bot: rgba(0, 0, 0, 0.3); // AI機器人陰影
+
+// Shadow Colors
+$color-shadow-modal: rgba(0, 0, 0, 0.5); // 模態框陰影
+$color-shadow-card-hover: rgba(0, 0, 0, 0.3); // 卡片懸停陰影
+$color-shadow-primary: rgba(250, 204, 21, 0.1); // 主要陰影色
+
+// ============================================================================
+// LAYOUT & SPACING
+// ============================================================================
+
+// Layout Dimensions
+$layout-header-height: 56px; // 頁首高度（與 Header.js 中的設定保持一致）
+
+// Spacing Scale
+$spacing-xs: 0.25rem; // 4px
+$spacing-sm: 0.5rem; // 8px
+$spacing-md: 1rem; // 16px
+$spacing-lg: 1.5rem; // 24px
+$spacing-xl: 2rem; // 32px
+$spacing-2xl: 3rem; // 48px
+$spacing-3xl: 4rem; // 64px
+
+// Border Radius Scale
+$radius-none: 0; // 無圓角
+$radius-sm: 4px; // 小圓角
+$radius-md: 8px; // 中圓角
+$radius-lg: 16px; // 大圓角
+$radius-xl: 2rem; // 特大圓角
+$radius-full: 999px; // 全圓角
+
+// Shadow Scale
+$shadow-none: none; // 無陰影
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08); // 小陰影
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12); // 中陰影
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.18); // 大陰影
+$shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.22); // 特大陰影
+
+// ============================================================================
+// TYPOGRAPHY
+// ============================================================================
+
+// Font Family
+$font-family-primary: "Segoe UI", sans-serif; // 主要字體
+$font-family-secondary: system-ui, sans-serif; // 次要字體
+$font-family-mono: "Courier New", monospace; // 等寬字體
+
+// Font Size Scale
+$font-size-xs: 0.95rem; // 12px 極小字體
+$font-size-sm: 1rem; // 14px 小字體
+$font-size-base: 1.1rem; // 16px 基準字體
+$font-size-lg: 1.25rem; // 18px 大字體
+$font-size-xl: 1.5rem; // 24px 特大字體
+$font-size-2xl: 2.2rem; // 36px 標題字體
+$font-size-3xl: 3rem; // 48px 大標題字體
+$font-size-4xl: 3.75rem; // 60px 超大標題字體
+
+// Font Weight
+$font-weight-light: 300; // 細字體
+$font-weight-normal: 400; // 正常字體
+$font-weight-medium: 500; // 中等字體
+$font-weight-semibold: 600; // 半粗體
+$font-weight-bold: 700; // 粗體
+$font-weight-extrabold: 800; // 特粗體
+
+// Line Height
+$line-height-tight: 1.25; // 緊密行高
+$line-height-normal: 1.5; // 正常行高
+$line-height-relaxed: 1.75; // 寬鬆行高
+
+// Letter Spacing
+$letter-spacing-tight: -0.025em; // 緊密字間距
+$letter-spacing-normal: 0; // 正常字間距
+$letter-spacing-wide: 0.025em; // 寬鬆字間距
+
+// ============================================================================
+// ANIMATION & TRANSITIONS
+// ============================================================================
+
+// Transition Duration
+$duration-fast: 0.1s; // 快速過渡
+$duration-normal: 0.2s; // 正常過渡
+$duration-slow: 0.3s; // 慢速過渡
+$duration-slower: 0.5s; // 更慢過渡
+
+// Transition Timing Functions
+$ease-linear: linear; // 線性過渡
+$ease-in: ease-in; // 淡入過渡
+$ease-out: ease-out; // 淡出過渡
+$ease-in-out: ease-in-out; // 淡入淡出過渡
+
+// Common Transitions
+$transition-base: all $duration-normal $ease-in-out; // 基礎過渡
+$transition-transform: transform $duration-fast $ease-out; // 變換過渡
+$transition-opacity: opacity $duration-normal $ease-in-out; // 透明度過渡
+$transition-colors: color $duration-normal $ease-in-out,
+  background-color $duration-normal $ease-in-out; // 顏色過渡
+
+// ============================================================================
+// BREAKPOINTS
+// ============================================================================
+
+// Responsive Breakpoints
+$breakpoint-xs: 480px; // 超小螢幕
+$breakpoint-sm: 640px; // 小螢幕
+$breakpoint-md: 768px; // 中等螢幕
+$breakpoint-lg: 1024px; // 大螢幕
+$breakpoint-xl: 1280px; // 超大螢幕
+$breakpoint-2xl: 1536px; // 超超大螢幕
+
+// Container Max Widths
+$container-sm: 640px; // 小容器
+$container-md: 768px; // 中容器
+$container-lg: 1024px; // 大容器
+$container-xl: 1280px; // 超大容器

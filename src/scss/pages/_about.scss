@@ -1,0 +1,89 @@
+// ============================================================================
+// ABOUT PAGE
+// ============================================================================
+
+#about {
+  @include section-padding;
+
+  p,
+  li {
+    color: $color-text-secondary;
+    padding: 0.5rem 0 0 0;
+  }
+
+  ul {
+    list-style: disc;
+    margin-top: 1rem;
+  }
+}
+
+.about-box {
+  background-color: $color-bg-about;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  @include container-center(48rem);
+  margin: 1rem auto 2rem auto;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.about-card {
+  padding: 0 0 1.5rem 0;
+
+  h3 {
+    font-size: $font-size-xl;
+    line-height: 2rem;
+  }
+}
+
+.social-icons {
+  @include flex-center;
+  gap: 1rem;
+  margin-top: 1rem;
+
+  a {
+    background: $color-border-secondary;
+    color: $color-text-primary;
+    padding: 0.7rem 1.2rem;
+    border-radius: $radius-md;
+    text-decoration: none;
+    font-size: $font-size-sm;
+    transition: background 0.3s, color 0.3s;
+    margin: 0 0.2rem;
+
+    &:hover {
+      background: $color-status-warning;
+      color: $color-secondary-dark;
+      box-shadow: $shadow-sm;
+    }
+  }
+}
+
+.about-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 1.5rem 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: $color-text-secondary;
+  }
+
+  .li-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+    margin-top: 0;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      min-width: 1.5rem;
+      min-height: 1.5rem;
+      color: $color-accent-logo;
+      display: block;
+    }
+  }
+}

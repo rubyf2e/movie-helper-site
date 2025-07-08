@@ -1,0 +1,231 @@
+// ============================================================================
+// MIXINS
+// ============================================================================
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin card-hover {
+  transition: $transition-transform;
+
+  &:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: $shadow-xl;
+  }
+}
+
+@mixin simple-hover($scale: 1.05) {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+@mixin slide-up-hover($distance: -8px) {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY($distance);
+    box-shadow: 0 20px 40px $color-shadow-card-hover;
+  }
+}
+
+@mixin button-primary {
+  background: $color-primary;
+  color: $color-neutral-white;
+  border: none;
+  font-weight: $font-weight-bold;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: $transition-base;
+  box-shadow: $shadow-sm;
+
+  &:hover {
+    background: $color-primary-hover;
+    color: $color-neutral-white;
+    box-shadow: 0 4px 16px rgba(250, 204, 21, 0.18);
+  }
+}
+
+@mixin button-secondary {
+  background: $color-bg-card-dark;
+  color: $color-neutral-white;
+  border: none;
+  font-weight: $font-weight-bold;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: $transition-base;
+  box-shadow: $shadow-sm;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: $color-secondary-accent;
+    color: $color-neutral-white;
+    box-shadow: 0 4px 24px #facc1533;
+  }
+}
+
+@mixin button-outline {
+  background: transparent;
+  color: $color-primary;
+  border: 1px solid $color-primary;
+  font-weight: $font-weight-normal;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $color-primary;
+    color: $color-neutral-white;
+    border-color: $color-primary;
+  }
+}
+
+@mixin button-rounded {
+  border-radius: $radius-full;
+  border: none;
+  cursor: pointer;
+  transition: $transition-colors;
+  text-align: center;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+@mixin card-base {
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+  overflow: hidden;
+  transition: $transition-base;
+}
+
+@mixin section-padding {
+  padding: $spacing-lg $spacing-sm;
+}
+
+@mixin container-center($max-width: $container-xl) {
+  max-width: $max-width;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@mixin text-truncate($lines: 1) {
+  @if $lines == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@mixin gradient-background(
+  $start: $color-bg-gradient-start,
+  $end: $color-bg-gradient-end
+) {
+  background: linear-gradient(180deg, $start 0%, $end 100%);
+}
+
+@mixin modal-base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  @include flex-center;
+  background: $color-overlay-modal;
+  padding: $spacing-md;
+}
+
+@mixin input-focus-glow($color: $color-primary) {
+  &:focus-within {
+    transition: $transition-base;
+    box-shadow: 0 0 15px rgba($color, 0.5);
+  }
+}
+
+@mixin grid-responsive($min-width: 200px, $gap: $spacing-lg) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin badge-style(
+  $bg-color: $color-primary,
+  $text-color: $color-neutral-white
+) {
+  background: $bg-color;
+  color: $text-color;
+  padding: 0.2rem 0.7rem;
+  border-radius: $radius-md;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-extrabold;
+}
+
+@mixin icon-container($size: 60px) {
+  width: $size;
+  height: $size;
+  border-radius: 12px;
+  margin-bottom: $spacing-md;
+  @include flex-center;
+  font-size: 2.2rem;
+  color: $color-text-primary;
+}
+
+@mixin animation-fade-in-up($delay: 0s) {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out $delay forwards;
+}
+
+@mixin reset-focus-styles {
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+  }
+}
+
+@mixin no-select {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

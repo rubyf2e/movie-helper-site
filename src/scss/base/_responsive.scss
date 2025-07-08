@@ -1,0 +1,263 @@
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+// Large screens (1025px+)
+@media (min-width: 1025px) {
+  #popular-movies {
+    .movie {
+      width: 300px;
+      flex: 0 0 auto;
+      max-width: 300px;
+    }
+  }
+
+  #coming-soon-movies {
+    .movie.upcoming {
+      width: 100%;
+      max-width: 400px;
+      flex: 0 0 auto;
+    }
+  }
+}
+
+// Medium-Large screens (1025px - 1400px)
+@media (min-width: 1025px) and (max-width: 1400px) {
+  #popular-movies {
+    gap: 1rem;
+    padding: 0 1rem;
+
+    .movie {
+      width: calc(25% - 0.75rem);
+      min-width: 220px;
+      max-width: 260px;
+    }
+  }
+
+  #coming-soon-movies {
+    gap: 1.2rem;
+    padding: 0 1rem;
+
+    .movie.upcoming {
+      width: calc(33.333% - 0.8rem);
+      min-width: 280px;
+      max-width: 350px;
+    }
+  }
+
+  #search {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+}
+
+// Medium screens (641px - 1024px)
+@media (max-width: 1024px) and (min-width: 641px) {
+  #popular-movies {
+    gap: 1.5rem;
+    padding: 0 1rem;
+
+    .movie {
+      width: calc(50% - 0.75rem);
+      min-width: 280px;
+      max-width: 400px;
+    }
+  }
+
+  #coming-soon-movies {
+    gap: 1.5rem;
+    padding: 0 1rem;
+    flex-direction: column;
+    align-items: center;
+
+    .movie.upcoming {
+      width: 90%;
+      min-width: 350px;
+      max-width: 500px;
+    }
+  }
+
+  #search {
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+// Small-Medium screens (900px and below)
+@media (max-width: 900px) {
+  .tags {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+
+    span {
+      width: auto;
+      min-width: 140px;
+      font-size: 1.2rem;
+      padding: 0.7rem 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .genre-filters {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+  }
+
+  .genre-btn {
+    min-width: 90px;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-box {
+    padding: 2rem 0.5rem 2rem 0.5rem;
+  }
+
+  .search-input-wrap input,
+  .tags span,
+  .search-btn {
+    font-size: 16px;
+  }
+
+  .tags span {
+    padding: 0.7rem 1.5rem;
+  }
+
+  .search-btn {
+    padding: 1rem 2.5rem;
+  }
+}
+
+// Medium screens (760px+)
+@media (min-width: 760px) {
+  .movie.upcoming {
+    min-width: 320px;
+    max-width: 480px;
+  }
+
+  #coming-soon-movies {
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 0 auto 2rem auto;
+  }
+}
+
+// Small screens (640px and below)
+@media (max-width: 640px) {
+  .header-inner {
+    padding: 0 1rem;
+  }
+
+  nav {
+    @include flex-center;
+
+    ul {
+      display: none;
+      position: absolute;
+      top: $layout-header-height;
+      right: 0;
+      left: 0;
+      background: $color-bg-header;
+      flex-direction: column;
+      gap: 0;
+      z-index: 99;
+      box-shadow: $shadow-md;
+      margin: 0;
+      padding: 1rem 0;
+
+      &.show {
+        display: flex;
+      }
+
+      li {
+        border-bottom: 0px solid $color-border-secondary;
+        text-align: center;
+        padding: 0.75rem 0;
+      }
+    }
+  }
+
+  .menu-toggle {
+    display: flex !important;
+    z-index: 100;
+    position: relative;
+  }
+
+  .movie {
+    width: 90%;
+  }
+
+  #popular-movies,
+  #coming-soon-movies {
+    gap: 1.2rem;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0.5rem;
+  }
+
+  .movie {
+    width: 100%;
+  }
+
+  #search {
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+// Extra small screens (600px and below)
+@media (max-width: 600px) {
+  #search h2 {
+    font-size: 2rem;
+    margin: 1.2rem 0 1.2rem 0;
+  }
+
+  .search-box {
+    padding: 1.5rem 1rem;
+  }
+
+  .search-input-wrap {
+    padding: 0.3rem 0.7rem;
+  }
+
+  .tags {
+    gap: 0.7rem;
+
+    span {
+      font-size: $font-size-sm;
+      padding: 0.5rem 1.2rem;
+    }
+
+    .genre-filters {
+      gap: 0.5rem;
+    }
+  }
+
+  .genre-btn {
+    font-size: $font-size-sm;
+    padding: 0.5rem 1rem;
+    min-width: 80px;
+  }
+
+  .search-btn {
+    font-size: 1.1rem;
+    padding: 0.7rem 1.5rem;
+    margin-top: 1rem;
+  }
+}
+
+// Very small screens (500px and below)
+@media (max-width: 500px) {
+  .movie.upcoming {
+    .remind-row {
+      gap: 0.7rem;
+    }
+
+    button {
+      width: 100px;
+      min-width: 0;
+      text-align: center;
+    }
+  }
+}

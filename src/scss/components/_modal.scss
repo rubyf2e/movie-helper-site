@@ -1,0 +1,138 @@
+// ============================================================================
+// MODAL COMPONENT
+// ============================================================================
+
+.modal-backdrop {
+  @include modal-base;
+}
+
+.movie-modal {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  @include container-center(800px);
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 25px 50px $color-shadow-modal;
+}
+
+button.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: $color-text-primary;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+  @include simple-hover(1.1);
+  box-shadow: none !important;
+  background: transparent !important;
+
+  &:hover {
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+}
+
+.modal-content {
+  @include flex-column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.modal-poster {
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    @media (min-width: 768px) {
+      width: 300px;
+      height: 450px;
+      object-fit: cover;
+    }
+  }
+}
+
+.modal-info {
+  padding: 2rem;
+  flex: 1;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-text-primary;
+    margin-bottom: 1rem;
+  }
+
+  .movie-meta {
+    @include flex-center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    color: $color-text-secondary;
+    font-size: 0.9rem;
+
+    span {
+      &:not(:last-child) {
+        &:nth-child(even) {
+          margin: 0 0.25rem;
+        }
+      }
+    }
+  }
+
+  .movie-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+
+    .genre-tag {
+      background: $color-overlay-genre-tag;
+      color: $color-text-primary;
+      padding: 0.25rem 0.75rem;
+      border-radius: $radius-full;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  }
+
+  .movie-overview {
+    color: $color-text-secondary;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .movie-credits {
+    p {
+      margin-bottom: 0.5rem;
+      color: $color-text-secondary;
+      font-size: 0.9rem;
+      text-align: left;
+
+      strong {
+        color: $color-text-primary;
+      }
+    }
+  }
+}
+
+.modal-loading,
+.modal-error {
+  padding: 3rem;
+  text-align: center;
+  color: $color-text-secondary;
+  font-size: 1.1rem;
+}
+
+.modal-error {
+  color: $color-status-error;
+}

@@ -66,6 +66,10 @@
 - **5️⃣ Css 元件化**
   - 請 Copilot 重新整理 style.scss，將硬編碼顏色都整理成 VARIABLES、優化 mixin 使用、優化變數命名、建立主題色彩系統
   - 請 Copilot 將 style.scss 元件化
+  - 檢查 UI/功能一致性。
+  - 發現有跑版請 Copilot 調整，將 git commit 的 style.scss 舊版本打開，提供給 Copilot，請它調整 scss 模組與舊版本樣式一致
+  - 發現 Copilot 調整有它的極限，於是手動 debug。
+  - 檢查 UI/功能一致性。
 
 </details>
 

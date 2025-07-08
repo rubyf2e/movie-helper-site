@@ -1,0 +1,16 @@
+// ============================================================================
+// MOVIE SECTIONS
+// ============================================================================
+
+#popular {
+  background-color: $color-bg-popular;
+  padding-top: $spacing-md;
+  padding-bottom: 4rem;
+  box-sizing: border-box;
+}
+
+#coming-soon {
+  background-color: $color-bg-coming-soon;
+  padding-top: $spacing-md;
+  padding-bottom: $spacing-xl;
+}

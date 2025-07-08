@@ -1,0 +1,39 @@
+// ============================================================================
+// FOOTER
+// ============================================================================
+
+footer {
+  background: $color-bg-footer;
+  box-shadow: $shadow-md;
+  @include flex-between;
+  text-align: center;
+  padding: 2.5rem 2.5rem 1.5rem 2.5rem;
+  font-size: $font-size-xs;
+  color: $color-text-muted;
+  margin-top: $spacing-xl;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    color: $color-text-primary;
+    margin-bottom: $spacing-sm;
+  }
+
+  .footer-right {
+    max-width: 120px;
+  }
+
+  .logo {
+    &-text {
+      font-size: 1.2rem;
+    }
+
+    &-icon {
+      margin-right: 0.3rem;
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}

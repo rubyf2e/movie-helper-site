@@ -1,0 +1,158 @@
+// ============================================================================
+// EXPLORE SECTION
+// ============================================================================
+
+#explore {
+  @include animation-fade-in-up(0.7s);
+  position: relative;
+
+  .explore-content {
+    position: relative;
+    min-height: 300px;
+  }
+
+  .explore-robot {
+    position: absolute;
+    bottom: -20px;
+    right: 20px;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInScale 0.6s ease-out 1.8s forwards;
+
+    .robot-image {
+      width: 300px;
+      height: auto;
+      @include simple-hover;
+      opacity: 0;
+
+      &.loaded {
+        opacity: 1;
+      }
+
+      &:hover {
+        transform: scale(1.05) rotate(2deg);
+      }
+    }
+
+    .robot-fallback {
+      text-align: center;
+      opacity: 0.8;
+
+      .robot-emoji {
+        font-size: 3rem;
+        display: block;
+        margin-bottom: $spacing-sm;
+      }
+
+      p {
+        color: $color-text-secondary;
+        font-size: 0.9rem;
+        margin: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .robot-image {
+        width: 120px;
+      }
+    }
+  }
+
+  ul {
+    @include flex-center;
+    gap: $spacing-xl;
+    margin-top: $spacing-md;
+    flex-wrap: wrap;
+    list-style: none;
+    text-align: center;
+
+    li {
+      background: transparent;
+      color: $color-text-primary;
+      font-size: $font-size-base;
+      opacity: 0;
+      animation: fadeInUp 0.4s ease-out calc(0.9s + var(--delay, 0s)) forwards;
+
+      strong {
+        font-size: 2rem;
+        color: $color-primary;
+        display: block;
+      }
+
+      &:nth-child(1) {
+        --delay: 0s;
+      }
+      &:nth-child(2) {
+        --delay: 0.1s;
+      }
+      &:nth-child(3) {
+        --delay: 0.2s;
+      }
+    }
+  }
+}
+
+.explore-cards {
+  @include flex-column;
+  gap: $spacing-xl;
+  @include container-center(700px);
+  margin-bottom: 2.5rem;
+  padding: 0 $spacing-sm;
+  @include animation-fade-in-up(1.2s);
+  position: relative;
+  z-index: 5;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: $spacing-md;
+  }
+}
+
+.explore-card {
+  background: $color-bg-explore;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 2.2rem $spacing-lg $spacing-lg $spacing-lg;
+  text-align: center;
+  flex: 1 1 0;
+  @include flex-column-center;
+  opacity: 0;
+  animation: fadeInScale 0.4s ease-out calc(1.4s + var(--card-delay, 0s))
+    forwards;
+
+  &:nth-child(1) {
+    --card-delay: 0s;
+  }
+  &:nth-child(2) {
+    --card-delay: 0.1s;
+  }
+  &:nth-child(3) {
+    --card-delay: 0.2s;
+  }
+}
+
+.explore-number {
+  color: $color-primary;
+  font-size: 2.5rem;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-sm;
+  letter-spacing: $letter-spacing-wide;
+  opacity: 0;
+  animation: fadeInScale 0.3s ease-out calc(1.6s + var(--card-delay, 0s))
+    forwards;
+}
+
+.explore-label {
+  color: $color-text-secondary;
+  font-size: $font-size-base;
+  margin-bottom: $spacing-md;
+  opacity: 0;
+  animation: fadeInUp 0.3s ease-out calc(1.7s + var(--card-delay, 0s)) forwards;
+}

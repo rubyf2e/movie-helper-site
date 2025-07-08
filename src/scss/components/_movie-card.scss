@@ -1,0 +1,175 @@
+// ============================================================================
+// MOVIE CARD COMPONENT
+// ============================================================================
+
+.movie {
+  @include card-base;
+  padding: 1.8rem $spacing-lg $spacing-lg $spacing-lg;
+  width: 300px;
+  @include flex-column;
+  justify-content: space-between;
+  position: relative;
+  background: $color-bg-card;
+  @include card-hover;
+
+  .icon {
+    @include icon-container;
+  }
+
+  .rating-badge {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    @include badge-style;
+  }
+
+  button {
+    @include button-primary;
+    padding: 0.7rem 1.8rem;
+    font-size: $font-size-sm;
+    margin-top: $spacing-md;
+  }
+
+  // Theme variations
+  &.yellow {
+    background: $color-status-warning;
+    color: $color-secondary-dark;
+  }
+
+  &.blue {
+    background: $color-status-info;
+    color: $color-secondary-dark;
+  }
+
+  &.red {
+    background: $color-accent-movie-theme;
+    color: $color-secondary-dark;
+  }
+
+  &.green {
+    background: $color-status-success;
+    color: $color-secondary-dark;
+  }
+
+  // Upcoming movie styles
+  &.upcoming {
+    background: $color-bg-card-dark;
+    color: $color-text-primary;
+    border-radius: $radius-md;
+    box-shadow: $shadow-lg;
+    position: relative;
+    padding: $spacing-md $spacing-lg;
+    width: 100%;
+    min-width: 0px;
+    max-width: 608px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    h3 {
+      font-size: 20px;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-md;
+      margin-top: $spacing-md;
+      color: $color-neutral-white;
+    }
+
+    .badge {
+      position: absolute;
+      top: 1.8rem;
+      right: $spacing-lg;
+      @include badge-style($color-status-error, $color-neutral-white);
+      padding: 2.5px 8px;
+      font-size: 12px;
+      font-weight: $font-weight-bold;
+      letter-spacing: $letter-spacing-wide;
+    }
+
+    .meta {
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+      margin-bottom: 1.1rem;
+      line-height: $line-height-normal;
+    }
+
+    p {
+      color: $color-text-primary;
+      margin-bottom: 1.7rem;
+      font-size: $font-size-sm;
+      line-height: 1.7;
+    }
+
+    .remind-row {
+      @include flex-between;
+      margin-top: auto;
+      width: 100%;
+      gap: 1rem;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+
+    button {
+      @include button-outline;
+      padding: 0.6rem 0rem;
+      font-size: 16px;
+      white-space: nowrap;
+      min-width: 98px;
+      max-width: 100%;
+      margin-top: 0;
+      margin-bottom: 0;
+      display: inline-block;
+    }
+
+    .expect {
+      color: $color-text-secondary;
+      font-size: 1.08rem;
+      @include flex-center;
+    }
+
+    .stars {
+      @include flex-center;
+      gap: 0.18em;
+      font-size: 1.15rem;
+      margin-left: 0;
+      letter-spacing: 0;
+
+      .star {
+        @include flex-center;
+        padding: 0;
+        margin: 0;
+
+        svg {
+          width: 1.25em;
+          height: 1.25em;
+          fill: $color-accent-star;
+          display: block;
+        }
+
+        &.gray svg {
+          fill: $color-accent-star-inactive;
+        }
+      }
+    }
+  }
+}
+
+// Movie grids
+#popular-movies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xl;
+  justify-content: center;
+  margin-bottom: $spacing-xl;
+  padding: 0 $spacing-sm;
+}
+
+#coming-soon-movies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.8rem;
+  justify-content: center;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-xl 0.3rem;
+}
