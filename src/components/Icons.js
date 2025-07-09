@@ -23,23 +23,8 @@ export function CheckIcon({
 }
 
 // 電影膠卷圖標組件
-export function MovieIcon({ className = "h-8 w-8 text-amber-500 mr-2" }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M7 4v16M17 4v16M3 8h18M3 16h18"
-      />
-    </svg>
-  );
+export function MovieIcon({ src = "/images/icon/icon6.svg" }) {
+  return <img src={`${process.env.PUBLIC_URL || ""}${src}`} alt="" />;
 }
 
 // 搜尋圖標組件
