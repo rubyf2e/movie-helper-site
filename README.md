@@ -17,25 +17,39 @@
 為了不讓經驗變成框架，我選擇用「初學者的方式」去與 AI 協作，並調整心態，讓自己站在和初學者一樣的角度去使用 AI 撰寫這個專案。
 
 <details>
-<summary><strong> 🌱 2025.07.09 整合 Gemini 生成的網頁元件</strong></summary>
-  
+<summary><strong> 🌱 2025.07.09 整合 Flask 框架進專案</strong></summary>
+
+- **1️⃣ 跟 Copilot 討論 Flask 與 React 專案部署策略**
+
+  - Copilot 建議兩種常見方案：
+    - **方案一：前後端分離部署（推薦）**
+    - **方案二：單一倉庫統一部署**
+
+- **2️⃣ 啟用 Copilot Agent 模式**
+
+  - 啟用 Copilot Agent 模式，請 Copilot 依「前後端分離部署」方式協助專案整合與部署腳本設計。
+  - </details>
+    <details>
+    <summary><strong> 🌱 2025.07.09 整合 Gemini 生成的網頁元件</strong></summary>
+
   - **1️⃣ 使用 Gemini Canvas 生成元件雛形**
     - 用 prompt 請 Gemini 擔任前端工程師，提供工程師專業術語描述的 prompt 要求 Gemini 用 Canvas 生成電影待看清單元件雛形
   - **2️⃣ 將雛形網站產生的 JS 和功能與目前的專案整合**
     - 啟用 Copilot Agent 模式，複製 Gemini Canvas 程式碼給 Copilot，請 Copilot 把功能整合在一起
     - Copilot 自己找地方美美的把元件放上去了，連背景都符合網站風格調性的漸層色，還刻成 React 和 Scss 元件，舉一反三的幫我把待看清單放進 Header 裡
   - **3️⃣ 置換電影小幫手圖示**
+
     - 先用 Figma 編輯 Lottielab 套件置入的機器人元件
     - 把不要的圖層刪掉，下載 png 檔，只剩下機器人的頭和軀幹，目標是只留頭
-    - 發現各大AI無法協助把機器人的軀幹拿掉，手動用圖片編輯器用智慧套索把機器人的軀幹拿掉
+    - 發現各大 AI 無法協助把機器人的軀幹拿掉，手動用圖片編輯器用智慧套索把機器人的軀幹拿掉
     - 把圖片丟回 Figma，生成 svg
     - 置換電影小幫手網站圖示
 
-      <img src="public/images/icon/icon2.svg" alt="icon2" width="100" />
+      <img src="frontend/public/images/icon/icon2.svg" alt="icon2" width="100" />
       =>
-      <img src="public/images/icon/icon5.svg" alt="icon5" width="100" />
+      <img src="frontend/public/images/icon/icon5.svg" alt="icon5" width="100" />
       =>
-      <img src="public/images/icon/icon6.svg" alt="icon6" width="50" />
+      <img src="frontend/public/images/icon/icon6.svg" alt="icon6" width="50" />
 
 <summary><strong> 🌱 2025.07.09 整合 Gemini 專案企劃書雛形程式</strong></summary>
 
@@ -132,15 +146,15 @@
   - 登入 https://iconscout.com/ai/illustration-generator
   - 使用 Copilot 幫忙寫 prompt，使用 3D Illustration Generator，AI 生圖
 
-    <img src="public/images/ai_robot_chair_png_optimized.png" alt="AI 生成圖" width="150" />
+    <img src="frontend/public/images/ai_robot_chair_png_optimized.png" alt="AI 生成圖" width="150" />
 
   - 在 lottiefiles 找到可愛 AI 客服用圖
     https://app.lottiefiles.com/share/f6aeb9d1-afbc-42c0-83e7-5ba8e4543e35
   - 在 lottiefiles 介面開啟 AI 客服圖下載對話框 png，用 Figma 置換文字，再回 lottiefiles 更新對話框 png，下載 json 和 lottie 檔
 
-      <img src="public/images/icon/icon0.svg" alt="icon0" width="100" />
+      <img src="frontend/public/images/icon/icon0.svg" alt="icon0" width="100" />
       =>
-      <img src="public/images/icon/icon2.svg" alt="icon2" width="100" />
+      <img src="frontend/public/images/icon/icon2.svg" alt="icon2" width="100" />
 
 - **5️⃣ 將 AI 客服圖片置入**
   - 請 Copilot 幫忙把原有的 Lottie 動畫添加為浮動 AI 客服顯示

@@ -1,0 +1,80 @@
+// 電影 API 服務 - 前後端分離版本
+const API_BASE_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_API_URL ||
+      "https://your-flask-api.herokuapp.com/api"
+    : "http://localhost:5000/api";
+
+export class MovieAPI {
+  static async fetchFromAPI(endpoint, options = {}) {
+    try {
+      const url = `${API_BASE_URL}${endpoint}`;
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+          ...options.headers,
+        },
+        ...options,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || "請求失敗");
+      }
+
+      return data.data;
+    } catch (error) {
+      console.error("API 請求失敗:", error);
+      throw error;
+    }
+  }
+
+  static async getPopularMovies() {
+    return this.fetchFromAPI("/movies/popular");
+  }
+
+  static async searchMovies(query) {
+    return this.fetchFromAPI(`/movies/search?q=${encodeURIComponent(query)}`);
+  }
+
+  static async getMoviesByGenre(genreId) {
+    return this.fetchFromAPI(`/movies/genre/${genreId}`);
+  }
+
+  static async getMovieDetails(movieId) {
+    try {
+      const response = await this.fetchFromAPI(`/movies/${movieId}`);
+      return response;
+    } catch (error) {
+      console.error("無法獲取電影詳細資料:", error);
+      return null;
+    }
+  }
+
+  static async fetchGenres() {
+    try {
+      return await this.fetchFromAPI("/movies/genres");
+    } catch (error) {
+      console.error("無法獲取類型列表:", error);
+      return [];
+    }
+  }
+
+  static getImageURL(posterPath) {
+    // 後端已經處理完整的圖片 URL，直接返回
+    return (
+      posterPath || "https://placehold.co/500x750/1f2937/6b7280?text=無圖片"
+    );
+  }
+
+  static getRatingColor(vote) {
+    if (vote >= 8) return "text-green-400 font-bold";
+    if (vote >= 6) return "text-yellow-400";
+    return "text-red-400";
+  }
+}

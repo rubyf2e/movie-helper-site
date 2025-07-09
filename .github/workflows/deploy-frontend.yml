@@ -1,9 +1,17 @@
-name: Deploy React App to GitHub Pages (Legacy - 已被 deploy-frontend.yml 取代)
+name: Deploy React App to GitHub Pages
 
 on:
-  # push:
-  #   branches: [main]
-  workflow_dispatch: # 只允許手動觸發
+  push:
+    branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/deploy-frontend.yml"
+  workflow_dispatch:
+
+# 確保只有一個前端部署 workflow 同時運行
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -11,14 +19,14 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout 程式碼
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -26,14 +34,18 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-          cache-dependency-path: "frontend/package-lock.json"
 
-      - name: Install dependencies
+      - name: 安裝前端依賴
         run: |
           cd frontend
           npm ci
 
-      - name: Create production environment file
+      - name: 運行測試
+        run: |
+          cd frontend
+          npm run test -- --coverage --watchAll=false || echo "測試失敗，但不阻擋部署"
+
+      - name: 創建生產環境檔案
         run: |
           cd frontend
           cat > .env.production << EOF
@@ -70,19 +82,29 @@ jobs:
             echo "REACT_APP_TMDB_MOVIE_LANGUAGE=zh-tw" >> .env.production
           fi
 
-      - name: Build
+      - name: 構建前端應用
         run: |
           cd frontend
           npm run build
 
-      - name: Setup Pages
+      - name: 設置 Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload artifact
+      - name: 上傳 artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./frontend/build"
 
-      - name: Deploy to GitHub Pages
+      - name: 部署到 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: 部署狀態通知
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ 前端部署成功！"
+            echo "🌐 網站 URL: ${{ steps.deployment.outputs.page_url }}"
+          else
+            echo "❌ 前端部署失敗！"
+          fi
