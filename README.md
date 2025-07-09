@@ -17,6 +17,14 @@
 為了不讓經驗變成框架，我選擇用「初學者的方式」去與 AI 協作，並調整心態，讓自己站在和初學者一樣的角度去使用 AI 撰寫這個專案。
 
 <details>
+<summary><strong> 🌱 2025.07.09 整合 Gemini 生成的網頁元件</strong></summary>
+  
+  - **1️⃣ 使用 Gemini Canvas 生成元件雛形**
+    - 用 prompt 請 Gemini 擔任前端工程師，提供工程師專業術語描述的 prompt 要求 Gemini 用 Canvas 生成電影待看清單元件雛形
+  - **2️⃣ 將雛形網站產生的 JS 和功能與目前的專案整合**
+    - 啟用 Copilot Agent 模式，複製 Gemini Canvas 程式碼給 Copilot，請 Copilot 把功能整合在一起
+    - Copilot 自己找地方美美的把元件放上去了，連背景都符合網站風格調性的漸層色，還刻成 React 和 Scss 元件，舉一反三的幫我把待看清單放進 Header 裡
+
 <summary><strong> 🌱 2025.07.09 整合 Gemini 專案企劃書雛形程式</strong></summary>
 
 ##### 完成工時：因為是整理學到的東西所以難以估計
@@ -78,7 +86,7 @@
 </details>
 
 <details>
-<summary><strong> 🌱 2025.07.08 專案導入 ENV、Sass、AI客服介面 完成心得</strong></summary>
+<summary><strong> 🌱 2025.07.08 專案導入 ENV、Scss、AI客服介面 完成心得</strong></summary>
 
 ##### 完成工時：一天
 
