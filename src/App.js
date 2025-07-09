@@ -6,6 +6,7 @@ import MovieList from "./components/MovieList";
 import About from "./components/About";
 import Explore from "./components/Explore";
 import FloatingAIBot from "./components/FloatingAIBot";
+import Watchlist from "./components/Watchlist";
 import "./scss/style.scss";
 
 function App() {
@@ -76,6 +77,8 @@ function App() {
         <h2>電影搜尋</h2>
         <SearchBox />
       </section>
+
+      <Watchlist />
 
       <About />
       <Footer />

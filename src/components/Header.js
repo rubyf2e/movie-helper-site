@@ -34,7 +34,14 @@ function Header() {
   useEffect(() => {
     // 滾動監聽器，自動更新活躍連結
     const handleScroll = () => {
-      const sections = ["home", "popular", "coming-soon", "search", "about"];
+      const sections = [
+        "home",
+        "popular",
+        "coming-soon",
+        "search",
+        "watchlist",
+        "about",
+      ];
       const headerHeight = 72;
       const scrollPosition = window.scrollY + headerHeight + 100; // 增加一些偏移量
 
@@ -108,9 +115,18 @@ function Header() {
             </li>
             <li>
               <a
-                href="#about"
+                href="#watchlist"
                 className={activeLink === 4 ? "active" : ""}
-                onClick={(e) => handleLinkClick(4, e, "about")}
+                onClick={(e) => handleLinkClick(4, e, "watchlist")}
+              >
+                待看清單
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                className={activeLink === 5 ? "active" : ""}
+                onClick={(e) => handleLinkClick(5, e, "about")}
               >
                 關於我們
               </a>
