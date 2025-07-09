@@ -17,7 +17,7 @@ function About() {
         <div className="about-card">
           <h3>電影小幫手是什麼？</h3>
           <p>
-            電影小幫手是您的個人觀影決策專家，我們整合了來自 OMDb API
+            電影小幫手是您的個人觀影決策專家，我們整合了來自 TMDB API
             的豐富電影資料，為您提供全面且即時的電影資訊。
           </p>
           <p>
