@@ -3,12 +3,16 @@ import { MovieAPI } from "../services/movieAPI";
 import TMDBMovieCard from "./TMDBMovieCard";
 import MovieModal from "./MovieModal";
 
-const MovieSearchForm = ({ onMovieAdd, placeholder = "輸入電影名稱..." }) => {
+const MovieSearchForm = ({
+  onMovieAdd,
+  placeholder = "描述您想看的電影類型或心情...",
+}) => {
   const [inputValue, setInputValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
+  const [recommendedMovies, setRecommendedMovies] = useState([]);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState("");
   const [notification, setNotification] = useState({
     message: "",
     type: "",
@@ -27,26 +31,77 @@ const MovieSearchForm = ({ onMovieAdd, placeholder = "輸入電影名稱..." }) 
     }, 2000);
   };
 
-  // 搜尋電影
-  const handleSearch = async () => {
+  // AI 分析推薦電影
+  const handleAnalyzeAndRecommend = async () => {
     const query = inputValue.trim();
     if (!query) {
-      showMessage("請輸入電影名稱！", "error");
+      showMessage("請描述您想看的電影類型或心情！", "error");
       return;
     }
 
-    setIsSearching(true);
+    setIsAnalyzing(true);
+    setAnalysisResult("");
+    setRecommendedMovies([]);
+
     try {
-      const results = await MovieAPI.searchMovies(query);
-      setSearchResults(results.results || []);
-      if (results.results?.length === 0) {
-        showMessage("找不到相關電影", "warning");
+      // 調用後端 AI 分析 API
+      const response = await fetch(
+        `${API_BASE_URL}/api/analyze-movie-preference`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userInput: query,
+            language: "zh-TW",
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setAnalysisResult(data.analysis);
+
+        // 根據 AI 分析結果搜尋推薦電影
+        const movieRecommendations = await MovieAPI.getRecommendedMovies(
+          data.keywords
+        );
+        setRecommendedMovies(movieRecommendations);
+
+        if (movieRecommendations.length === 0) {
+          showMessage(
+            "根據您的喜好找不到相關電影，請嘗試不同的描述",
+            "warning"
+          );
+        } else {
+          showMessage(
+            `為您推薦了 ${movieRecommendations.length} 部電影！`,
+            "success"
+          );
+        }
+      } else {
+        throw new Error(data.message || "分析失敗");
       }
     } catch (error) {
-      console.error("搜尋電影失敗:", error);
-      showMessage("搜尋失敗，請稍後再試", "error");
+      console.error("AI 分析失敗:", error);
+
+      // 降級處理：使用關鍵字搜尋
+      try {
+        const fallbackResults = await MovieAPI.searchMovies(query);
+        setRecommendedMovies(fallbackResults || []);
+        setAnalysisResult(`根據您的輸入「${query}」為您找到以下電影推薦：`);
+        showMessage("使用關鍵字搜尋為您推薦電影", "warning");
+      } catch (fallbackError) {
+        showMessage("推薦失敗，請稍後再試", "error");
+      }
     } finally {
-      setIsSearching(false);
+      setIsAnalyzing(false);
     }
   };
 
@@ -56,33 +111,54 @@ const MovieSearchForm = ({ onMovieAdd, placeholder = "輸入電影名稱..." }) 
     if (movieTitle && onMovieAdd) {
       onMovieAdd(movieTitle);
       setInputValue("");
-      setSearchResults([]);
+      setRecommendedMovies([]);
+      setAnalysisResult("");
     } else {
       showMessage("請輸入電影名稱！", "error");
     }
   };
 
   const handleSendToLine = async () => {
-    const movie = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    try {
+      const movie = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
 
-    const res = await fetch(API_BASE_URL + "/send-to-line", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(movie),
-    });
+      const response = await MovieAPI.sendToLine(movie);
 
-    const data = await res.json();
-    alert("送出成功：" + data.status);
+      if (response.success) {
+        showMessage("成功發送到 LINE！", "success");
+      } else {
+        throw new Error(response.message || "發送失敗");
+      }
+    } catch (error) {
+      console.error("發送到 LINE 失敗:", error);
+      showMessage("發送到 LINE 失敗，請稍後再試", "error");
+    }
   };
 
-  // 從搜尋結果添加電影
-  const handleAddFromSearch = (movie) => {
+  // 從推薦結果添加電影
+  const handleAddFromRecommendation = async (movie) => {
     if (onMovieAdd) {
       onMovieAdd(movie.title, movie);
-      handleSendToLine();
-      showMessage(`已新增「${movie.title}」到清單`, "success");
+
+      // 儲存到 localStorage 並發送到 LINE
+      const movieData = {
+        title: movie.title,
+        overview: movie.overview,
+        poster_path: movie.poster_path,
+        vote_average: movie.vote_average,
+        release_date: movie.release_date,
+        analysis: analysisResult,
+        addedAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(movieData));
+
+      try {
+        await handleSendToLine();
+        showMessage(`已新增「${movie.title}」到清單並發送到 LINE`, "success");
+      } catch (error) {
+        showMessage(`已新增「${movie.title}」到清單`, "success");
+      }
     }
   };
 
@@ -105,16 +181,22 @@ const MovieSearchForm = ({ onMovieAdd, placeholder = "輸入電影名稱..." }) 
         // Shift + Enter 直接添加
         handleDirectAdd();
       } else {
-        // Enter 搜尋
-        handleSearch();
+        // Enter 開始分析推薦
+        handleAnalyzeAndRecommend();
       }
     }
   };
 
-  // 清除搜尋結果
-  const clearSearch = () => {
+  // 清除分析結果
+  const clearAnalysis = () => {
     setInputValue("");
-    setSearchResults([]);
+    setRecommendedMovies([]);
+    setAnalysisResult("");
+  };
+
+  // 重新分析
+  const handleReAnalyze = () => {
+    handleAnalyzeAndRecommend();
   };
 
   return (
@@ -128,21 +210,21 @@ const MovieSearchForm = ({ onMovieAdd, placeholder = "輸入電影名稱..." }) 
         </div>
       )}
 
-      {/* 搜尋表單 */}
+      {/* 分析表單 */}
       <div className="movie-search-form__form">
         <div className="movie-search-form__input-group">
-          <input
-            type="text"
+          <textarea
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={placeholder}
-            className="movie-search-form__input"
-            disabled={isSearching}
+            className="movie-search-form__input movie-search-form__textarea"
+            disabled={isAnalyzing}
+            rows={3}
           />
           {inputValue && (
             <button
-              onClick={clearSearch}
+              onClick={clearAnalysis}
               className="movie-search-form__clear-btn"
               type="button"
             >
@@ -153,11 +235,18 @@ const MovieSearchForm = ({ onMovieAdd, placeholder = "輸入電影名稱..." }) 
 
         <div className="movie-search-form__buttons">
           <button
-            onClick={handleSearch}
-            className="movie-search-form__search-btn"
-            disabled={isSearching || !inputValue.trim()}
+            onClick={handleAnalyzeAndRecommend}
+            className="movie-search-form__search-btn movie-search-form__analyze-btn"
+            disabled={isAnalyzing || !inputValue.trim()}
           >
-            {isSearching ? "搜尋中..." : "搜尋電影"}
+            {isAnalyzing ? (
+              <>
+                <span className="spinner"></span>
+                AI 分析中...
+              </>
+            ) : (
+              <>🤖 AI 推薦電影</>
+            )}
           </button>
           <button
             onClick={handleDirectAdd}
@@ -171,30 +260,55 @@ const MovieSearchForm = ({ onMovieAdd, placeholder = "輸入電影名稱..." }) 
 
       {/* 使用提示 */}
       <div className="movie-search-form__hint">
-        <span>提示：按 Enter 搜尋，Shift + Enter 直接新增</span>
+        <span>
+          💡 提示：描述您的心情、喜好或想看的電影類型，AI 會為您推薦合適的電影
+        </span>
+        <br />
+        <span>
+          例如：「我想看輕鬆搞笑的電影」、「推薦一些科幻動作片」、「心情不好想看療癒的電影」
+        </span>
       </div>
 
-      {/* 搜尋結果 */}
-      {searchResults.length > 0 && (
+      {/* AI 分析結果 */}
+      {analysisResult && (
+        <div className="movie-search-form__analysis">
+          <div className="movie-search-form__analysis-header">
+            <h3>🎯 AI 分析結果</h3>
+            <button
+              onClick={handleReAnalyze}
+              className="movie-search-form__reanalyze-btn"
+              disabled={isAnalyzing}
+            >
+              重新分析
+            </button>
+          </div>
+          <div className="movie-search-form__analysis-content">
+            {analysisResult}
+          </div>
+        </div>
+      )}
+
+      {/* 推薦結果 */}
+      {recommendedMovies.length > 0 && (
         <div className="movie-search-form__results">
           <div className="movie-search-form__results-header">
-            <h3>搜尋結果 ({searchResults.length})</h3>
+            <h3>🎬 為您推薦 ({recommendedMovies.length})</h3>
             <button
-              onClick={() => setSearchResults([])}
+              onClick={() => setRecommendedMovies([])}
               className="movie-search-form__clear-results"
             >
               清除結果
             </button>
           </div>
           <div className="movie-search-form__grid">
-            {searchResults.map((movie) => (
+            {recommendedMovies.map((movie) => (
               <div key={movie.id} className="movie-search-form__result-item">
                 <TMDBMovieCard movie={movie} onClick={handleMovieClick} />
                 <button
-                  onClick={() => handleAddFromSearch(movie)}
+                  onClick={() => handleAddFromRecommendation(movie)}
                   className="movie-search-form__add-result-btn"
                 >
-                  新增到清單
+                  ⭐ 新增到清單
                 </button>
               </div>
             ))}

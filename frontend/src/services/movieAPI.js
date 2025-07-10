@@ -13,8 +13,8 @@ export class MovieAPI {
     };
 
     // 如果是 ngrok URL，添加跳過瀏覽器警告的 header
-    if (API_BASE_URL.includes('ngrok') || API_BASE_URL.includes('ngrok.io')) {
-      baseHeaders['ngrok-skip-browser-warning'] = 'true';
+    if (API_BASE_URL.includes("ngrok") || API_BASE_URL.includes("ngrok.io")) {
+      baseHeaders["ngrok-skip-browser-warning"] = "true";
     }
 
     return { ...baseHeaders, ...customHeaders };
@@ -23,7 +23,7 @@ export class MovieAPI {
   static async fetchFromAPI(endpoint, options = {}) {
     try {
       const url = `${API_BASE_URL}${endpoint}`;
-      
+
       const response = await fetch(url, {
         headers: this.getHeaders(options.headers),
         ...options,
@@ -100,6 +100,20 @@ export class MovieAPI {
     } catch (error) {
       console.error("發送到 LINE 失敗:", error);
       throw error;
+    }
+  }
+
+  // 根據關鍵字獲取推薦電影
+  static async getRecommendedMovies(keywords) {
+    try {
+      // 嘗試使用後端 AI 推薦 API
+      return await this.fetchFromAPI(
+        `/movies/recommend?keywords=${encodeURIComponent(keywords)}`
+      );
+    } catch (error) {
+      console.error("AI 推薦失敗，降級到搜尋功能:", error);
+      // 降級到搜尋功能
+      return await this.searchMovies(keywords);
     }
   }
 }
