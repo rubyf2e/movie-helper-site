@@ -1,19 +1,31 @@
-// 電影 API 服務 - 前後端分離版本
+// 電影 API 服務 - 支援 ngrok 版本
 const API_BASE_URL =
   process.env.NODE_ENV === "production"
     ? process.env.REACT_APP_API_URL ||
       "https://your-flask-api.herokuapp.com/api"
-    : "http://localhost:5000/api";
+    : process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
 
 export class MovieAPI {
+  // 獲取基本 headers
+  static getHeaders(customHeaders = {}) {
+    const baseHeaders = {
+      "Content-Type": "application/json",
+    };
+
+    // 如果是 ngrok URL，添加跳過瀏覽器警告的 header
+    if (API_BASE_URL.includes('ngrok') || API_BASE_URL.includes('ngrok.io')) {
+      baseHeaders['ngrok-skip-browser-warning'] = 'true';
+    }
+
+    return { ...baseHeaders, ...customHeaders };
+  }
+
   static async fetchFromAPI(endpoint, options = {}) {
     try {
       const url = `${API_BASE_URL}${endpoint}`;
+      
       const response = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-          ...options.headers,
-        },
+        headers: this.getHeaders(options.headers),
         ...options,
       });
 
@@ -76,5 +88,18 @@ export class MovieAPI {
     if (vote >= 8) return "text-green-400 font-bold";
     if (vote >= 6) return "text-yellow-400";
     return "text-red-400";
+  }
+
+  // 發送到 LINE 功能
+  static async sendToLine(movieData) {
+    try {
+      return await this.fetchFromAPI("/send-to-line", {
+        method: "POST",
+        body: JSON.stringify(movieData),
+      });
+    } catch (error) {
+      console.error("發送到 LINE 失敗:", error);
+      throw error;
+    }
   }
 }
