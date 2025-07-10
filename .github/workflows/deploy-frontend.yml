@@ -59,8 +59,8 @@ jobs:
             echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL || '/data/content.json' }}" >> .env.production
           fi
 
-          if [ -n "${{ secrets.REACT_APP_DATABASE_URL }}" ]; then
-            echo "REACT_APP_DATABASE_URL=${{ secrets.REACT_APP_DATABASE_URL }}" >> .env.production
+          if [ -n "${{ secrets.REACT_APP_API_BASE_URL }}" ]; then
+            echo "REACT_APP_API_BASE_URL=${{ secrets.REACT_APP_API_BASE_URL }}" >> .env.production
           fi
 
           # TMDB API 相關環境變數
