@@ -28,9 +28,10 @@
 - **2️⃣ 啟用 Copilot Agent 模式**
 
   - 啟用 Copilot Agent 模式，請 Copilot 依「前後端分離部署」方式協助專案整合與部署腳本設計。
-  - </details>
+  </details>
+
     <details>
-    <summary><strong> 🌱 2025.07.09 整合 Gemini 生成的網頁元件</strong></summary>
+      <summary><strong> 🌱 2025.07.09 整合 Gemini 生成的網頁元件</strong></summary>
 
   - **1️⃣ 使用 Gemini Canvas 生成元件雛形**
     - 用 prompt 請 Gemini 擔任前端工程師，提供工程師專業術語描述的 prompt 要求 Gemini 用 Canvas 生成電影待看清單元件雛形
