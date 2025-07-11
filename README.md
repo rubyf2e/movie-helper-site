@@ -19,6 +19,8 @@
 <details>
 <summary><strong> 🌱 2025.07.10 整合 Flask 框架進專案</strong></summary>
 
+##### 完成工時：一天
+
 - **1️⃣ 跟 Copilot 討論 Flask 與 React 專案部署策略**
 
   - Copilot 建議兩種常見方案：
@@ -28,10 +30,17 @@
 - **2️⃣ 啟用 Copilot Agent 模式**
 
   - 啟用 Copilot Agent 模式，請 Copilot 依「前後端分離部署」方式協助專案整合與部署腳本設計。
+  - Copilot 將 React 程式搬家到 frontend，並新增 backend 安裝 Flask，還自己主動幫我寫 TMDB API 串接的程式，並改寫.github/workflows/deploy.yml，主動寫了 DEVELOPMENT.md 和 package.json 方便整合測試部署
+  - 發現 Copilot 會把 package-lock.json 寫進 .gitignore，如果沒留意，就會在 github action 部署失敗
+  - 手動調整 .github/workflows/deploy.yml 轉寫成 .github/workflows/deploy-frontend.yml，github action 只部署 frontend 資料夾
+  - 測試是否部署正常
+
   </details>
 
 <details>
   <summary><strong> 🌱 2025.07.09 整合 Gemini 生成的網頁元件</strong></summary>
+
+##### 完成工時：一天
 
 - **1️⃣ 使用 Gemini Canvas 生成元件雛形**
   - 用 prompt 請 Gemini 擔任前端工程師，提供工程師專業術語描述的 prompt 要求 Gemini 用 Canvas 生成電影待看清單元件雛形
