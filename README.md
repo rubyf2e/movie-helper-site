@@ -17,7 +17,7 @@
 為了不讓經驗變成框架，我選擇用「初學者的方式」去與 AI 協作，並調整心態，讓自己站在和初學者一樣的角度去使用 AI 撰寫這個專案。
 
 <details>
-<summary><strong> 🌱 2025.07.10 整合 Flask 框架進專案</strong></summary>
+<summary><strong> 🌱 2025.07.10 將 TMDB API 串接從 React 轉移到 Flask</strong></summary>
 
 ##### 完成工時：一天
 
@@ -27,13 +27,13 @@
     - **方案一：前後端分離部署（推薦）**
     - **方案二：單一倉庫統一部署**
 
-- **2️⃣ 啟用 Copilot Agent 模式**
+- **2️⃣ 前後端分離部署至 github action**
 
   - 啟用 Copilot Agent 模式，請 Copilot 依「前後端分離部署」方式協助專案整合與部署腳本設計。
   - Copilot 將 React 程式搬家到 frontend，並新增 backend 安裝 Flask，還自己主動幫我寫 TMDB API 串接的程式，並改寫.github/workflows/deploy.yml，主動寫了 DEVELOPMENT.md 和 package.json 方便整合測試部署
   - 發現 Copilot 會把 package-lock.json 寫進 .gitignore，如果沒留意，就會在 github action 部署失敗
   - 手動調整 .github/workflows/deploy.yml 轉寫成 .github/workflows/deploy-frontend.yml，github action 只部署 frontend 資料夾
-  - 測試是否部署正常
+  - 測試 github action 是否部署正常
 
   </details>
 
