@@ -17,9 +17,49 @@
 為了不讓經驗變成框架，我選擇用「初學者的方式」去與 AI 協作，並調整心態，讓自己站在和初學者一樣的角度去使用 AI 撰寫這個專案。
 
 <details>
+<summary><strong> 🌱 2025.07.10 調整電影待看清單</strong></summary>
+
+##### 完成工時：半天
+
+- **1️⃣ 電影待看清單新增電影搜尋功能**
+
+  - 啟用 Copilot Agent 模式，請 Copilot 在電影待看清單新增電影搜尋功能。
+  - Copilot 不但在恰當的地方加上電影搜尋按鈕，還加上很多細節，順便把整個區塊重新設計成暗色調，還幫忙加上背景動畫
+
+- **2️⃣ 調整電影待看清單顏色**
+
+  - 因為比較喜歡原有的淡紫色調，所以請 Copilot 調回來。
+  - 在 VS code 點擊 git tree 上該 commit 的程式碼檔案，並與原本的 css 檔和 JS 檔一同給予 Copilot 請它調整
+  - 因為舊版的版面為簡單架構淡紫色調，新版的版面為複雜架構暗色調，請 Copilot 調整要詳述，要不然它就會順便改整體架構，又因為相對應的 Scss class 不同，所以需要分階段請 Copilot 處理。
+
+    ##### 指示範例：
+
+    ```
+    請幫我把現在(_watchlist.scss) 與 (d8778a00541f5ec1fff95ae3d3d4b68bfe5fa170的_watchlist.scss )共有的css class補回 Watchlist.js，只補相對應css class 標籤，功能不動，功能以現有的為主，樣式以舊有的為主
+
+    此次只改js中的html class樣式，css只補上缺漏的class，html結構保持與現有的複雜架構ㄧ致
+    ```
+
+    ```
+    watchlist__card 內容色調改成以前 (d8778a00541f5ec1fff95ae3d3d4b68bfe5fa170的_watchlist.scss )的白底色調顏色配置，只改這範圍以內區塊的色調，如有需要，請重新調配顏色，只改顏色
+    ```
+
+- **3️⃣ 將電影搜尋功能改成 AI 推薦電影功能**
+
+  - 因為想要把電影搜尋功能改成 AI 推薦電影功能 請 Copilot 逕行修改。
+  - Copilot 不但改好了功能，還幫忙加上了提示框
+
+- **4️⃣ 加上官方帳號的加入待看清單的 Line 通知**
+
+  - 手動加上相關程式
+  - 請 Copilot 幫忙處理前端呼叫 ngrok 網址時可能會被擋住時的相關程式
+
+  </details>
+
+<details>
 <summary><strong> 🌱 2025.07.10 將 TMDB API 串接從 React 轉移到 Flask</strong></summary>
 
-##### 完成工時：一天
+##### 完成工時：半天
 
 - **1️⃣ 跟 Copilot 討論 Flask 與 React 專案部署策略**
 
@@ -31,10 +71,10 @@
 
   - 啟用 Copilot Agent 模式，請 Copilot 依「前後端分離部署」方式協助專案整合與部署腳本設計。
   - Copilot 將 React 程式搬家到 frontend，並新增 backend 安裝 Flask，還自己主動幫我寫 TMDB API 串接的程式，並改寫.github/workflows/deploy.yml，主動寫了 DEVELOPMENT.md 和 package.json 方便整合測試部署
+  - 請 Copilot 將現有的 Flask API 進行整合，移除 React 相關程式
   - 發現 Copilot 會把 package-lock.json 寫進 .gitignore，如果沒留意，就會在 github action 部署失敗
   - 手動調整 .github/workflows/deploy.yml 轉寫成 .github/workflows/deploy-frontend.yml，github action 只部署 frontend 資料夾
   - 測試 github action 是否部署正常
-
   </details>
 
 <details>
