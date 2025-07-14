@@ -59,11 +59,6 @@ jobs:
           GENERATE_SOURCEMAP=false
           EOF
 
-          # TMDB API 相關環境變數
-          if [ -n "${{ secrets.REACT_APP_TMDB_API_KEY }}" ]; then
-            echo "REACT_APP_TMDB_API_KEY=${{ secrets.REACT_APP_TMDB_API_KEY }}" >> .env.production
-          fi
-
       - name: 構建前端應用
         run: |
           cd frontend
