@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { MovieAPI } from "../services/movieAPI";
+import { MovieIcon } from "./Icons";
 import TMDBMovieCard from "./TMDBMovieCard";
 import MovieModal from "./MovieModal";
+import LineLoginButton from "./LineLoginButton";
+import {
+  aiMovieService,
+  lineAuthService,
+  LOCAL_STORAGE_KEY,
+} from "../services/globalServices";
+import { NOTIFICATION_TYPES } from "../utils/constants";
 
 const MovieSearchForm = ({
   onMovieAdd,
@@ -19,10 +26,6 @@ const MovieSearchForm = ({
     show: false,
   });
 
-  const LOCAL_STORAGE_KEY = "movieWatchlist";
-  const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
-
   // 顯示提示訊息
   const showMessage = (message, type) => {
     setNotification({ message, type, show: true });
@@ -31,11 +34,10 @@ const MovieSearchForm = ({
     }, 2000);
   };
 
-  // AI 分析推薦電影
   const handleAnalyzeAndRecommend = async () => {
     const query = inputValue.trim();
     if (!query) {
-      showMessage("請描述您想看的電影類型或心情！", "error");
+      showMessage("請描述您想看的電影類型或心情！", NOTIFICATION_TYPES.ERROR);
       return;
     }
 
@@ -44,62 +46,38 @@ const MovieSearchForm = ({
     setRecommendedMovies([]);
 
     try {
-      // 調用後端 AI 分析 API
-      const response = await fetch(
-        `${API_BASE_URL}/api/analyze-movie-preference`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userInput: query,
-            language: "zh-TW",
-          }),
-        }
-      );
+      // 使用 AI 服務進行分析和推薦
+      const result = await aiMovieService.analyzeAndRecommend(query);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (result.success) {
+        setAnalysisResult(result.analysis);
+        setRecommendedMovies(result.movies);
 
-      const data = await response.json();
-
-      if (data.success) {
-        setAnalysisResult(data.analysis);
-
-        // 根據 AI 分析結果搜尋推薦電影
-        const movieRecommendations = await MovieAPI.getRecommendedMovies(
-          data.keywords
-        );
-        setRecommendedMovies(movieRecommendations);
-
-        if (movieRecommendations.length === 0) {
+        if (result.totalCount === 0) {
           showMessage(
             "根據您的喜好找不到相關電影，請嘗試不同的描述",
-            "warning"
+            NOTIFICATION_TYPES.WARNING
           );
         } else {
+          const message = result.isFallback
+            ? `使用關鍵字搜尋為您推薦了 ${result.totalCount} 部電影`
+            : `AI 為您推薦了 ${result.totalCount} 部電影！`;
           showMessage(
-            `為您推薦了 ${movieRecommendations.length} 部電影！`,
-            "success"
+            message,
+            result.isFallback
+              ? NOTIFICATION_TYPES.WARNING
+              : NOTIFICATION_TYPES.SUCCESS
           );
         }
       } else {
-        throw new Error(data.message || "分析失敗");
+        showMessage(
+          result.error || "推薦失敗，請稍後再試",
+          NOTIFICATION_TYPES.ERROR
+        );
       }
     } catch (error) {
-      console.error("AI 分析失敗:", error);
-
-      // 降級處理：使用關鍵字搜尋
-      try {
-        const fallbackResults = await MovieAPI.searchMovies(query);
-        setRecommendedMovies(fallbackResults || []);
-        setAnalysisResult(`根據您的輸入「${query}」為您找到以下電影推薦：`);
-        showMessage("使用關鍵字搜尋為您推薦電影", "warning");
-      } catch (fallbackError) {
-        showMessage("推薦失敗，請稍後再試", "error");
-      }
+      console.error("AI 分析推薦失敗:", error);
+      showMessage("推薦失敗，請稍後再試", NOTIFICATION_TYPES.ERROR);
     } finally {
       setIsAnalyzing(false);
     }
@@ -114,24 +92,35 @@ const MovieSearchForm = ({
       setRecommendedMovies([]);
       setAnalysisResult("");
     } else {
-      showMessage("請輸入電影名稱！", "error");
+      showMessage("請輸入電影名稱！", NOTIFICATION_TYPES.ERROR);
     }
   };
 
   const handleSendToLine = async () => {
     try {
-      const movie = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+      // 檢查是否已登入
+      if (!lineAuthService.isAuthenticated()) {
+        showMessage("請先登入 LINE 帳號", NOTIFICATION_TYPES.WARNING);
+        return;
+      }
 
-      const response = await MovieAPI.sendToLine(movie);
+      const savedMovies = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (!savedMovies) {
+        showMessage("沒有電影清單可以發送", NOTIFICATION_TYPES.WARNING);
+        return;
+      }
 
-      if (response.success) {
-        showMessage("成功發送到 LINE！", "success");
+      const movieList = JSON.parse(savedMovies);
+      const result = await lineAuthService.sendMovieListToLine(movieList);
+
+      if (result.success) {
+        showMessage("電影清單已發送到 LINE", NOTIFICATION_TYPES.SUCCESS);
       } else {
-        throw new Error(response.message || "發送失敗");
+        showMessage("發送失敗：" + result.message, NOTIFICATION_TYPES.ERROR);
       }
     } catch (error) {
       console.error("發送到 LINE 失敗:", error);
-      showMessage("發送到 LINE 失敗，請稍後再試", "error");
+      showMessage("發送失敗，請稍後再試", NOTIFICATION_TYPES.ERROR);
     }
   };
 
@@ -140,24 +129,24 @@ const MovieSearchForm = ({
     if (onMovieAdd) {
       onMovieAdd(movie.title, movie);
 
-      // 儲存到 localStorage 並發送到 LINE
-      const movieData = {
-        title: movie.title,
-        overview: movie.overview,
-        poster_path: movie.poster_path,
-        vote_average: movie.vote_average,
-        release_date: movie.release_date,
-        analysis: analysisResult,
-        addedAt: new Date().toISOString(),
-      };
-
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(movieData));
-
       try {
+        // 使用 AI 服務儲存電影
+        const formattedMovie = aiMovieService.formatMovieForStorage(
+          movie,
+          analysisResult
+        );
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formattedMovie));
+
         await handleSendToLine();
-        showMessage(`已新增「${movie.title}」到清單並發送到 LINE`, "success");
+        showMessage(
+          `已新增「${movie.title}」到清單並發送到 LINE`,
+          NOTIFICATION_TYPES.SUCCESS
+        );
       } catch (error) {
-        showMessage(`已新增「${movie.title}」到清單`, "success");
+        showMessage(
+          `已新增「${movie.title}」到清單`,
+          NOTIFICATION_TYPES.SUCCESS
+        );
       }
     }
   };
@@ -245,7 +234,9 @@ const MovieSearchForm = ({
                 AI 分析中...
               </>
             ) : (
-              <>🤖 AI 推薦電影</>
+              <>
+                <MovieIcon /> AI 推薦電影
+              </>
             )}
           </button>
           <button
@@ -256,6 +247,32 @@ const MovieSearchForm = ({
             直接新增
           </button>
         </div>
+      </div>
+
+      {/* LINE 登入區域 */}
+      <div className="movie-search-form__line-login">
+        <div className="movie-search-form__line-login-header">
+          <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
+        </div>
+        <LineLoginButton
+          onLoginSuccess={(user) => {
+            if (user) {
+              showMessage(
+                `歡迎，${user.displayName}！`,
+                NOTIFICATION_TYPES.SUCCESS
+              );
+            } else {
+              showMessage("已登出 LINE 帳號", NOTIFICATION_TYPES.SUCCESS);
+            }
+          }}
+          onLoginError={(error) => {
+            showMessage(
+              `LINE 登入失敗：${error.message}`,
+              NOTIFICATION_TYPES.ERROR
+            );
+          }}
+          className="movie-search-form__line-login-btn"
+        />
       </div>
 
       {/* 使用提示 */}

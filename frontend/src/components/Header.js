@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MovieIcon, HamburgerIcon } from "./Icons";
+import { APP_CONFIG } from "../utils/constants";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(0);
   const headerRef = useRef(null);
-
-  // 從環境變數獲取應用標題
-  const appTitle = process.env.REACT_APP_TITLE || "電影小幫手";
+  const appTitle = APP_CONFIG.REACT_APP_TITLE;
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -21,7 +20,7 @@ function Header() {
     // 平滑滾動到目標區塊
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
-      const headerHeight = 72; // header 的高度
+      const headerHeight = APP_CONFIG.HEADER_HEIGHT;
       const targetPosition = targetElement.offsetTop - headerHeight;
 
       window.scrollTo({
@@ -42,7 +41,7 @@ function Header() {
         "watchlist",
         "about",
       ];
-      const headerHeight = 72;
+      const headerHeight = APP_CONFIG.HEADER_HEIGHT;
       const scrollPosition = window.scrollY + headerHeight + 100; // 增加一些偏移量
 
       for (let i = sections.length - 1; i >= 0; i--) {

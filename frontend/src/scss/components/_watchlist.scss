@@ -680,6 +680,34 @@
       border: 1px solid rgba(229, 231, 235, 0.5);
     }
 
+    // LINE 登入區域樣式
+    &__line-login {
+      background: rgba(249, 250, 251, 0.8);
+      border: 1px solid rgba(6, 199, 85, 0.2);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      box-shadow: 0 2px 8px rgba(6, 199, 85, 0.1);
+    }
+
+    &__line-login-header {
+      text-align: center;
+      margin-bottom: 0.75rem;
+
+      span {
+        color: #6b7280;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+    }
+
+    &__line-login-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
     // 搜尋結果樣式
     &__results {
       background: rgba(249, 250, 251, 0.8);
@@ -1010,6 +1038,14 @@
       position: relative;
       overflow: hidden;
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      img {
+        width: 2rem;
+        height: 2rem;
+      }
 
       &:hover:not(:disabled) {
         background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);

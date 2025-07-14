@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import MovieSearchForm from "./MovieSearchForm";
-import "../scss/style.scss";
+import {
+  DEFAULT_STORAGE_KEY,
+  APP_CONFIG,
+  API_ENDPOINTS,
+  HTTP_HEADERS,
+  NOTIFICATION_TYPES,
+} from "../utils/constants";
 
 const Watchlist = () => {
   const [movies, setMovies] = useState([]);
@@ -11,9 +17,8 @@ const Watchlist = () => {
     show: false,
   });
 
-  const LOCAL_STORAGE_KEY = "movieWatchlist";
-  const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+  const LOCAL_STORAGE_KEY = DEFAULT_STORAGE_KEY;
+  const API_BASE_URL = APP_CONFIG.API_BASE_URL;
 
   // 除錯用 - 監控 movies 狀態變化
   useEffect(() => {
@@ -48,24 +53,27 @@ const Watchlist = () => {
       }
     } catch (error) {
       console.error("載入電影清單失敗:", error);
-      showMessage("載入資料失敗，已重置清單。", "error");
+      showMessage("載入資料失敗，已重置清單。", NOTIFICATION_TYPES.ERROR);
 
       localStorage.removeItem(LOCAL_STORAGE_KEY);
       setMovies([]);
     }
-  }, [showMessage]);
+  }, [showMessage, LOCAL_STORAGE_KEY]);
 
   const handleSendToLine = useCallback(
     async (movieList = null) => {
       try {
         const dataToSend = movieList || movies;
-        const response = await fetch(`${API_BASE_URL}/send-to-line`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSend),
-        });
+        const response = await fetch(
+          `${API_BASE_URL}${API_ENDPOINTS.SEND_TO_LINE}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON,
+            },
+            body: JSON.stringify(dataToSend),
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -97,12 +105,12 @@ const Watchlist = () => {
         }
       } catch (error) {
         console.error("儲存電影清單失敗:", error);
-        showMessage("儲存失敗，請檢查瀏覽器設定。", "error");
+        showMessage("儲存失敗，請檢查瀏覽器設定。", NOTIFICATION_TYPES.ERROR);
       } finally {
         setLoading(false);
       }
     },
-    [showMessage, handleSendToLine]
+    [showMessage, handleSendToLine, LOCAL_STORAGE_KEY]
   );
 
   const getMovieTitle = useCallback((movie) => {
@@ -133,12 +141,12 @@ const Watchlist = () => {
           : movieTitle?.title?.trim();
 
       if (!title) {
-        showMessage("請輸入電影名稱！", "error");
+        showMessage("請輸入電影名稱！", NOTIFICATION_TYPES.ERROR);
         return;
       }
 
       if (isMovieExists(title)) {
-        showMessage("電影已存在清單中！", "warning");
+        showMessage("電影已存在清單中！", NOTIFICATION_TYPES.WARNING);
         return;
       }
 
@@ -159,7 +167,7 @@ const Watchlist = () => {
 
       const updatedMovies = [...movies, movieToAdd];
       saveMovies(updatedMovies);
-      showMessage(`成功新增「${title}」！`, "success");
+      showMessage(`成功新增「${title}」！`, NOTIFICATION_TYPES.SUCCESS);
     },
     [movies, isMovieExists, saveMovies, showMessage]
   );
@@ -179,7 +187,7 @@ const Watchlist = () => {
       });
 
       saveMovies(updatedMovies);
-      showMessage(`成功移除「${removeTitle}」！`, "success");
+      showMessage(`成功移除「${removeTitle}」！`, NOTIFICATION_TYPES.SUCCESS);
     },
     [movies, getMovieTitle, saveMovies, showMessage]
   );
@@ -189,7 +197,7 @@ const Watchlist = () => {
 
     if (window.confirm("確定要清空所有電影嗎？此操作無法復原。")) {
       saveMovies([]);
-      showMessage("已清空所有電影！", "success");
+      showMessage("已清空所有電影！", NOTIFICATION_TYPES.SUCCESS);
     }
   }, [movies.length, saveMovies, showMessage]);
 
@@ -320,7 +328,7 @@ const Watchlist = () => {
                         {movieData?.poster_path && (
                           <div className="watchlist__poster">
                             <img
-                              src={`${process.env.REACT_APP_TMDB_IMG_URL}${movieData.poster_path}`}
+                              src={`${APP_CONFIG.TMDB_IMG_URL}${movieData.poster_path}`}
                               alt={`${movieTitle} 海報`}
                               loading="lazy"
                               onError={(e) => {

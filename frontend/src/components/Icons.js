@@ -1,6 +1,7 @@
 import React from "react";
-
+import { APP_CONFIG } from "../utils/constants";
 // 勾選圖標組件
+const PUBLIC_URL = APP_CONFIG.PUBLIC_URL;
 export function CheckIcon({
   className = "h-6 w-6 text-amber-500 mr-2 flex-shrink-0",
 }) {
@@ -22,9 +23,8 @@ export function CheckIcon({
   );
 }
 
-// 電影膠卷圖標組件
 export function MovieIcon({ src = "/images/icon/icon6.svg" }) {
-  return <img src={`${process.env.PUBLIC_URL || ""}${src}`} alt="" />;
+  return <img src={`${PUBLIC_URL}${src}`} alt="" />;
 }
 
 // 搜尋圖標組件
