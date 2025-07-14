@@ -18,7 +18,7 @@ class Config:
     
     # CORS 設置
     FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
-    PRODUCTION_FRONTEND_URL = os.environ.get('PRODUCTION_FRONTEND_URL', 'https://rubyf2e.github.io/movie-helper-site')
+    PRODUCTION_FRONTEND_URL = os.environ.get('PRODUCTION_FRONTEND_URL', 'https://rubyf2e.github.io')
 
 class DevelopmentConfig(Config):
     DEBUG = True
