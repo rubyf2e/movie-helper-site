@@ -1,8 +1,4 @@
-// 電影 API 服務 - 支援 ngrok 版本
-const API_BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? process.env.REACT_APP_API_URL
-    : process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export class MovieAPI {
   // 獲取基本 headers
