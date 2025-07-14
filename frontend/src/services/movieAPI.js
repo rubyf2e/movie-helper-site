@@ -14,6 +14,7 @@ export class MovieAPI {
     // 如果是 ngrok URL，添加跳過瀏覽器警告的 header
     if (API_BASE_URL.includes("ngrok") || API_BASE_URL.includes("ngrok.io")) {
       baseHeaders["ngrok-skip-browser-warning"] = "true";
+      baseHeaders["Access-Control-Allow-Origin"] = "*";
     }
 
     return { ...baseHeaders, ...customHeaders };
@@ -24,7 +25,9 @@ export class MovieAPI {
       const url = `${API_BASE_URL}${endpoint}`;
 
       const response = await fetch(url, {
+        method: options.method || "GET",
         headers: this.getHeaders(options.headers),
+        mode: "cors",
         ...options,
       });
 

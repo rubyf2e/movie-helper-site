@@ -50,6 +50,7 @@ jobs:
           cd frontend
           cat > .env.production << EOF
           REACT_APP_TITLE=${{ vars.REACT_APP_TITLE || '電影小幫手' }}
+          REACT_APP_API_BASE_URL=${{ vars.REACT_APP_API_BASE_URL || '電影小幫手' }}
           PUBLIC_URL=${{ vars.PUBLIC_URL || 'https://rubyf2e.github.io/movie-helper-site' }}
           GENERATE_SOURCEMAP=false
           EOF
@@ -59,9 +60,6 @@ jobs:
             echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL || '/data/content.json' }}" >> .env.production
           fi
 
-          if [ -n "${{ secrets.REACT_APP_API_BASE_URL }}" ]; then
-            echo "REACT_APP_API_BASE_URL=${{ secrets.REACT_APP_API_BASE_URL }}" >> .env.production
-          fi
 
           # TMDB API 相關環境變數
           if [ -n "${{ secrets.REACT_APP_TMDB_API_KEY }}" ]; then
