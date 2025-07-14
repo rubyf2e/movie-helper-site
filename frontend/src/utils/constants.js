@@ -32,12 +32,12 @@ export const MOVIE_STATUS = {
 // API 端點常數
 export const API_ENDPOINTS = {
   HEALTH: "/health",
-  MOVIES: "/api/movies",
-  POPULAR: "/api/movies/popular",
-  SEARCH: "/api/movies/search",
-  GENRES: "/api/movies/genres",
-  ANALYZE: "/api/analyze-movie-preference",
-  SEND_TO_LINE: "/api/send-to-line",
+  MOVIES: "/movies",
+  POPULAR: "/movies/popular",
+  SEARCH: "/movies/search",
+  GENRES: "/movies/genres",
+  ANALYZE: "/analyze-movie-preference",
+  SEND_TO_LINE: "/send-to-line",
   LINE_AUTH_CALLBACK: "/auth/line/callback",
   LINE_AUTH_REFRESH: "/auth/line/refresh",
   LINE_AUTH_REVOKE: "/auth/line/revoke",
