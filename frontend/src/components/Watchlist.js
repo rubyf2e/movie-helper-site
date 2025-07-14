@@ -15,28 +15,46 @@ const Watchlist = () => {
   const API_BASE_URL =
     process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 
-  // 顯示提示訊息
+  // 除錯用 - 監控 movies 狀態變化
+  useEffect(() => {
+    console.log("Movies 狀態變化:", {
+      movies,
+      isArray: Array.isArray(movies),
+      type: typeof movies,
+      length: Array.isArray(movies) ? movies.length : "N/A",
+    });
+  }, [movies]);
+
   const showMessage = useCallback((message, type) => {
     setNotification({ message, type, show: true });
     setTimeout(() => {
       setNotification({ message: "", type: "", show: false });
-    }, 3000); // 增加顯示時間到 3 秒
+    }, 3000);
   }, []);
 
-  // 載入電影清單
   useEffect(() => {
     try {
       const savedMovies = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (savedMovies) {
-        setMovies(JSON.parse(savedMovies));
+        const parsedMovies = JSON.parse(savedMovies);
+
+        if (Array.isArray(parsedMovies)) {
+          setMovies(parsedMovies);
+        } else {
+          console.warn("載入的資料不是陣列格式，重置為空陣列");
+          setMovies([]);
+          localStorage.removeItem(LOCAL_STORAGE_KEY);
+        }
       }
     } catch (error) {
       console.error("載入電影清單失敗:", error);
       showMessage("載入資料失敗，已重置清單。", "error");
+
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+      setMovies([]);
     }
   }, [showMessage]);
 
-  // 改善的 Line 發送功能
   const handleSendToLine = useCallback(
     async (movieList = null) => {
       try {
@@ -57,21 +75,23 @@ const Watchlist = () => {
         }
       } catch (error) {
         console.error("Line 發送錯誤:", error);
-        // 不顯示錯誤訊息，因為這是可選功能
       }
     },
     [movies, API_BASE_URL]
   );
 
-  // 改善的儲存電影清單函式
   const saveMovies = useCallback(
     async (movieList) => {
+      if (!Array.isArray(movieList)) {
+        console.error("嘗試儲存非陣列資料:", movieList);
+        return;
+      }
+
       setLoading(true);
       try {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(movieList));
         setMovies(movieList);
 
-        // 嘗試發送到 Line（可選功能）
         if (movieList.length > 0) {
           handleSendToLine(movieList);
         }
@@ -85,14 +105,18 @@ const Watchlist = () => {
     [showMessage, handleSendToLine]
   );
 
-  // 獲取電影標題的輔助函式
   const getMovieTitle = useCallback((movie) => {
     return typeof movie === "string" ? movie : movie?.title || "";
   }, []);
 
-  // 檢查電影是否已存在
   const isMovieExists = useCallback(
     (newTitle) => {
+      if (!Array.isArray(movies)) {
+        console.error("movies 不是陣列:", movies);
+        setMovies([]); // 重置為空陣列
+        return false;
+      }
+
       return movies.some((movie) => {
         const existingTitle = getMovieTitle(movie);
         return existingTitle.toLowerCase() === newTitle.toLowerCase();
@@ -101,7 +125,6 @@ const Watchlist = () => {
     [movies, getMovieTitle]
   );
 
-  // 改善的新增電影功能
   const handleAddMovie = useCallback(
     (movieTitle, movieData = null) => {
       const title =
@@ -119,7 +142,6 @@ const Watchlist = () => {
         return;
       }
 
-      // 建立電影物件
       const movieToAdd = movieData
         ? {
             id: movieData.id,
@@ -128,7 +150,7 @@ const Watchlist = () => {
             vote_average: movieData.vote_average,
             release_date: movieData.release_date,
             overview: movieData.overview,
-            addedAt: new Date().toISOString(), // 新增時間戳記
+            addedAt: new Date().toISOString(),
           }
         : {
             title: title,
@@ -142,9 +164,14 @@ const Watchlist = () => {
     [movies, isMovieExists, saveMovies, showMessage]
   );
 
-  // 改善的移除電影功能
   const handleRemoveMovie = useCallback(
     (movieToRemove) => {
+      if (!Array.isArray(movies)) {
+        console.error("movies 不是陣列:", movies);
+        setMovies([]);
+        return;
+      }
+
       const removeTitle = getMovieTitle(movieToRemove);
       const updatedMovies = movies.filter((movie) => {
         const movieTitle = getMovieTitle(movie);
@@ -157,7 +184,6 @@ const Watchlist = () => {
     [movies, getMovieTitle, saveMovies, showMessage]
   );
 
-  // 清空所有電影
   const handleClearAll = useCallback(() => {
     if (movies.length === 0) return;
 
@@ -167,8 +193,17 @@ const Watchlist = () => {
     }
   }, [movies.length, saveMovies, showMessage]);
 
-  // 計算統計資料
   const stats = useMemo(() => {
+    if (!Array.isArray(movies)) {
+      console.error("movies 不是陣列，無法計算統計:", movies);
+      return {
+        total: 0,
+        withRating: 0,
+        averageRating: null,
+        recentAdditions: 0,
+      };
+    }
+
     const totalMovies = movies.length;
     const moviesWithRating = movies.filter(
       (movie) => typeof movie === "object" && movie.vote_average
@@ -181,7 +216,6 @@ const Watchlist = () => {
         return sum;
       }, 0) / (moviesWithRating || 1);
 
-    // 計算最近新增的電影
     const recentMovies = movies.filter((movie) => {
       if (typeof movie === "object" && movie.addedAt) {
         const addedDate = new Date(movie.addedAt);
