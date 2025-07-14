@@ -560,6 +560,6 @@ cd build && http-server -p 8000
 ### 手動觸發部署
 
 ```bash
-git commit -m "Update content"
-git push origin main
+git commit --allow-empty -m "Force rebuild to update environment variables"
+git push
 ```
