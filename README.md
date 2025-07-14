@@ -62,6 +62,13 @@
   - Copilot 幫忙寫 AIMovieService，並改寫相關程式
   - 請 Copilot 將 AIMovieService 和 LOCAL_STORAGE_KEY 寫成全域變數方便管理
   - Copilot 生成 /src/utils/constants.js，並改寫相關程式
+  - 逐一檢視各檔引入 constants.js 參數和調整架構
+
+- **5️⃣ 加上 Line 登入按鈕**
+
+  - 將 Line Login 的相關 Secrets 寫在 .env 裡
+  - 啟用 Copilot Agent 模式，直接請 Copilot 把 LINE Login v2.1 整合到這個專案，Line 登入按鈕放在指定位置
+  - Copilot 直接寫完前後端和 css，前端還寫成 lineAuthService
 
   </details>
 
