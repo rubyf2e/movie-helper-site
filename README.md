@@ -329,17 +329,21 @@
 ## 📦 特點
 
 - **RWD 響應式設計**: 完美適配桌面版、平板、手機等各種裝置
-- **動態資料載入**: 支援 JSON 檔案與 TMDB API 雙重資料來源
+- **AI 電影推薦系統**: 智能分析用戶喜好並推薦相關電影，整合 Azure OpenAI 服務
+- **LINE 登入整合**: 完整的 LINE 身份驗證流程、令牌管理與社群功能
+- **模組化架構**: SCSS 元件化設計、React 組件化開發、服務導向架構
+- **前後端分離**: React 前端 + Flask 後端，支援 TMDB API 與 AI 服務整合
+- **環境變數管理**: 安全的 API 密鑰管理與多環境配置
+- **完整測試覆蓋**: Jest + React Testing Library 單元測試，包含錯誤處理測試
+- **自動化部署**: GitHub Actions 整合與部署，支援前後端分離部署
 - **AI 協作開發**: 使用 Google NotebookLM + Canva AI + ChatGPT + Google Gemini + GitHub Copilot 協作生成
-- **模組化架構**: SCSS 元件化設計、React 組件化開發
-- **環境變數管理**: 安全的 API 密鑰管理與環境配置
-- **完整測試覆蓋**: Jest + React Testing Library 單元測試
-- **自動化部署**: GitHub Actions 持續整合與部署
 
 ## 💡 功能
 
 - **響應式設計**: 支援桌面版、平板、手機等各種裝置
-- **動態資料載入**: 從 JSON 檔案動態載入電影資料
+- **AI 電影推薦**: 智能分析使用者電影喜好，提供個人化推薦清單
+- **LINE 社群整合**: LINE 登入認證、電影清單分享到 LINE 官方帳號
+- **電影待看清單**: 新增、移除、管理個人電影清單，支援本地儲存
 - **TMDB API 整合**: 真實電影資料搜尋、類型篩選、詳情查看
 - **智能搜尋**: 支援電影名稱關鍵字搜尋，即時結果顯示
 - **類型篩選**: 動態載入電影類型，一鍵篩選特定類型電影
@@ -355,91 +359,83 @@
 ## 🛠 技術架構
 
 - **前端框架**：React 19.1.0
+- **後端框架**：Flask (Python) - 處理 AI 推薦與 LINE 整合
 - **樣式**：SCSS + Responsive Design（模組化架構）
-- **開發工具**：Create React App
-- **API 整合**：TMDB (The Movie Database) API v3
+- **API 整合**：TMDB (The Movie Database) API v3、Azure OpenAI API、LINE Bot API
+- **身份驗證**：LINE Login OAuth 2.0
+- **資料管理**：統一常數管理系統 (constants.js)、localStorage 本地儲存
 - **動畫**：Lottie Animation (@lottiefiles/lottie-player)
 - **測試**：Jest + React Testing Library
-- **部署**：GitHub Pages + GitHub Actions
-- **資料來源**：JSON 檔案驅動 + 真實電影 API
-- **環境管理**：環境變數配置 (.env)
+- **部署**：GitHub Pages (前端) + Render/Heroku (後端) + GitHub Actions
+- **跨域處理**：Flask-CORS、ngrok 隧道支援
+- **環境管理**：多環境變數配置 (.env)
 
 ## 🗂 專案結構
 
 ```text
 movie-helper-site/
-├── public/                          # 靜態資源
-│   ├── data/
-│   │   └── content.json            # 電影資料
-│   ├── images/
-│   │   └── MovieIcon.svg           # 應用圖標
-│   ├── index.html                  # 主 HTML 文件
-│   ├── manifest.json               # PWA 配置
-│   └── robots.txt                  # SEO 爬蟲配置
-├── src/                            # 源碼目錄
-│   ├── components/                 # React 組件
-│   │   ├── About.js               # 關於我們組件
-│   │   ├── Explore.js             # 探索數據組件
-│   │   ├── FloatingAIBot.js       # 浮動 AI 客服組件
-│   │   ├── Footer.js              # 頁尾組件
-│   │   ├── GenreFilter.js         # TMDB 類型篩選組件
-│   │   ├── Header.js              # 頁首與導航組件
-│   │   ├── Icons.js               # SVG 圖標集合
-│   │   ├── MovieCard.js           # 電影卡片組件
-│   │   ├── MovieList.js           # 電影列表組件
-│   │   ├── MovieModal.js          # TMDB 電影詳情彈窗組件
-│   │   ├── MovieSearch.js         # TMDB 電影搜尋主組件
-│   │   ├── MovieTags.js           # 電影標籤組件
-│   │   ├── SearchBox.js           # 搜尋框組件
-│   │   ├── TMDBMovieCard.js       # TMDB 電影卡片組件
-│   │   └── __tests__/             # 組件測試
-│   │       ├── About.test.js
-│   │       ├── Explore.test.js
-│   │       ├── FloatingAIBot.test.js
-│   │       ├── Footer.test.js
-│   │       ├── Header.test.js
-│   │       ├── Icons.test.js
-│   │       ├── MovieCard.test.js
-│   │       ├── MovieSearch.test.js
-│   │       ├── MovieTags.test.js
-│   │       ├── SearchBox.test.js
-│   │       └── TMDBMovieCard.test.js
-│   ├── services/                   # API 服務層
-│   │   └── movieAPI.js            # TMDB API 整合服務
-│   ├── scss/                       # 樣式系統（SCSS 模組化）
-│   │   ├── abstracts/             # 抽象層（變數、混合、動畫）
-│   │   │   ├── _animations.scss   # 動畫定義
-│   │   │   ├── _mixins.scss       # 混合器
-│   │   │   └── _variables.scss    # 全域變數
-│   │   ├── base/                  # 基礎層
-│   │   │   ├── _accessibility.scss # 無障礙樣式
-│   │   │   ├── _base.scss         # 基礎樣式
-│   │   │   ├── _reset.scss        # 重置樣式
-│   │   │   └── _responsive.scss   # 響應式設計
-│   │   ├── components/            # 組件樣式
-│   │   │   ├── _floating-ai-bot.scss # AI 客服樣式
-│   │   │   ├── _modal.scss        # 彈窗樣式
-│   │   │   ├── _movie-card.scss   # 電影卡片樣式
-│   │   │   ├── _search-box.scss   # 搜尋框樣式
-│   │   │   ├── _tmdb-movie-card.scss # TMDB 電影卡片樣式
-│   │   │   └── _tmdb-movie.scss   # TMDB 電影樣式
-│   │   ├── layout/                # 佈局樣式
-│   │   │   ├── _footer.scss       # 頁尾樣式
-│   │   │   └── _header.scss       # 頁首樣式
-│   │   ├── pages/                 # 頁面樣式
-│   │   │   ├── _about.scss        # 關於頁面樣式
-│   │   │   ├── _explore.scss      # 探索頁面樣式
-│   │   │   ├── _hero.scss         # 主視覺樣式
-│   │   │   ├── _movie-sections.scss # 電影區塊樣式
-│   │   │   └── _search.scss       # 搜尋頁面樣式
-│   │   └── style.scss             # 主樣式文件
-│   ├── App.js                     # 主應用組件
-│   ├── App.test.js                # 主應用測試
-│   ├── index.js                   # 應用入口點
-│   ├── reportWebVitals.js         # 性能監測
-│   └── setupTests.js              # 測試配置
-├── package.json                    # 專案依賴與腳本
-├── package-lock.json              # 依賴鎖定文件
+├── frontend/                        # React 前端應用
+│   ├── public/                      # 靜態資源
+│   │   ├── data/
+│   │   │   └── content.json        # 電影資料
+│   │   ├── images/
+│   │   │   ├── MovieIcon.svg       # 應用圖標
+│   │   │   ├── AI_bot.lottie       # AI 客服動畫
+│   │   │   └── line_qrcode.png     # LINE QR Code
+│   │   ├── index.html              # 主 HTML 文件
+│   │   ├── manifest.json           # PWA 配置
+│   │   └── robots.txt              # SEO 爬蟲配置
+│   ├── src/                        # 源碼目錄
+│   │   ├── components/             # React 組件
+│   │   │   ├── About.js           # 關於我們組件
+│   │   │   ├── Explore.js         # 探索數據組件
+│   │   │   ├── FloatingAIBot.js   # 浮動 AI 客服組件
+│   │   │   ├── Footer.js          # 頁尾組件
+│   │   │   ├── GenreFilter.js     # TMDB 類型篩選組件
+│   │   │   ├── Header.js          # 頁首與導航組件
+│   │   │   ├── Icons.js           # SVG 圖標集合
+│   │   │   ├── MovieCard.js       # 電影卡片組件
+│   │   │   ├── MovieList.js       # 電影列表組件
+│   │   │   ├── MovieModal.js      # TMDB 電影詳情彈窗組件
+│   │   │   ├── MovieSearchForm.js # AI 電影搜尋表單組件
+│   │   │   ├── MovieTags.js       # 電影標籤組件
+│   │   │   ├── SearchBox.js       # 搜尋框組件
+│   │   │   ├── TMDBMovieCard.js   # TMDB 電影卡片組件
+│   │   │   ├── Watchlist.js       # 電影待看清單組件
+│   │   │   └── __tests__/         # 組件測試
+│   │   ├── services/              # 服務層
+│   │   │   ├── aiMovieService.js  # AI 電影推薦服務
+│   │   │   ├── lineAuthService.js # LINE 認證服務
+│   │   │   ├── movieAPI.js        # TMDB API 整合服務
+│   │   │   └── globalServices.js  # 全域服務管理
+│   │   ├── utils/                 # 工具函數
+│   │   │   └── constants.js       # 統一常數管理
+│   │   ├── scss/                  # 樣式系統（SCSS 模組化）
+│   │   │   ├── abstracts/         # 抽象層（變數、混合、動畫）
+│   │   │   ├── base/              # 基礎層
+│   │   │   ├── components/        # 組件樣式
+│   │   │   ├── layout/            # 佈局樣式
+│   │   │   ├── pages/             # 頁面樣式
+│   │   │   └── style.scss         # 主樣式文件
+│   │   ├── App.js                 # 主應用組件
+│   │   └── index.js               # 應用入口點
+│   └── package.json               # 前端依賴與腳本
+├── backend/                        # Flask 後端應用
+│   ├── api/                       # API 路由
+│   │   ├── movies.py             # 電影相關 API
+│   │   └── tmdb_service.py       # TMDB 服務整合
+│   ├── tests/                     # 後端測試
+│   │   ├── conftest.py           # 測試配置
+│   │   └── test_api.py           # API 測試
+│   ├── app.py                     # Flask 主應用
+│   ├── config.py                  # 配置管理
+│   ├── requirements.txt           # Python 依賴
+│   └── runtime.txt                # Python 版本配置
+├── .github/workflows/             # GitHub Actions
+│   └── deploy-frontend.yml        # 前端部署腳本
+├── doc/                           # 專案文件
+│   └── images/                    # 說明圖片
+├── DEVELOPMENT.md                 # 開發說明文件
 └── README.md                      # 專案說明文件
 ```
 
@@ -452,6 +448,8 @@ App.js (主應用)
 ├── Explore.js (數據統計)
 ├── MovieList.js (電影列表)
 │   └── MovieCard.js (電影卡片)
+├── Watchlist.js (電影待看清單)
+│   └── MovieSearchForm.js (AI 電影搜尋表單)
 ├── TMDB Movie Search (TMDB 電影搜尋)
 │   ├── GenreFilter.js (類型篩選)
 │   ├── TMDBMovieCard.js (TMDB 電影卡片)
@@ -466,6 +464,8 @@ App.js (主應用)
 ### 🎯 核心功能模組
 
 - **Header.js**: 響應式導航、漢堡選單、平滑滾動錨點
+- **Watchlist.js**: 電影待看清單管理、本地儲存、統計資訊、LINE 分享
+- **MovieSearchForm.js**: AI 電影推薦搜尋、偏好分析、智能推薦
 - **MovieCard.js**: 熱門電影卡片、即將上映卡片、星級評分
 - **TMDBMovieCard.js**: TMDB API 電影卡片、評分顯示、詳情觸發
 - **GenreFilter.js**: 動態類型篩選、API 驅動的類型選項
@@ -475,7 +475,21 @@ App.js (主應用)
 - **Icons.js**: 統一管理所有 SVG 圖標（CheckIcon, MovieIcon, SearchIcon, StarIcon）
 - **Explore.js**: 數據統計展示卡片
 - **About.js**: 功能特色列表展示
-- **movieAPI.js**: TMDB API 整合服務、環境變數管理
+
+### 🔧 服務層架構
+
+- **aiMovieService.js**: AI 電影推薦核心服務、偏好分析、推薦算法
+- **lineAuthService.js**: LINE OAuth 認證、令牌管理、用戶資料處理
+- **movieAPI.js**: TMDB API 整合服務、電影資料獲取
+- **globalServices.js**: 全域服務實例管理、避免循環依賴
+- **constants.js**: 統一常數管理、API 端點、配置參數
+
+### 🛡️ 後端 API 架構
+
+- **app.py**: Flask 主應用、CORS 配置、路由管理
+- **movies.py**: 電影相關 API、AI 推薦端點、LINE 整合
+- **tmdb_service.py**: TMDB API 後端整合、資料處理
+- **config.py**: 後端配置管理、環境變數處理
 
 ### 🧪 測試覆蓋
 
@@ -573,7 +587,7 @@ cd build && http-server -p 8000
 - **開發模式**：`http://localhost:3000`
 - **生產模式**：`http://localhost:8000` 或 `http://localhost:5000`（依使用的伺服器而定）
 
-```
+```bash
 ngrok http 5000 --host-header="localhost:5000"
 # 這樣 ngrok 會：
 # 1. 接收外部請求（Host: 99bce85b0333.ngrok-free.app）
