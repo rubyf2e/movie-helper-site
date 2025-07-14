@@ -55,14 +55,9 @@ jobs:
           REACT_APP_TMDB_MOVIE_LANGUAGE=${{ vars.REACT_APP_TMDB_MOVIE_LANGUAGE }}
           REACT_APP_TMDB_IMG_URL=${{ vars.REACT_APP_TMDB_IMG_URL }}
           REACT_APP_TMDB_BASE_URL=${{ vars.REACT_APP_TMDB_BASE_URL }}
+          REACT_APP_API_URL=${{ vars.REACT_APP_API_URL || '/data/content.json' }}
           GENERATE_SOURCEMAP=false
           EOF
-
-          # 只有在 secrets 存在時才添加機密變數
-          if [ -n "${{ secrets.REACT_APP_API_URL }}" ]; then
-            echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL || '/data/content.json' }}" >> .env.production
-          fi
-
 
           # TMDB API 相關環境變數
           if [ -n "${{ secrets.REACT_APP_TMDB_API_KEY }}" ]; then
