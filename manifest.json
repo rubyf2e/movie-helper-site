@@ -3,17 +3,17 @@
   "name": "%REACT_APP_TITLE%",
   "icons": [
     {
-      "src": "images/MovieIcon.svg",
+      "src": "images/icon/icon6.svg",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/svg+xml"
     },
     {
-      "src": "images/MovieIcon.svg",
+      "src": "images/icon/icon6.svg",
       "type": "image/svg+xml",
       "sizes": "192x192"
     },
     {
-      "src": "images/MovieIcon.svg",
+      "src": "images/icon/icon6.svg",
       "type": "image/svg+xml",
       "sizes": "512x512"
     }

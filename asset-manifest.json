@@ -1,12 +1,13 @@
 {
   "files": {
-    "main.css": "https://rubyf2e.github.io/movie-helper-site/static/css/main.a49324f0.css",
-    "main.js": "https://rubyf2e.github.io/movie-helper-site/static/js/main.5bba6a3e.js",
+    "main.css": "https://rubyf2e.github.io/movie-helper-site/static/css/main.119c4ede.css",
+    "main.js": "https://rubyf2e.github.io/movie-helper-site/static/js/main.b75c3a7c.js",
+    "static/js/436.25bc4173.chunk.js": "https://rubyf2e.github.io/movie-helper-site/static/js/436.25bc4173.chunk.js",
     "static/js/206.0437e59f.chunk.js": "https://rubyf2e.github.io/movie-helper-site/static/js/206.0437e59f.chunk.js",
     "index.html": "https://rubyf2e.github.io/movie-helper-site/index.html"
   },
   "entrypoints": [
-    "static/css/main.a49324f0.css",
-    "static/js/main.5bba6a3e.js"
+    "static/css/main.119c4ede.css",
+    "static/js/main.b75c3a7c.js"
   ]
 }
