@@ -19,7 +19,7 @@
 <details>
 <summary><strong> 🌱 2025.07.10 調整電影待看清單</strong></summary>
 
-##### 完成工時：半天
+##### 完成工時：一天
 
 - **1️⃣ 電影待看清單新增電影搜尋功能**
 
@@ -46,13 +46,22 @@
 
 - **3️⃣ 將電影搜尋功能改成 AI 推薦電影功能**
 
-  - 因為想要把電影搜尋功能改成 AI 推薦電影功能 請 Copilot 逕行修改。
-  - Copilot 不但改好了功能，還幫忙加上了提示框
+  - 因為想要把電影搜尋功能改成 AI 推薦電影功能，請 Copilot 逕行修改並整合電影明細燈箱，並在電影待看清單呈現搜尋結果和新增到清單的功能 。
+  - Copilot 不但改好了功能，還幫忙加上了提示框，前後端一起調整。
 
 - **4️⃣ 加上官方帳號的加入待看清單的 Line 通知**
 
   - 手動加上相關程式
-  - 請 Copilot 幫忙處理前端呼叫 ngrok 網址時可能會被擋住時的相關程式
+  - 詢問 Copilot GitHub Pages 上的 React 無法連接 ngrok 後端 API 的問題之後，依照其建議調整前後端相關程式
+  - 調整 GitHub Action 的參數和 deploy-frontend.yml
+  - 測試 lint bot 是否正常接受到訊息
+
+- **5️⃣ AI 推薦電影功能抽出來寫成 Service**
+
+  - 啟用 Copilot Agent 模式，請 Copilot 將選取的區塊改寫成 service。
+  - Copilot 幫忙寫 AIMovieService，並改寫相關程式
+  - 請 Copilot 將 AIMovieService 和 LOCAL_STORAGE_KEY 寫成全域變數方便管理
+  - Copilot 生成 /src/utils/constants.js，並改寫相關程式
 
   </details>
 
@@ -556,6 +565,14 @@ cd build && http-server -p 8000
 
 - **開發模式**：`http://localhost:3000`
 - **生產模式**：`http://localhost:8000` 或 `http://localhost:5000`（依使用的伺服器而定）
+
+```
+ngrok http 5000 --host-header="localhost:5000"
+# 這樣 ngrok 會：
+# 1. 接收外部請求（Host: 99bce85b0333.ngrok-free.app）
+# 2. 將 Host header 改寫為 localhost:5000
+# 3. 轉發給本地伺服器（Host: localhost:5000）
+```
 
 ### 手動觸發部署
 
