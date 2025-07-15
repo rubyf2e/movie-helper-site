@@ -97,6 +97,9 @@ def get_line_handler():
 
 @line_bp.route('/bot/send-to-line', methods=['POST', 'OPTIONS'])
 def send_to_line():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     data = request.get_data(as_text=True)
     current_app.logger.info("Request body: " + data)
 
@@ -120,8 +123,10 @@ def send_to_line():
 
 @line_bp.route("/login/callback", methods=['GET', 'OPTIONS'])
 def line_login_callback():
-    redirect_uri = get_line_service(current_app).get_line_login_redirect_uri()
-    if request.method == 'GET':
+    if request.method == 'OPTIONS':
+        return '', 200 
+    elif request.method == 'GET':
+        redirect_uri = get_line_service(current_app).get_line_login_redirect_uri()
         jwt_token = request.args.get('response', '')
         state = request.args.get('state', '')
         client_id = request.args.get('client_id', '')
@@ -140,7 +145,9 @@ def line_verify():
     
 @line_bp.route("/bot/callback", methods=['GET', 'POST', 'OPTIONS'])
 def line_bot_callback():
-    if request.method == 'GET':
+    if request.method == 'OPTIONS':
+        return '', 200 
+    elif request.method == 'GET':
         return 'ok'
     elif request.method == 'POST':
         signature = request.headers['X-Line-Signature']
