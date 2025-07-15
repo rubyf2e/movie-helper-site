@@ -6,11 +6,21 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // 檢查是否已登入
-    if (lineAuthService.isAuthenticated()) {
-      const userData = lineAuthService.getStoredUser();
-      setUser(userData);
-    }
+    // 頁面載入時，檢查 URL 參數並初始化登入狀態
+    const init = async () => {
+      const profile = await lineAuthService.initFromUrlParams();
+      // 檢查是否已登入
+      const isAuthenticated = lineAuthService.isAuthenticated();
+      console.log("isAuthenticated:", lineAuthService.isAuthenticated());
+      if (isAuthenticated) {
+        const userData = lineAuthService.getStoredUser();
+        setUser(userData);
+      } else if (profile) {
+        setUser(profile);
+        lineAuthService.setStoredUser(profile);
+      }
+    };
+    init();
   }, []);
 
   const handleLogin = () => {

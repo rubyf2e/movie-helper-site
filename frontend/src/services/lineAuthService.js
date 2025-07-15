@@ -6,30 +6,41 @@ import {
 } from "../utils/constants";
 
 class LineAuthService {
+  async initFromUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get("response");
+    const state = params.get("state");
+    const client_id = params.get("client_id");
+    const scope = params.get("scope");
+    if (accessToken) {
+      const profile = await this.getUserProfile(
+        accessToken,
+        state,
+        client_id,
+        scope
+      );
+      this.userdata = profile;
+
+      console.log("LINE 登入成功，獲取用戶資料:", profile);
+      console.log("accessToken", accessToken);
+      console.log(LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT, this.userdata.exp);
+
+      localStorage.setItem(LINE_CONFIG.STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+      localStorage.setItem(
+        LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT,
+        this.userdata.exp
+      );
+
+      return profile;
+    }
+  }
+
   constructor() {
     this.channelId = APP_CONFIG.LINE_LOGIN_CHANNEL_ID;
     this.apiBaseUrl = APP_CONFIG.API_BASE_URL;
     this.redirectUri = this.apiBaseUrl + API_ENDPOINTS.LINE_LOGIN_CALLBACK;
     this.state = this.generateState();
     this.nonce = this.generateNonce();
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get("response");
-    if (accessToken) {
-      localStorage.setItem(LINE_CONFIG.STORAGE_KEYS.ACCESS_TOKEN, accessToken);
-      console.log("Access Token:", accessToken);
-
-      const state = params.get("state");
-      const client_id = params.get("client_id");
-      const scope = params.get("scope");
-
-      this.userdata = this.getUserProfile(accessToken, state, client_id, scope);
-      console.log(this.userdata);
-
-      const expiresAt = localStorage.setItem(
-        LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT,
-        this.userdata.exp
-      );
-    }
   }
 
   // 生成 state 參數 (防止 CSRF 攻擊)
@@ -112,7 +123,7 @@ class LineAuthService {
       const data = await response.json();
 
       // 儲存用戶資訊和 token
-      this.storeUserData(data);
+      this.setStoredUser(data);
 
       return data;
     } catch (error) {
@@ -122,7 +133,7 @@ class LineAuthService {
   }
 
   // 儲存用戶資料
-  storeUserData(userData) {
+  setStoredUser(userData) {
     localStorage.setItem(
       LINE_CONFIG.STORAGE_KEYS.USER,
       JSON.stringify(userData.user)
@@ -208,7 +219,7 @@ class LineAuthService {
       }
 
       const data = await response.json();
-      this.storeUserData(data);
+      this.setStoredUser(data);
 
       return data;
     } catch (error) {
