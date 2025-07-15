@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, current_app
-from api.tmdb_service import TMDBService
+from service.tmdb_service import TMDBService
 
 movies_bp = Blueprint('movies', __name__)
 
-@movies_bp.route('/movies/popular')
+@movies_bp.route('/popular')
 def get_popular_movies():
     """獲取熱門電影"""
     try:
@@ -46,7 +46,7 @@ def get_popular_movies():
             'message': str(e)
         }), 500
 
-@movies_bp.route('/movies/search')
+@movies_bp.route('/search')
 def search_movies():
     """搜尋電影"""
     try:
@@ -98,7 +98,7 @@ def search_movies():
             'message': str(e)
         }), 500
 
-@movies_bp.route('/movies/genres')
+@movies_bp.route('/genres')
 def get_genres():
     """獲取電影類型列表"""
     try:
@@ -116,7 +116,7 @@ def get_genres():
             'message': str(e)
         }), 500
 
-@movies_bp.route('/movies/genre/<int:genre_id>')
+@movies_bp.route('/genre/<int:genre_id>')
 def get_movies_by_genre(genre_id):
     """根據類型獲取電影"""
     try:
@@ -160,7 +160,7 @@ def get_movies_by_genre(genre_id):
             'message': str(e)
         }), 500
 
-@movies_bp.route('/movies/<int:movie_id>')
+@movies_bp.route('/<int:movie_id>')
 def get_movie_details(movie_id):
     """獲取電影詳細資訊"""
     try:
@@ -208,7 +208,7 @@ def get_movie_details(movie_id):
             'message': str(e)
         }), 500
 
-@movies_bp.route('/movies')
+@movies_bp.route('/')
 def get_movies():
     """電影 API 總覽"""
     return jsonify({
