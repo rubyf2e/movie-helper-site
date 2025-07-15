@@ -12,6 +12,24 @@ class LineAuthService {
     this.redirectUri = this.apiBaseUrl + API_ENDPOINTS.LINE_LOGIN_CALLBACK;
     this.state = this.generateState();
     this.nonce = this.generateNonce();
+    const params = new URLSearchParams(window.location.search);
+    const accessToken = params.get("response");
+    if (accessToken) {
+      localStorage.setItem(LINE_CONFIG.STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+      console.log("Access Token:", accessToken);
+
+      const state = params.get("state");
+      const client_id = params.get("client_id");
+      const scope = params.get("scope");
+
+      this.userdata = this.getUserProfile(accessToken, state, client_id, scope);
+      console.log(this.userdata);
+
+      const expiresAt = localStorage.setItem(
+        LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT,
+        this.userdata.exp
+      );
+    }
   }
 
   // 生成 state 參數 (防止 CSRF 攻擊)
@@ -38,7 +56,15 @@ class LineAuthService {
       state: this.state,
       scope: LINE_CONFIG.SCOPE,
       nonce: this.nonce,
-      redirect_uri: this.redirectUri,
+      redirect_uri:
+        this.redirectUri +
+        "?state=" +
+        this.state +
+        "&client_id=" +
+        this.channelId +
+        "&scope=" +
+        LINE_CONFIG.SCOPE,
+      response_mode: "query.jwt",
     });
 
     // 儲存 state 到 localStorage 以便驗證
@@ -225,19 +251,29 @@ class LineAuthService {
   }
 
   // 獲取用戶資料
-  async getUserProfile() {
+  async getUserProfile(
+    accessToken = null,
+    state = null,
+    client_id = null,
+    scope = null
+  ) {
     try {
-      const accessToken = this.getAccessToken();
       if (!accessToken) {
-        throw new Error("No access token available");
+        const accessToken = this.getAccessToken();
+        if (!accessToken) {
+          throw new Error("No access token available");
+        }
       }
 
       const response = await fetch(
-        `${this.apiBaseUrl}${API_ENDPOINTS.LINE_AUTH_PROFILE}`,
+        `${this.apiBaseUrl}${API_ENDPOINTS.LINE_AUTH_PROFILE}?state=${state}&client_id=${client_id}&scope=${scope}`,
         {
           method: "GET",
+          mode: "cors",
           headers: {
             AUTHORIZATION: `Bearer ${accessToken}`,
+            [HTTP_HEADERS.NGROK_SKIP_WARNING]: "true",
+            "Access-Control-Allow-Origin": "*",
           },
         }
       );
@@ -262,7 +298,7 @@ class LineAuthService {
       }
 
       const response = await fetch(
-        `${this.apiBaseUrl}${API_ENDPOINTS.LINE_SEND_MOVIES}`,
+        `${this.apiBaseUrl}${API_ENDPOINTS.SEND_TO_LINE}`,
         {
           method: "POST",
           headers: {

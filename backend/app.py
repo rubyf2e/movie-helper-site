@@ -1,57 +1,29 @@
-from flask import Flask
 from flask_cors import CORS
 import os
 from config import config
+from flask import Flask
+from api.movies import movies_bp
+from api.line import line_bp
 
 def create_app(config_name=None):
-    """應用程式工廠函式"""
     app = Flask(__name__)
-    
-    # 載入配置
     config_name = config_name or os.getenv('FLASK_ENV', 'development')
     app.config.from_object(config[config_name])
-    
-    # 設置 CORS
-    allowed_origins = [
-        app.config['FRONTEND_URL'],
-        app.config['PRODUCTION_FRONTEND_URL']
-    ]
-    CORS(app, origins=allowed_origins, supports_credentials=True)
-    
-    # 註冊藍圖
-    from api.movies import movies_bp
-    app.register_blueprint(movies_bp, url_prefix='/api')
-    
+
+    CORS(app, origins=app.config['CORS_ALLOWED_ORIGINS'], supports_credentials=True, allow_headers=["*"])
+   
+    app.register_blueprint(movies_bp, url_prefix='/api/movies')
+    app.register_blueprint(line_bp, url_prefix='/api/line')
+
     @app.route('/health')
     def health_check():
         return {
             'status': 'healthy', 
-            'message': f'{app.config["APP_TITLE"]} API 運行中',
             'version': app.config['APP_VERSION']
         }, 200
-    
-    @app.route('/')
-    def index():
-        return {
-            'message': f'歡迎使用{app.config["APP_TITLE"]} API',
-            'version': app.config['APP_VERSION'],
-            'title': app.config['APP_TITLE'],
-            'endpoints': {
-                'health': '/health',
-                'movies': '/api/movies',
-                'popular': '/api/movies/popular',
-                'search': '/api/movies/search',
-                'genres': '/api/movies/genres'
-            },
-            'tmdb_config': {
-                'base_url': app.config['TMDB_BASE_URL'],
-                'img_url': app.config['TMDB_IMG_URL'],
-                'language': app.config['TMDB_MOVIE_LANGUAGE'],
-                'api_key_configured': bool(app.config['TMDB_API_KEY'])
-            }
-        }, 200
-    
-    return app
+        
+        
+    return app 
 
 if __name__ == '__main__':
     app = create_app()

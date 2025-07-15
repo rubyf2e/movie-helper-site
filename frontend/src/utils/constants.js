@@ -36,13 +36,12 @@ export const API_ENDPOINTS = {
   POPULAR: "/movies/popular",
   SEARCH: "/movies/search",
   GENRES: "/movies/genres",
-  ANALYZE: "/analyze-movie-preference",
-  SEND_TO_LINE: "/send-to-line",
-  LINE_AUTH_CALLBACK: "/auth/line/callback",
-  LINE_AUTH_REFRESH: "/auth/line/refresh",
-  LINE_AUTH_REVOKE: "/auth/line/revoke",
-  LINE_AUTH_PROFILE: "/auth/line/profile",
-  LINE_SEND_MOVIES: "/line/send-movies",
+  ANALYZE: "/movies/analyze-movie-preference",
+  SEND_TO_LINE: "/line/bot/send-to-line",
+  LINE_AUTH_CALLBACK: "/line/auth/line/callback",
+  LINE_AUTH_REFRESH: "/line/auth/line/refresh",
+  LINE_AUTH_REVOKE: "/line/auth/line/revoke",
+  LINE_AUTH_PROFILE: "/line/auth/line/profile",
   LINE_LOGIN_CALLBACK: "/line/login/callback",
 };
 
@@ -56,7 +55,7 @@ export const HTTP_HEADERS = {
 export const LINE_CONFIG = {
   AUTH_URL: "https://access.line.me/oauth2/v2.1/authorize",
   RESPONSE_TYPE: "code",
-  SCOPE: "profile%20openid",
+  SCOPE: "profile",
   STORAGE_KEYS: {
     USER: "line_user",
     ACCESS_TOKEN: "line_access_token",

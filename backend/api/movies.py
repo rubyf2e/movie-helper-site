@@ -208,8 +208,8 @@ def get_movie_details(movie_id):
             'message': str(e)
         }), 500
 
-@movies_bp.route('/')
-def get_movies():
+@movies_bp.route('/analyze-movie-preference', methods=['POST', 'OPTIONS'])
+def analyze_movie_preference():
     """電影 API 總覽"""
     return jsonify({
         'message': '電影小幫手 API',
