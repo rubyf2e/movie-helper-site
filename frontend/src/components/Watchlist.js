@@ -3,10 +3,10 @@ import MovieSearchForm from "./MovieSearchForm";
 import {
   DEFAULT_STORAGE_KEY,
   APP_CONFIG,
-  API_ENDPOINTS,
-  HTTP_HEADERS,
   NOTIFICATION_TYPES,
 } from "../utils/constants";
+
+import { lineAuthService } from "../services/globalServices";
 
 const Watchlist = () => {
   const [movies, setMovies] = useState([]);
@@ -18,7 +18,6 @@ const Watchlist = () => {
   });
 
   const LOCAL_STORAGE_KEY = DEFAULT_STORAGE_KEY;
-  const API_BASE_URL = APP_CONFIG.API_BASE_URL;
 
   // 除錯用 - 監控 movies 狀態變化
   useEffect(() => {
@@ -61,36 +60,23 @@ const Watchlist = () => {
   }, [showMessage, LOCAL_STORAGE_KEY]);
 
   const handleSendToLine = useCallback(
-    async (movieList = null) => {
-      try {
-        const dataToSend = movieList || movies;
-        const response = await fetch(
-          `${API_BASE_URL}${API_ENDPOINTS.SEND_TO_LINE}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON,
-            },
-            body: JSON.stringify(dataToSend),
-          }
-        );
+    async (movies = null) => {
+      const response = await lineAuthService.sendMovieListToLine(movies);
 
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Line 發送成功:", data);
-        } else {
-          console.warn("Line 發送失敗:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Line 發送錯誤:", error);
+      console.log(movies);
+
+      if (response.success) {
+        showMessage("電影清單已發送到 LINE", NOTIFICATION_TYPES.SUCCESS);
+      } else {
+        showMessage("發送失敗：" + response.message, NOTIFICATION_TYPES.ERROR);
       }
     },
-    [movies, API_BASE_URL]
+    [showMessage]
   );
 
   const saveMovies = useCallback(
-    async (movieList) => {
-      if (!Array.isArray(movieList)) {
+    async (movieList, movies) => {
+      if (!Array.isArray(movieList) || !Array.isArray(movies)) {
         console.error("嘗試儲存非陣列資料:", movieList);
         return;
       }
@@ -100,8 +86,8 @@ const Watchlist = () => {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(movieList));
         setMovies(movieList);
 
-        if (movieList.length > 0) {
-          handleSendToLine(movieList);
+        if (movies.length > 0) {
+          handleSendToLine(movies);
         }
       } catch (error) {
         console.error("儲存電影清單失敗:", error);
@@ -166,7 +152,7 @@ const Watchlist = () => {
           };
 
       const updatedMovies = [...movies, movieToAdd];
-      saveMovies(updatedMovies);
+      saveMovies(updatedMovies, [movieToAdd]);
       showMessage(`成功新增「${title}」！`, NOTIFICATION_TYPES.SUCCESS);
     },
     [movies, isMovieExists, saveMovies, showMessage]
@@ -186,7 +172,9 @@ const Watchlist = () => {
         return movieTitle !== removeTitle;
       });
 
-      saveMovies(updatedMovies);
+      const removeMovies = updatedMovies || [movies];
+
+      saveMovies(updatedMovies, [removeMovies]);
       showMessage(`成功移除「${removeTitle}」！`, NOTIFICATION_TYPES.SUCCESS);
     },
     [movies, getMovieTitle, saveMovies, showMessage]
@@ -196,7 +184,7 @@ const Watchlist = () => {
     if (movies.length === 0) return;
 
     if (window.confirm("確定要清空所有電影嗎？此操作無法復原。")) {
-      saveMovies([]);
+      saveMovies([], []);
       showMessage("已清空所有電影！", NOTIFICATION_TYPES.SUCCESS);
     }
   }, [movies.length, saveMovies, showMessage]);

@@ -301,11 +301,16 @@ class LineAuthService {
   }
 
   // 發送電影清單到 LINE
-  async sendMovieListToLine(movieList) {
+  async sendMovieListToLine(movieList = []) {
     try {
       const accessToken = this.getAccessToken();
       if (!accessToken) {
-        throw new Error("用戶未登入");
+        console.error("Line 用戶未登入:");
+        return { success: false, message: "請先登入 LINE 帳號" };
+      }
+
+      if (!movieList || !Array.isArray(movieList) || movieList.length === 0) {
+        return { success: false, message: "沒有電影清單可以發送" };
       }
 
       const response = await fetch(
@@ -317,19 +322,30 @@ class LineAuthService {
             AUTHORIZATION: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
-            movies: movieList,
+            movieList: movieList,
           }),
         }
       );
 
       if (!response.ok) {
-        throw new Error("發送失敗");
-      }
+        console.warn("Line 發送失敗:", response.statusText);
+        return {
+          success: false,
+          message: "API 發送失敗",
+        };
+      } else {
+        console.log("Line 發送成功:", response.json());
+        response.success = true;
+        response.message = "API 發送成功";
 
-      return await response.json();
+        return response;
+      }
     } catch (error) {
-      console.error("發送電影清單失敗:", error);
-      throw error;
+      console.error("Line 發送錯誤:", error);
+      return {
+        success: false,
+        message: "API 發送失敗",
+      };
     }
   }
 }

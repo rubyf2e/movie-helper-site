@@ -100,23 +100,20 @@ def send_to_line():
     if request.method == 'OPTIONS':
         return '', 200 
     
-    data = request.get_data(as_text=True)
-    current_app.logger.info("Request body: " + data)
-
-    movie_title = ''
-    try:
-        data = json.loads(data)
-        for movie in data:
-            if 'title' in movie:
-                movie_title += '\n' + movie['title']
-            else:
-                movie_title = "未知電影"
-    except json.JSONDecodeError:
-        current_app.logger.error("JSON decode error")
+    data = request.get_json(force=True, silent=True)
+    if not data:
         return jsonify({"status": "ERROR", "detail": "Invalid JSON format"}), 400
-    except Exception:
-        movie_title = ""
 
+    current_app.logger.info(data)
+    
+    movie_title = ''
+    for movie in data['movieList']:
+        if 'title' in movie:
+            movie_title += '\n' + movie['title']
+        else:
+            movie_title = "未知電影"
+
+    current_app.logger.info("movie_title: " + movie_title)
 
     return get_line_service(current_app).send_push_message_api(f"電影待看清單新增了：{movie_title}")
 

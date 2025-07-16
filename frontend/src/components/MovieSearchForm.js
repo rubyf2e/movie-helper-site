@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { MovieIcon } from "./Icons";
 import TMDBMovieCard from "./TMDBMovieCard";
 import MovieModal from "./MovieModal";
 import LineLoginButton from "./LineLoginButton";
-import {
-  aiMovieService,
-  lineAuthService,
-  LOCAL_STORAGE_KEY,
-} from "../services/globalServices";
+import { aiMovieService, LOCAL_STORAGE_KEY } from "../services/globalServices";
 import { NOTIFICATION_TYPES } from "../utils/constants";
 
 const MovieSearchForm = ({
@@ -96,34 +92,6 @@ const MovieSearchForm = ({
     }
   };
 
-  const handleSendToLine = async () => {
-    try {
-      // 檢查是否已登入
-      if (!lineAuthService.isAuthenticated()) {
-        showMessage("請先登入 LINE 帳號", NOTIFICATION_TYPES.WARNING);
-        return;
-      }
-
-      const savedMovies = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (!savedMovies) {
-        showMessage("沒有電影清單可以發送", NOTIFICATION_TYPES.WARNING);
-        return;
-      }
-
-      const movieList = JSON.parse(savedMovies);
-      const result = await lineAuthService.sendMovieListToLine(movieList);
-
-      if (result.success) {
-        showMessage("電影清單已發送到 LINE", NOTIFICATION_TYPES.SUCCESS);
-      } else {
-        showMessage("發送失敗：" + result.message, NOTIFICATION_TYPES.ERROR);
-      }
-    } catch (error) {
-      console.error("發送到 LINE 失敗:", error);
-      showMessage("發送失敗，請稍後再試", NOTIFICATION_TYPES.ERROR);
-    }
-  };
-
   // 從推薦結果添加電影
   const handleAddFromRecommendation = async (movie) => {
     if (onMovieAdd) {
@@ -137,7 +105,6 @@ const MovieSearchForm = ({
         );
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formattedMovie));
 
-        await handleSendToLine();
         showMessage(
           `已新增「${movie.title}」到清單並發送到 LINE`,
           NOTIFICATION_TYPES.SUCCESS
