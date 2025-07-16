@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MovieIcon, HamburgerIcon } from "./Icons";
 import { APP_CONFIG } from "../utils/constants";
+import { handleLinkClick } from "../utils/scrollUtils";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,24 +11,6 @@ function Header() {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
-  };
-
-  const handleLinkClick = (index, event, targetId) => {
-    event.preventDefault(); // 防止頁面跳轉
-    setActiveLink(index);
-    setMenuOpen(false); // 點擊連結後關閉選單
-
-    // 平滑滾動到目標區塊
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      const headerHeight = APP_CONFIG.HEADER_HEIGHT;
-      const targetPosition = targetElement.offsetTop - headerHeight;
-
-      window.scrollTo({
-        top: targetPosition,
-        behavior: "smooth",
-      });
-    }
   };
 
   useEffect(() => {
@@ -80,7 +63,16 @@ function Header() {
               <a
                 href="#home"
                 className={activeLink === 0 ? "active" : ""}
-                onClick={(e) => handleLinkClick(0, e, "home")}
+                onClick={(e) =>
+                  handleLinkClick(
+                    0,
+                    e,
+                    "home",
+                    setActiveLink,
+                    setMenuOpen,
+                    APP_CONFIG.HEADER_HEIGHT
+                  )
+                }
               >
                 首頁
               </a>
@@ -89,7 +81,16 @@ function Header() {
               <a
                 href="#popular"
                 className={activeLink === 1 ? "active" : ""}
-                onClick={(e) => handleLinkClick(1, e, "popular")}
+                onClick={(e) =>
+                  handleLinkClick(
+                    1,
+                    e,
+                    "popular",
+                    setActiveLink,
+                    setMenuOpen,
+                    APP_CONFIG.HEADER_HEIGHT
+                  )
+                }
               >
                 熱門電影
               </a>
@@ -98,7 +99,16 @@ function Header() {
               <a
                 href="#coming-soon"
                 className={activeLink === 2 ? "active" : ""}
-                onClick={(e) => handleLinkClick(2, e, "coming-soon")}
+                onClick={(e) =>
+                  handleLinkClick(
+                    2,
+                    e,
+                    "coming-soon",
+                    setActiveLink,
+                    setMenuOpen,
+                    APP_CONFIG.HEADER_HEIGHT
+                  )
+                }
               >
                 即將上映
               </a>
@@ -107,7 +117,16 @@ function Header() {
               <a
                 href="#search"
                 className={activeLink === 3 ? "active" : ""}
-                onClick={(e) => handleLinkClick(3, e, "search")}
+                onClick={(e) =>
+                  handleLinkClick(
+                    3,
+                    e,
+                    "search",
+                    setActiveLink,
+                    setMenuOpen,
+                    APP_CONFIG.HEADER_HEIGHT
+                  )
+                }
               >
                 電影搜尋
               </a>
@@ -116,7 +135,16 @@ function Header() {
               <a
                 href="#watchlist"
                 className={activeLink === 4 ? "active" : ""}
-                onClick={(e) => handleLinkClick(4, e, "watchlist")}
+                onClick={(e) =>
+                  handleLinkClick(
+                    4,
+                    e,
+                    "watchlist",
+                    setActiveLink,
+                    setMenuOpen,
+                    APP_CONFIG.HEADER_HEIGHT
+                  )
+                }
               >
                 待看清單
               </a>
@@ -125,7 +153,16 @@ function Header() {
               <a
                 href="#about"
                 className={activeLink === 5 ? "active" : ""}
-                onClick={(e) => handleLinkClick(5, e, "about")}
+                onClick={(e) =>
+                  handleLinkClick(
+                    5,
+                    e,
+                    "about",
+                    setActiveLink,
+                    setMenuOpen,
+                    APP_CONFIG.HEADER_HEIGHT
+                  )
+                }
               >
                 關於我們
               </a>

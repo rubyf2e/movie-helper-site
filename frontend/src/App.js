@@ -7,13 +7,18 @@ import About from "./components/About";
 import Explore from "./components/Explore";
 import FloatingAIBot from "./components/FloatingAIBot";
 import Watchlist from "./components/Watchlist";
+import { handleLinkClick } from "./utils/scrollUtils";
 import "./scss/style.scss";
+import { APP_CONFIG } from "./utils/constants";
 
 function App() {
   const [movies, setMovies] = useState([]);
   const [comingSoon, setComingSoon] = useState([]);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState(0);
 
   useEffect(() => {
     // 使用環境變數設定頁面標題
@@ -42,7 +47,21 @@ function App() {
         <h1>電影小幫手</h1>
         <p className="subtitle">您的個人觀影決策專家</p>
         <div className="hero-mobile-robot">
-          <button className="hero-btn">探索電影世界</button>
+          <button
+            className="hero-btn"
+            onClick={(e) =>
+              handleLinkClick(
+                4,
+                e,
+                "watchlist",
+                setActiveLink,
+                setMenuOpen,
+                APP_CONFIG.HEADER_HEIGHT
+              )
+            }
+          >
+            探索電影世界
+          </button>
           <img
             src={`${
               process.env.PUBLIC_URL || ""
