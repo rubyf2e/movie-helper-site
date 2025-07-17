@@ -54,6 +54,7 @@ jobs:
           cat > .env.production << EOF
           REACT_APP_TITLE=${{ vars.REACT_APP_TITLE || '電影小幫手' }}
           LINE_BOT_CHANNEL_ACCESS_TOKEN=${{ secrets.LINE_BOT_CHANNEL_ACCESS_TOKEN }}
+          LINE_LOGIN_CHANNEL_USER_ID=${{ secrets.LINE_LOGIN_CHANNEL_USER_ID }}
           REACT_APP_LINE_LOGIN_CHANNEL_ID=${{ vars.REACT_APP_LINE_LOGIN_CHANNEL_ID }}
           REACT_APP_API_BASE_URL=${{ vars.REACT_APP_API_BASE_URL || '電影小幫手' }}
           PUBLIC_URL=${{ vars.PUBLIC_URL || 'https://rubyf2e.github.io/movie-helper-site' }}
