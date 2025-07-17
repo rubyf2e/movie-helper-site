@@ -235,7 +235,7 @@ const Watchlist = () => {
       <div className="watchlist__container">
         <div className="watchlist__card">
           {/* 標題部分 */}
-          <header className="watchlist__header">
+          <div className="watchlist__header">
             <h1 className="watchlist__title">我的電影待看清單</h1>
             {/* 統計資訊 */}
             {stats.total > 0 && (
@@ -255,7 +255,7 @@ const Watchlist = () => {
                 )}
               </div>
             )}
-          </header>
+          </div>
 
           {/* 提示訊息區域 */}
           {notification.show && (

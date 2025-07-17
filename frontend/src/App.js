@@ -20,6 +20,45 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(0);
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  useEffect(() => {
+    // 滾動監聽器，自動更新活躍連結
+    const handleScroll = () => {
+      const sections = [
+        "home",
+        "popular",
+        "coming-soon",
+        "search",
+        "watchlist",
+        "about",
+      ];
+      const headerHeight = APP_CONFIG.HEADER_HEIGHT;
+      const scrollPosition = window.scrollY + headerHeight + 100; // 增加一些偏移量
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveLink(i);
+          break;
+        }
+      }
+    };
+
+    // 添加滾動事件監聽器
+    window.addEventListener("scroll", handleScroll);
+
+    // 初始檢查
+    handleScroll();
+
+    // 清理函數
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     // 使用環境變數設定頁面標題
     document.title = process.env.REACT_APP_TITLE || "電影小幫手";

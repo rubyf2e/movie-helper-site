@@ -19,10 +19,7 @@ const FloatingAIBot = () => {
     };
 
     loadLottiePlayer();
-  }, []);
 
-  // 頁面滾動時顯示客服
-  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
         setIsVisible(true);
@@ -38,13 +35,6 @@ const FloatingAIBot = () => {
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
-  };
-
-  const handleChatClick = () => {
-    // 這裡可以添加實際的客服聊天功能
-    alert(
-      "AI 客服功能開發中，敬請期待！\n\n您可以通過以下方式聯繫我們：\n- Email: contact@example.com\n- GitHub: https://github.com/rubyf2e/movie-helper-site"
-    );
   };
 
   if (!isVisible) return null;
@@ -84,15 +74,19 @@ const FloatingAIBot = () => {
             <div className="chat-content">
               <div className="chat-message bot-message">
                 <p>
-                  👋 嗨！我是AI電影小幫手
-                  ，歡迎加入電影小幫手Line頻道和我聊天喔～
+                  👋 嗨！我是AI電影小幫手 ，歡迎加入電影小幫手Line頻道 @122zvykv
+                  和我聊天喔～
                 </p>
               </div>
               <div className="chat-options">
-                <img
-                  src={`${process.env.PUBLIC_URL || ""}/images/line_qrcode.png`}
-                  alt="qrcode"
-                />
+                <a href="https://line.me/R/ti/p/%40122zvykv">
+                  <img
+                    src={`${
+                      process.env.PUBLIC_URL || ""
+                    }/images/line_qrcode.png`}
+                    alt="qrcode"
+                  />
+                </a>
                 {/* <button className="chat-option" onClick={handleChatClick}>
                   🎬 推薦電影
                 </button>
