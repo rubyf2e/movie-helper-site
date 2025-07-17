@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { MovieAPI } from "./services/movieAPI";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SearchBox from "./components/SearchBox";
@@ -10,29 +11,27 @@ import Watchlist from "./components/Watchlist";
 import "./scss/style.scss";
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  const [popular, setPopular] = useState([]);
   const [comingSoon, setComingSoon] = useState([]);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
-    // 使用環境變數設定頁面標題
     document.title = process.env.REACT_APP_TITLE || "電影小幫手";
-
-    // 使用環境變數中的 API URL
-    const apiUrl = process.env.REACT_APP_API_URL || "/data/content.json";
-    fetch(apiUrl)
-      .then((res) => res.json())
-      .then((data) => {
-        setMovies(data.popular || []);
-        setComingSoon(data.comingSoon || []);
-      })
-      .catch((error) => {
-        console.error("Failed to load movie data:", error);
-        setMovies([]);
-        setComingSoon([]);
-      });
+    loadPopularMovies();
   }, []);
+
+  const loadPopularMovies = async () => {
+    try {
+      const popularMovies = await MovieAPI.getPopularMovies();
+      const upcomingMovies = await MovieAPI.getComingSoonMovies();
+
+      setPopular((popularMovies || []).slice(0, 4));
+      setComingSoon((upcomingMovies || []).slice(0, 4));
+    } catch (error) {
+    } finally {
+    }
+  };
 
   return (
     <div>
@@ -75,7 +74,7 @@ function App() {
 
       <section id="popular">
         <h2>熱門電影</h2>
-        <MovieList movies={movies} />
+        <MovieList movies={popular} />
       </section>
 
       <section id="coming-soon">

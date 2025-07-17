@@ -48,6 +48,10 @@ export class MovieAPI {
     return this.fetchFromAPI("/movies/popular");
   }
 
+  static async getComingSoonMovies() {
+    return this.fetchFromAPI("/movies/coming_soon");
+  }
+
   static async searchMovies(query) {
     return this.fetchFromAPI(`/movies/search?q=${encodeURIComponent(query)}`);
   }

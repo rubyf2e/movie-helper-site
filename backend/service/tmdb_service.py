@@ -33,7 +33,21 @@ class TMDBService:
         except requests.exceptions.RequestException as e:
             current_app.logger.error(f"TMDB API 請求失敗: {e}")
             raise
-    
+
+    @classmethod
+    def get_coming_soon_movies(cls,min_date, max_date, page=1):
+        """獲取熱門電影"""
+        endpoint = "/discover/movie"
+        params = {
+            'sort_by': 'popularity.desc',
+            'with_release_type':'2|3',
+            'release_date.gte':min_date,
+            'release_date.lte':max_date,
+            'page': page
+        }
+        return cls._make_request(endpoint, params)
+
+     
     @classmethod
     def get_popular_movies(cls, page=1):
         """獲取熱門電影"""
