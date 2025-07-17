@@ -300,21 +300,30 @@ def analyze_movie_preference():
         userInput
     )
     
-    if isFunctionCall == False:
-        print('round2:')
-        isFunctionCall, response2, movie_title2, movie_target = get_openai_service(current_app).azure_openai(
-            response,
-            {"name": "extract_movie_titles"}, 
-            "prompts/bot_user_prompt.json",
-            "prompts/bot_user_message_text.json"
-        )
-        print(isFunctionCall, response2, movie_title2, movie_target)
-        print('')
-    
     if isFunctionCall:
         movie_title = call_tmdb(movie_title)
     else:
-        movie_title = userInput
+        print('round2:')
+        isFunctionCall, response, movie_title, movie_target = get_openai_service(current_app).azure_openai(
+            response,
+            "auto",
+            prompt_file = "prompts/user_prompt.json",
+            message_text_file ="prompts/bot_user_message_text.json"
+        )
+        
+        try:
+            response = json.loads(response)
+            if 'text' in response:
+                movie_title = response['text']
+            print(isFunctionCall, response, movie_title, movie_target)
+            print('')
+        except Exception as e:
+            current_app.logger.error(f"解析 OpenAI 回應失敗: {e}")
+            return jsonify({
+                'success': False,
+                'error': '無法解析 OpenAI 回應',
+                'message': str(e)
+            }), 500
         
     return jsonify({
                 'success': True,

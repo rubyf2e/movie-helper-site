@@ -69,7 +69,11 @@ class OpenAiService:
           
             return True, "need to call funcation", movie_title, movie_target
         else:
-            return False, completion_message.content, "unknown", "unknown"
+            if function_call == "auto":
+                content = completion_message.content
+            else:
+                content = completion_message.function_call.arguments
+            return False, content, "unknown", "unknown"
 
 
 openai_service_instance = None  # 全域變數

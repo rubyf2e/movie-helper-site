@@ -60,7 +60,15 @@ class AIMovieService {
         };
       }
 
-      return await this.fallbackSearch(data.keywords);
+      const movies = await this.fetchMoviesByKeywords(data.keywords);
+
+      return {
+        success: true,
+        analysis: data.analysis,
+        keywords: data.keywords,
+        movies,
+        totalCount: movies.length,
+      };
       // // 根據 AI 分析結果搜尋推薦電影
       // const movieRecommendations = await MovieAPI.getRecommendedMovies(
       //   data.keywords
@@ -79,6 +87,16 @@ class AIMovieService {
       // 降級處理：使用關鍵字搜尋
       return await this.fallbackSearch(userInput);
     }
+  }
+
+  async fetchMoviesByKeywords(keywords) {
+    // 並行查詢每個關鍵字
+    const results = await Promise.all(
+      keywords.map((kw) => MovieAPI.searchMovies(kw))
+    );
+    // 合併所有結果為一個陣列
+    const movies = results.flat();
+    return movies;
   }
 
   /**
