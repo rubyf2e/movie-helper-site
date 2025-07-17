@@ -1,6 +1,6 @@
 {
-  "short_name": "%REACT_APP_TITLE%",
-  "name": "%REACT_APP_TITLE%",
+  "short_name": "電影小幫手",
+  "name": "電影小幫手",
   "icons": [
     {
       "src": "images/icon/icon6.svg",
