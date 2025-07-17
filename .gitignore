@@ -44,3 +44,5 @@ Thumbs.db
 .pnp.js
 /coverage
 /build
+backend/service/azure/message_text.json
+backend/service/azure/prompt.json
