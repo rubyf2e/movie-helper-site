@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify, current_app
+import requests, json
 from datetime import datetime, timedelta
 from service.tmdb_service import TMDBService
+from service.azure.openai_service import get_openai_service
 
 movies_bp = Blueprint('movies', __name__)
 
@@ -267,56 +269,45 @@ def get_movie_details(movie_id):
 
 @movies_bp.route('/analyze-movie-preference', methods=['POST', 'OPTIONS'])
 def analyze_movie_preference():
-    """電影 API 總覽"""
-    return jsonify({
-        'message': '電影小幫手 API',
-        'available_endpoints': {
-            'popular': '/api/movies/popular - 獲取熱門電影',
-            'search': '/api/movies/search?q=關鍵字 - 搜尋電影',
-            'genres': '/api/movies/genres - 獲取類型列表',
-            'by_genre': '/api/movies/genre/{genre_id} - 根據類型獲取電影',
-            'details': '/api/movies/{movie_id} - 獲取電影詳細資訊'
-        }
-    })
+    data = request.get_json(silent=True) or {}
+    userInput = data.get('userInput', '').strip()
+    language = data.get('language', "zh-TW").strip()
     
-       
-    # def call_tmdb(movie_title, movie_target):
-    #     print("[call_tmdb] in")
-    #     print("movie_title : ", movie_title)
-    #     print("movie_target : ", movie_target)
-    #     baseUrl = "https://api.themoviedb.org/3/search/movie?"
-    #     parameters = "language=" + "zh-TW"
-    #     parameters += "&"
-    #     parameters += "query=" + movie_title
+    print(userInput, language)
+    
+    isFunctionCall, response, movie_title, movie_target = get_openai_service(current_app).azure_openai(
+        userInput
+    )
+    
+    if isFunctionCall:
+        movie_title = call_tmdb(movie_title)
+    else:
+        movie_title = userInput
+        
+    return jsonify({
+                'success': True,
+                'keywords': movie_title,
+    
+            })
 
-    #     headers = {
-    #         "accept": "application/json",
-    #         "Authorization": "Bearer " + current_app.config['TMDB_API_TOKEN'],
-    #     }
 
-    #     response = requests.get(baseUrl + parameters, headers=headers)
-    #     result = json.loads(response.text)
-    #     print(result)
-    #     if len(result["results"]) != 0:
-    #         if movie_target == "overview":
-    #             if "overview" in result["results"][0] and len(result["results"][0]["overview"])!=0:
-    #                 return TextMessage(text=result["results"][0]["title"]), TextMessage(text=result["results"][0]["overview"])
-    #             else:
-    #                 return TextMessage(text=result["results"][0]["title"]), TextMessage(text="該電影沒有簡介")
-    #         elif movie_target == "poster":
-    #             if "poster_path" in result["results"][0]:
-    #                 imageUri = "https://image.tmdb.org/t/p/original" + result["results"][0]["poster_path"]
-    #                 return TextMessage(text=result["results"][0]["title"]), ImageMessage(
-    #                     originalContentUrl=imageUri, previewImageUrl=imageUri
-    #                 )
-    #             else:
-    #                 return TextMessage(text=result["results"][0]["title"]), TextMessage(text="該電影沒有海報")
-    #         else:
-    #             if "overview" in result["results"][0]:
-    #                 return TextMessage(text=result["results"][0]["title"]), TextMessage(text=result["results"][0]["overview"])
-    #             else:
-    #                 return TextMessage(text=result["results"][0]["title"]), TextMessage(text="該電影沒有簡介")
-    #     else:
-    #         return TextMessage(text="N/A"), TextMessage(text="很抱歉，系統內並無相關電影")
+def call_tmdb(movie_title):
+    print("movie_title : ", movie_title)
+    baseUrl = "https://api.themoviedb.org/3/search/movie?"
+    parameters = "language=" + "zh-TW"
+    parameters += "&"
+    parameters += "query=" + movie_title
 
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer " + current_app.config['TMDB_API_TOKEN'],
+    }
+
+    response = requests.get(baseUrl + parameters, headers=headers)
+    result = json.loads(response.text)
+    
+    if len(result["results"]) != 0:
+        return result["results"][0]["title"]
+    else:
+        return ''
 

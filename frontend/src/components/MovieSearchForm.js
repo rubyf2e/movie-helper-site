@@ -63,8 +63,11 @@ const MovieSearchForm = ({
       const result = await aiMovieService.analyzeAndRecommend(query);
 
       if (result.success) {
+        const num = 4;
+        const data = result.movies.slice(0, num);
+
         setAnalysisResult(result.analysis);
-        setRecommendedMovies(result.movies);
+        setRecommendedMovies(data);
 
         if (result.totalCount === 0) {
           showMessage(
@@ -72,9 +75,9 @@ const MovieSearchForm = ({
             NOTIFICATION_TYPES.WARNING
           );
         } else {
-          const message = result.isFallback
-            ? `使用關鍵字搜尋為您推薦了 ${result.totalCount} 部電影`
-            : `AI 為您推薦了 ${result.totalCount} 部電影！`;
+          const message = data.isFallback
+            ? `使用關鍵字搜尋為您推薦了 ${num} 部電影`
+            : `AI 為您推薦了 ${num} 部電影！`;
           showMessage(
             message,
             result.isFallback
@@ -235,12 +238,11 @@ const MovieSearchForm = ({
 
       {/* LINE 登入區域 */}
       <div className="movie-search-form__line-login">
-        {user
-          ? ""
-          : ""
-            // <div className="movie-search-form__line-login-header">
-            //   <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
-            // </div>
+        {
+          user ? "" : ""
+          // <div className="movie-search-form__line-login-header">
+          //   <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
+          // </div>
         }
         <LineLoginButton
           onLoginSuccess={(user) => {

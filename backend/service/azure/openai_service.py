@@ -43,11 +43,11 @@ class OpenAiService:
             presence_penalty=0,
             stop=None,
         )
-        print(completion)
+       
         completion_message = completion.choices[0].message
         if completion.choices[0].finish_reason == "function_call":
             this_arguments = json.loads(completion_message.function_call.arguments)
-            print("[this_arguments]", this_arguments)
+ 
             function_name = completion_message.function_call.name
             movie_title = this_arguments["title"]
             movie_target = (
