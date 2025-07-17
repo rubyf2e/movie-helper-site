@@ -10,7 +10,7 @@ def create_app(config_name=None):
     config_name = config_name or os.getenv('FLASK_ENV', 'development')
     app.config.from_object(config[config_name])
 
-    CORS(app, origins=app.config['CORS_ALLOWED_ORIGINS'], supports_credentials=True, allow_headers=["*"])
+    CORS(app, origins=['*'], supports_credentials=True, allow_headers=["*"])
    
     app.register_blueprint(movies_bp, url_prefix='/api/movies')
     app.register_blueprint(line_bp, url_prefix='/api/line')
