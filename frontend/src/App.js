@@ -7,57 +7,13 @@ import About from "./components/About";
 import Explore from "./components/Explore";
 import FloatingAIBot from "./components/FloatingAIBot";
 import Watchlist from "./components/Watchlist";
-import { handleLinkClick } from "./utils/scrollUtils";
 import "./scss/style.scss";
-import { APP_CONFIG } from "./utils/constants";
 
 function App() {
   const [movies, setMovies] = useState([]);
   const [comingSoon, setComingSoon] = useState([]);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState(0);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  useEffect(() => {
-    // 滾動監聽器，自動更新活躍連結
-    const handleScroll = () => {
-      const sections = [
-        "home",
-        "popular",
-        "coming-soon",
-        "search",
-        "watchlist",
-        "about",
-      ];
-      const headerHeight = APP_CONFIG.HEADER_HEIGHT;
-      const scrollPosition = window.scrollY + headerHeight + 100; // 增加一些偏移量
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveLink(i);
-          break;
-        }
-      }
-    };
-
-    // 添加滾動事件監聽器
-    window.addEventListener("scroll", handleScroll);
-
-    // 初始檢查
-    handleScroll();
-
-    // 清理函數
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   useEffect(() => {
     // 使用環境變數設定頁面標題
@@ -88,16 +44,12 @@ function App() {
         <div className="hero-mobile-robot">
           <button
             className="hero-btn"
-            onClick={(e) =>
-              handleLinkClick(
-                4,
-                e,
-                "watchlist",
-                setActiveLink,
-                setMenuOpen,
-                APP_CONFIG.HEADER_HEIGHT
-              )
-            }
+            onClick={() => {
+              const target = document.getElementById("search");
+              if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
           >
             探索電影世界
           </button>
