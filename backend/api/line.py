@@ -112,8 +112,13 @@ def send_to_line():
             movie_title += '\n' + movie['title']
         else:
             movie_title = "未知電影"
+            
+    user_id_token = data['userIdToken']
+    profile = data['profile']
 
     current_app.logger.info("movie_title: " + movie_title)
+    current_app.logger.info("user_id_token: " + user_id_token)
+    current_app.logger.info("profile: " + str(profile))
 
     return get_line_service(current_app).send_push_message_api(f"電影待看清單新增了：{movie_title}")
 

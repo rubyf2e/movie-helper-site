@@ -202,6 +202,12 @@ class LineAuthService {
     }
   }
 
+  getStoredUserIdToken() {
+    const IdToken = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN);
+
+    return IdToken || null;
+  }
+
   getStoredUser() {
     try {
       const userData = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.User);
@@ -500,6 +506,8 @@ class LineAuthService {
           },
           body: JSON.stringify({
             movieList: movieList,
+            userIdToken: this.getStoredUserIdToken(),
+            profile: this.getStoredProfile(),
           }),
         }
       );
