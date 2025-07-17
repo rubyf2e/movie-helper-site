@@ -22,15 +22,15 @@ class OpenAiService:
                 azure_endpoint=self.AZURE_CHAT_ENDPOINT,
             )
         
-    def azure_openai(self, user_input):
-        with open(os.path.join(os.path.dirname(__file__), "message_text.json"), "r", encoding="utf-8") as f:
+    def azure_openai(self, user_input,function_call = "auto", prompt_file="prompts/user_prompt.json", message_text_file="prompts/user_message_text.json"):
+        with open(os.path.join(os.path.dirname(__file__), message_text_file), "r", encoding="utf-8") as f:
             message_text = json.load(f)
             
         for msg in message_text:
             if msg["role"] == "user":
                 msg["content"] = user_input
             
-        with open(os.path.join(os.path.dirname(__file__), "prompt.json"), "r", encoding="utf-8") as f:
+        with open(os.path.join(os.path.dirname(__file__), prompt_file), "r", encoding="utf-8") as f:
             functions = json.load(f)
 
         completion = self.client.chat.completions.create(
@@ -42,17 +42,31 @@ class OpenAiService:
             frequency_penalty=0,
             presence_penalty=0,
             stop=None,
+            function_call=function_call
         )
+       
+        print(functions)
+        print(message_text)
+        print(completion)
        
         completion_message = completion.choices[0].message
         if completion.choices[0].finish_reason == "function_call":
             this_arguments = json.loads(completion_message.function_call.arguments)
- 
+
+            print(this_arguments)
+            
             function_name = completion_message.function_call.name
-            movie_title = this_arguments["title"]
-            movie_target = (
-                this_arguments["target"] if "target" in this_arguments else "no-target"
-            )
+            
+            if 'title' in this_arguments:
+                movie_title = this_arguments["title"]
+                
+                movie_target = (
+                    this_arguments["target"] if "target" in this_arguments else "no-target"
+                )
+            elif 'text' in this_arguments:
+                movie_title = this_arguments["text"]
+                movie_target = None
+          
             return True, "need to call funcation", movie_title, movie_target
         else:
             return False, completion_message.content, "unknown", "unknown"

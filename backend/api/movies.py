@@ -8,6 +8,9 @@ movies_bp = Blueprint('movies', __name__)
 
 @movies_bp.route('/coming_soon')
 def get_coming_soon_movies():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     """獲取即將上映電影"""
     try:
         page = request.args.get('page', 1, type=int)
@@ -64,6 +67,9 @@ def get_coming_soon_movies():
         
 @movies_bp.route('/popular')
 def get_popular_movies():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     """獲取熱門電影"""
     try:
         page = request.args.get('page', 1, type=int)
@@ -107,6 +113,9 @@ def get_popular_movies():
 
 @movies_bp.route('/search')
 def search_movies():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     """搜尋電影"""
     try:
         query = request.args.get('q', '').strip()
@@ -159,6 +168,9 @@ def search_movies():
 
 @movies_bp.route('/genres')
 def get_genres():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     """獲取電影類型列表"""
     try:
         data = TMDBService.get_genres()
@@ -177,6 +189,9 @@ def get_genres():
 
 @movies_bp.route('/genre/<int:genre_id>')
 def get_movies_by_genre(genre_id):
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     """根據類型獲取電影"""
     try:
         page = request.args.get('page', 1, type=int)
@@ -221,6 +236,9 @@ def get_movies_by_genre(genre_id):
 
 @movies_bp.route('/<int:movie_id>')
 def get_movie_details(movie_id):
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     """獲取電影詳細資訊"""
     try:
         data = TMDBService.get_movie_details(movie_id)
@@ -269,15 +287,29 @@ def get_movie_details(movie_id):
 
 @movies_bp.route('/analyze-movie-preference', methods=['POST', 'OPTIONS'])
 def analyze_movie_preference():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
     data = request.get_json(silent=True) or {}
     userInput = data.get('userInput', '').strip()
     language = data.get('language', "zh-TW").strip()
     
-    print(userInput, language)
+    print(data, userInput, language)
     
     isFunctionCall, response, movie_title, movie_target = get_openai_service(current_app).azure_openai(
         userInput
     )
+    
+    if isFunctionCall == False:
+        print('round2:')
+        isFunctionCall, response2, movie_title2, movie_target = get_openai_service(current_app).azure_openai(
+            response,
+            {"name": "extract_movie_titles"}, 
+            "prompts/bot_user_prompt.json",
+            "prompts/bot_user_message_text.json"
+        )
+        print(isFunctionCall, response2, movie_title2, movie_target)
+        print('')
     
     if isFunctionCall:
         movie_title = call_tmdb(movie_title)

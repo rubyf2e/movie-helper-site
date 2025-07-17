@@ -46,3 +46,7 @@ Thumbs.db
 /build
 backend/service/azure/message_text.json
 backend/service/azure/prompt.json
+backend/service/azure/prompts/bot_user_message_text.json
+backend/service/azure/prompts/bot_user_prompt.json
+backend/service/azure/prompts/user_message_text.json
+backend/service/azure/prompts/user_prompt.json
