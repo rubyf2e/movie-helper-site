@@ -83,10 +83,17 @@ const FloatingAIBot = () => {
             </div>
             <div className="chat-content">
               <div className="chat-message bot-message">
-                <p>👋 嗨！我是電影小幫手 AI，有什麼可以幫助您的嗎？</p>
+                <p>
+                  👋 嗨！我是AI電影小幫手
+                  ，歡迎加入電影小幫手Line頻道和我聊天喔～
+                </p>
               </div>
               <div className="chat-options">
-                <button className="chat-option" onClick={handleChatClick}>
+                <img
+                  src={`${process.env.PUBLIC_URL || ""}/images/line_qrcode.png`}
+                  alt="qrcode"
+                />
+                {/* <button className="chat-option" onClick={handleChatClick}>
                   🎬 推薦電影
                 </button>
                 <button className="chat-option" onClick={handleChatClick}>
@@ -97,7 +104,7 @@ const FloatingAIBot = () => {
                 </button>
                 <button className="chat-option" onClick={handleChatClick}>
                   💬 其他問題
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

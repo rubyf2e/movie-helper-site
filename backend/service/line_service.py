@@ -24,8 +24,11 @@ class LineService:
     LINE_BOT_CHANNEL_ACCESS_TOKEN = None
     LINE_BOT_CHANNEL_SECRET = None
     LINE_LOGIN_REDIRECT_URI = None
-    PUSH_MESSAGE_API_URL = "https://api.line.me/v2/bot/message/push"
-    LINE_VERIFY_API_URL = "https://api.line.me/oauth2/v2.1/verify"
+    LINE_PUSH_MESSAGE_API_URL = "https://api.line.me/v2/bot/message/push"
+    LINE_GET_VERIFY_ACCESS_TOKEN_API_URL = "https://api.line.me/oauth2/v2.1/verify"
+    LINE_POST_VERIFY_ID_API_URL = "https://api.line.me/oauth2/v2.1/verify"
+    LINE_PROFILE_API_URL = "https://api.line.me/v2/profile"
+    LINE_TOKEN_API_URL = "https://api.line.me/oauth2/v2.1/token"
     
     def __init__(self, app=None):
         if app:
@@ -53,8 +56,6 @@ class LineService:
     def get_line_configuration(self):
         return self.configuration
     
-    def get_line_verify_api_url(self):
-        return self.LINE_VERIFY_API_URL
     
     def get_line_login_channel_id(self):
         return self.LINE_LOGIN_CHANNEL_ID   
@@ -73,7 +74,7 @@ class LineService:
             }]
         }
 
-        response = requests.post(self.PUSH_MESSAGE_API_URL,
+        response = requests.post(self.LINE_PUSH_MESSAGE_API_URL,
                         headers=headers,
                         json=payload)
 
@@ -91,34 +92,104 @@ class LineService:
             jwt_token = ''
 
         return jwt_token
-    
+
     def profile_api(self, request):
-        jwt_token = self.get_jwt_token(request)
+        access_token = request.args.get('code')
         
-        if not jwt_token:
-            return jsonify({"error": "Missing jwt_token"}), 400
+        if not access_token:
+            return jsonify({"error": "Missing access_token"}), 400
 
-        client_id = request.args.get('client_id', '')
         headers = {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}"
         }   
+   
+        response = requests.get(self.LINE_PROFILE_API_URL,
+                        headers=headers)
         
-        payload = {
-            "id_token": jwt_token,
-            "client_id": client_id
-        }
+        print(access_token)
         
-        print(payload)
-        
-        response = requests.post(self.LINE_VERIFY_API_URL,
-                        headers=headers,
-                        data=payload)
-
         if response.status_code == 200:
+            print(response.json())
             return jsonify(response.json())
         else:
             return jsonify({"status": "ERROR", "detail": response.text}), 400
 
+    
+    def verify_api(self, request):
+        access_token = request.args.get('code')
+        request_type = request.args.get('type')
+        request_redirect_uri = request.args.get('redirect_uri')
+        
+        if not access_token:
+            return jsonify({"error": "Missing access_token"}), 400
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }   
+        
+        response = None
+        
+        if request_type == 'ACCESS_TOKEN':
+            response = requests.get(self.LINE_POST_VERIFY_ID_API_URL,
+                        headers=headers,
+                        params={"access_token": access_token})
+
+        elif request_type == 'ID':
+            client_id = request.args.get('client_id', '')
+            response = requests.post(self.LINE_GET_VERIFY_ACCESS_TOKEN_API_URL,
+                        headers=headers,
+                        data={"id_token": access_token,"client_id": client_id})
+            
+        if response.status_code == 200:
+            response.request_redirect_uri = request_redirect_uri
+            print(response.json())
+            print(request_redirect_uri)
+            
+            return jsonify(response.json())
+        else:
+            return jsonify({"status": "ERROR", "detail": response.text}), 400
+
+    def get_token_api(self, request):
+        # 取得必要參數
+        access_token = request.args.get('code')
+        redirect_uri = request.args.get('redirect_uri')
+        client_id = request.args.get('client_id')
+        client_secret = self.LINE_LOGIN_CHANNEL_SECRET
+        
+        print(redirect_uri)
+
+        # 檢查必要參數
+        if not all([access_token, redirect_uri, client_id, client_secret]):
+            return jsonify({"error": "Missing required parameters"}), 400
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+
+        payload = {
+            "grant_type": 'authorization_code',
+            "code": access_token,
+            "redirect_uri": redirect_uri,
+            "client_id": client_id,
+            "client_secret": client_secret,
+        }
+
+        print("LINE token payload:", payload)
+
+        response = requests.post(
+            self.LINE_TOKEN_API_URL,
+            headers=headers,
+            data=payload
+        )
+
+        if response.status_code == 200:
+            print(response.json())
+            return jsonify(response.json())
+        else:
+            return jsonify({"status": "ERROR", "detail": response.text}), 400
+        
+   
 
 line_service_instance = None
 

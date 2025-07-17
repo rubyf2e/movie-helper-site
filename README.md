@@ -67,8 +67,8 @@
 - **5️⃣ 加上 Line 登入按鈕**
 
   - 將 Line Login 的相關 Secrets 寫在 .env 裡
-  - 啟用 Copilot Agent 模式，直接請 Copilot 把 LINE Login v2.1 整合到這個專案，Line 登入按鈕放在指定位置
-  - Copilot 直接寫完前後端和 css，前端還寫成 lineAuthService
+  - 啟用 Copilot Agent 模式，直接請 Copilot 把 LINE Login v2.1 整合到這個專案，Line 登入按鈕放在指定位置，只撰寫前端的部分
+  - Copilot 直接寫完前端和 css，前端還寫成 lineAuthService
 
   </details>
 

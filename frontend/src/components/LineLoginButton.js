@@ -8,16 +8,14 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
   useEffect(() => {
     // 頁面載入時，檢查 URL 參數並初始化登入狀態
     const init = async () => {
-      const profile = await lineAuthService.initFromUrlParams();
-      // 檢查是否已登入
       const isAuthenticated = lineAuthService.isAuthenticated();
       console.log("isAuthenticated:", lineAuthService.isAuthenticated());
       if (isAuthenticated) {
-        const userData = lineAuthService.getStoredUser();
+        const userData = lineAuthService.getStoredProfile();
         setUser(userData);
-      } else if (profile) {
-        setUser(profile);
-        lineAuthService.setStoredUser(profile);
+      } else {
+        const userData = await lineAuthService.initFromUrlParams();
+        setUser(userData);
       }
     };
     init();
@@ -58,7 +56,7 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
   if (user) {
     return (
       <div className={`line-login-status ${className}`}>
-        <div className="line-user-info">
+        {/* <div className="line-user-info">
           <img
             src={user.pictureUrl}
             alt={user.displayName}
@@ -68,7 +66,7 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
             <span className="line-user-name">{user.displayName}</span>
             <span className="line-user-id">@{user.userId}</span>
           </div>
-        </div>
+        </div> */}
         <button
           onClick={handleLogout}
           disabled={isLoading}

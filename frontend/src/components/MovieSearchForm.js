@@ -1,9 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { MovieIcon } from "./Icons";
 import TMDBMovieCard from "./TMDBMovieCard";
 import MovieModal from "./MovieModal";
 import LineLoginButton from "./LineLoginButton";
-import { aiMovieService, LOCAL_STORAGE_KEY } from "../services/globalServices";
+import {
+  aiMovieService,
+  lineAuthService,
+  LOCAL_STORAGE_KEY,
+} from "../services/globalServices";
 import { NOTIFICATION_TYPES } from "../utils/constants";
 
 const MovieSearchForm = ({
@@ -21,6 +25,19 @@ const MovieSearchForm = ({
     type: "",
     show: false,
   });
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // 頁面載入時自動檢查 LINE 登入狀態
+    if (lineAuthService.isAuthenticated()) {
+      const userData = lineAuthService.getStoredProfile();
+      setUser(userData);
+      console.log("LINE 使用者:", userData);
+    } else {
+      setUser(null);
+    }
+  }, []);
 
   // 顯示提示訊息
   const showMessage = (message, type) => {
@@ -218,12 +235,17 @@ const MovieSearchForm = ({
 
       {/* LINE 登入區域 */}
       <div className="movie-search-form__line-login">
-        <div className="movie-search-form__line-login-header">
-          <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
-        </div>
+        {user
+          ? ""
+          : ""
+            // <div className="movie-search-form__line-login-header">
+            //   <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
+            // </div>
+        }
         <LineLoginButton
           onLoginSuccess={(user) => {
             if (user) {
+              setUser(user);
               showMessage(
                 `歡迎，${user.displayName}！`,
                 NOTIFICATION_TYPES.SUCCESS

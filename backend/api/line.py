@@ -134,10 +134,22 @@ def line_login_callback():
         return redirect(redirect_uri+'?response='+jwt_token+'&state='+state+'&client_id='+client_id+'&scope='+scope)
     
 @line_bp.route("/auth/line/profile", methods=['GET', 'POST', 'OPTIONS'])
-def line_verify():
+def line_profile():
     if request.method == 'OPTIONS':
         return '', 200 
     return get_line_service(current_app).profile_api(request)
+
+@line_bp.route("/auth/line/verify", methods=['GET', 'POST', 'OPTIONS'])
+def line_verify():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    return get_line_service(current_app).verify_api(request)
+
+@line_bp.route("/auth/line/token", methods=['GET', 'POST', 'OPTIONS'])
+def line_token():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    return get_line_service(current_app).get_token_api(request)
     
     
 @line_bp.route("/bot/callback", methods=['GET', 'POST', 'OPTIONS'])
