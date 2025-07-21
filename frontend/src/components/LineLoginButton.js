@@ -21,11 +21,18 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
     init();
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const authUrl = lineAuthService.getAuthUrl();
-      window.location.href = authUrl;
+      const isAuthenticated = lineAuthService.isAuthenticated();
+      console.log("isAuthenticated:", isAuthenticated);
+      if (!isAuthenticated) {
+        const authUrl = lineAuthService.getAuthUrl();
+        window.location.href = authUrl;
+      } else {
+        const userData = await lineAuthService.initFromUrlParams();
+        setUser(userData);
+      }
     } catch (error) {
       console.error("登入失敗:", error);
       setIsLoading(false);

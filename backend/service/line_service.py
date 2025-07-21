@@ -1,6 +1,8 @@
 from urllib import response
 from flask import request, abort, jsonify
 import requests, json
+from jwt import PyJWKClient
+import jwt
 from linebot.v3 import (
     WebhookHandler
 )
@@ -24,6 +26,8 @@ class LineService:
     LINE_BOT_CHANNEL_ACCESS_TOKEN = None
     LINE_BOT_CHANNEL_SECRET = None
     LINE_LOGIN_REDIRECT_URI = None
+    LINE_ISSUER = "https://access.line.me"
+    LINE_JWKS_URL = "https://access.line.me/.well-known/openid-configuration"
     LINE_PUSH_MESSAGE_API_URL = "https://api.line.me/v2/bot/message/push"
     LINE_GET_VERIFY_ACCESS_TOKEN_API_URL = "https://api.line.me/oauth2/v2.1/verify"
     LINE_POST_VERIFY_ID_API_URL = "https://api.line.me/oauth2/v2.1/verify"
@@ -60,6 +64,44 @@ class LineService:
     def get_line_login_channel_id(self):
         return self.LINE_LOGIN_CHANNEL_ID   
     
+    def get_line_jwks(self):
+        openid_config = requests.get(self.LINE_JWKS_URL).json()
+        jwks_uri = openid_config["jwks_uri"]
+        jwks_client = PyJWKClient(jwks_uri)
+
+        return jwks_client
+    
+    def get_line_unverified_header(self, id_token):
+
+        return jwt.get_unverified_header(id_token)
+        
+    # response_mode=query.jwt
+    # {
+    #     "aud": "",
+    #     "code": "",
+    #     "exp": ,
+    #     "iss": "",
+    #     "state": ""
+    # }
+    def get_line_jwt_data(self, id_token, nonce, iss):
+        jwks_client = self.get_line_jwks()
+        
+        try:
+            decoded = jwt.decode(
+                id_token,
+                key=self.LINE_LOGIN_CHANNEL_SECRET,
+                algorithms=["HS256"],
+                audience=self.LINE_LOGIN_CHANNEL_ID
+            )
+            
+            print("JWT Payload:")
+            print(decoded)
+
+            return jsonify(decoded)
+
+        except Exception as e:
+            return jsonify({'error': 'Invalid token', 'details': str(e)}), 400
+
     def send_push_message_api(self, message):
         headers = {
             "Content-Type": "application/json",

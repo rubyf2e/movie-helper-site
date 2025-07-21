@@ -33,7 +33,6 @@ const MovieSearchForm = ({
     if (lineAuthService.isAuthenticated()) {
       const userData = lineAuthService.getStoredProfile();
       setUser(userData);
-      console.log("LINE 使用者:", userData);
     } else {
       setUser(null);
     }

@@ -45,6 +45,7 @@ export const API_ENDPOINTS = {
   LINE_AUTH_PROFILE: "/line/auth/line/profile",
   LINE_AUTH_VERIFY: "/line/auth/line/verify",
   LINE_AUTH_TOKEN: "/line/auth/line/token",
+  LINE_AUTH_TOKEN_PROFILE: "/line/auth/line/token_profile",
   LINE_LOGIN_CALLBACK: "/line/login/callback",
 };
 
@@ -68,6 +69,7 @@ export const LINE_CONFIG = {
     EXPIRES_AT: "line_expires_at",
     AUTH_STATE: "line_auth_state",
     AUTH_NONCE: "line_auth_nonce",
+    TOKEN_PROFILE: "line_token_profile",
   },
 };
 

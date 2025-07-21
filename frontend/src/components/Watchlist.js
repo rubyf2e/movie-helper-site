@@ -19,16 +19,6 @@ const Watchlist = () => {
 
   const LOCAL_STORAGE_KEY = DEFAULT_STORAGE_KEY;
 
-  // 除錯用 - 監控 movies 狀態變化
-  useEffect(() => {
-    console.log("Movies 狀態變化:", {
-      movies,
-      isArray: Array.isArray(movies),
-      type: typeof movies,
-      length: Array.isArray(movies) ? movies.length : "N/A",
-    });
-  }, [movies]);
-
   const showMessage = useCallback((message, type) => {
     setNotification({ message, type, show: true });
     setTimeout(() => {

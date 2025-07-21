@@ -133,11 +133,12 @@ def line_login_callback():
         state = request.args.get('state', '')
         client_id = request.args.get('client_id', '')
         scope = request.args.get('scope', '')
+        nonce = request.args.get('nonce', '')
     
         print(request.args.to_dict())
-        
-        return redirect(redirect_uri+'?response='+jwt_token+'&state='+state+'&client_id='+client_id+'&scope='+scope)
-    
+
+        return redirect(redirect_uri+'?response='+jwt_token+'&state='+state+'&client_id='+client_id+'&scope='+scope+'&nonce='+nonce)
+
 @line_bp.route("/auth/line/profile", methods=['GET', 'POST', 'OPTIONS'])
 def line_profile():
     if request.method == 'OPTIONS':
@@ -156,7 +157,17 @@ def line_token():
         return '', 200 
     return get_line_service(current_app).get_token_api(request)
     
-    
+@line_bp.route("/auth/line/token_profile", methods=['GET', 'POST', 'OPTIONS'])
+def line_token_profile():
+    id_token = request.args.get('id_token', '')
+    nonce = request.args.get('nonce', '')
+    iss = request.args.get('iss', '')
+        
+    if request.method == 'OPTIONS':
+        return '', 200
+     
+    return get_line_service(current_app).get_line_jwt_data(id_token, nonce, iss)
+        
 @line_bp.route("/bot/callback", methods=['GET', 'POST', 'OPTIONS'])
 def line_bot_callback():
     if request.method == 'OPTIONS':

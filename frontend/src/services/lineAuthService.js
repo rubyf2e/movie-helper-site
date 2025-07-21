@@ -8,22 +8,23 @@ import {
 class LineAuthService {
   async initFromUrlParams() {
     const params = new URLSearchParams(window.location.search);
-    const IdToken = params.get("response");
-    // const state = params.get("state");
+    const idToken = params.get("response");
+    const nonce = params.get("nonce");
+    const state = params.get("state");
 
-    if (IdToken) {
-      const verifyID = await this.getUserVerify(IdToken, "ID_TOKEN");
+    if (idToken) {
+      const verifyID = await this.getUserVerify(idToken, "ID_TOKEN");
 
       if (!verifyID || verifyID.success === false) {
         this.logout();
-        window.location.href = APP_CONFIG.PUBLIC_URL;
+
         return {
           success: false,
           message: "Failed to fetch user ID",
         };
       }
 
-      const profile = await this.getUserVerify(IdToken, "ID");
+      const profile = await this.getUserVerify(idToken, "ID");
 
       if (!profile || profile.success === false) {
         return {
@@ -33,12 +34,43 @@ class LineAuthService {
       }
 
       this.userdata = profile.message;
-      this.setStoredProfile(this.userdata, IdToken);
+      this.setStoredProfile(this.userdata, idToken);
+      const tokenProfile = await this.getTokenProfile(
+        idToken,
+        nonce,
+        this.userdata.iss
+      );
 
-      console.log("LINE 登入成功，獲取用戶資料:", profile);
-      console.log("IdToken", IdToken);
-      console.log(LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT, this.userdata.exp);
-      // await this.getUserToken(IdToken, state);
+      if (!tokenProfile || tokenProfile.success === false) {
+        return {
+          success: false,
+          message: "Failed to fetch token profile",
+        };
+      }
+
+      this.setStoredTokenProfile(tokenProfile);
+
+      console.log("Token Profile:", tokenProfile);
+      if (!this.getStoredUserAccessToken() && this.getStoredProfile()) {
+        const userTokenData = await this.getUserToken(
+          tokenProfile.message.code,
+          state,
+          tokenProfile.message.aud,
+          nonce
+        );
+
+        if (!userTokenData || userTokenData.success === false) {
+          return {
+            success: false,
+            message: "Failed to fetch user token",
+          };
+        }
+
+        this.setStoredUser(userTokenData, tokenProfile.message);
+        console.log("access_token:", userTokenData.message);
+        window.location.href = APP_CONFIG.PUBLIC_URL;
+      }
+
       return this.userdata;
     }
   }
@@ -67,11 +99,13 @@ class LineAuthService {
     );
   }
 
-  getAuthRedirectUrl(state = null) {
+  getAuthRedirectUrl(state = null, nonce = null) {
     return (
       this.redirectUrl +
       "?state=" +
       state +
+      "&nonce=" +
+      nonce +
       "&client_id=" +
       this.channelId +
       "&scope=" +
@@ -81,15 +115,14 @@ class LineAuthService {
 
   // 建立 LINE 登入 URL
   getAuthUrl() {
-    const redirectUrl = this.getAuthRedirectUrl(this.state);
-    // console.log(redirectUrl);
-
+    const redirectUrl = this.getAuthRedirectUrl(this.state, this.nonce);
     const params = new URLSearchParams({
       response_type: LINE_CONFIG.RESPONSE_TYPE,
       client_id: this.channelId,
       state: this.state,
       scope: LINE_CONFIG.SCOPE,
       nonce: this.nonce,
+      bot_prompt: "aggressive",
       redirect_uri: redirectUrl,
       response_mode: "query.jwt",
     });
@@ -144,9 +177,6 @@ class LineAuthService {
 
       const data = await response.json();
 
-      // 儲存用戶資訊和 token
-      this.setStoredUser(data);
-
       return data;
     } catch (error) {
       console.error("LINE 登入失敗:", error);
@@ -157,36 +187,36 @@ class LineAuthService {
     }
   }
 
-  // 儲存用戶資料
-  setStoredProfile(userData, IdToken) {
+  setStoredTokenProfile(userData) {
     localStorage.setItem(
-      LINE_CONFIG.STORAGE_KEYS.PROFILE,
+      LINE_CONFIG.STORAGE_KEYS.TOKEN_PROFILE,
       JSON.stringify(userData)
-    );
-    localStorage.setItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN, IdToken);
-    localStorage.setItem(
-      LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT,
-      this.userdata.exp
     );
   }
 
   // 儲存用戶資料
-  setStoredUser(userData) {
+  setStoredProfile(userData, idToken) {
     localStorage.setItem(
-      LINE_CONFIG.STORAGE_KEYS.USER,
-      JSON.stringify(userData.user)
+      LINE_CONFIG.STORAGE_KEYS.PROFILE,
+      JSON.stringify(userData)
     );
+    localStorage.setItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN, idToken);
+  }
+
+  // 儲存用戶資料
+  setStoredUser(userData, user) {
+    localStorage.setItem(LINE_CONFIG.STORAGE_KEYS.USER, JSON.stringify(user));
     localStorage.setItem(
-      LINE_CONFIG.STORAGE_KEYS.ID_TOKEN,
-      userData.access_token
+      LINE_CONFIG.STORAGE_KEYS.ACCESS_TOKEN,
+      userData.message.access_token
     );
     localStorage.setItem(
       LINE_CONFIG.STORAGE_KEYS.REFRESH_TOKEN,
-      userData.refresh_token
+      userData.message.refresh_token
     );
     localStorage.setItem(
       LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT,
-      userData.expires_at
+      parseInt(userData.message.expires_in) + Date.now()
     );
   }
 
@@ -194,7 +224,7 @@ class LineAuthService {
   getStoredProfile() {
     try {
       const userData = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.PROFILE);
-      console.log("用戶資料:", userData);
+
       return userData ? JSON.parse(userData) : null;
     } catch (error) {
       console.error("無法獲取用戶資料:", error);
@@ -203,9 +233,19 @@ class LineAuthService {
   }
 
   getStoredUserIdToken() {
-    const IdToken = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN);
+    const idToken = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN);
 
-    return IdToken || null;
+    return idToken == null || idToken === "undefined" ? null : idToken;
+  }
+
+  getStoredUserAccessToken() {
+    const accessToken = localStorage.getItem(
+      LINE_CONFIG.STORAGE_KEYS.ACCESS_TOKEN
+    );
+
+    return accessToken == null || accessToken === "undefined"
+      ? null
+      : accessToken;
   }
 
   getStoredUser() {
@@ -221,10 +261,10 @@ class LineAuthService {
 
   // 檢查是否已登入
   isAuthenticated() {
-    const IdToken = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN);
+    const accessToken = this.getStoredUserAccessToken();
     const expiresAt = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT);
 
-    if (!IdToken || !expiresAt) {
+    if (!accessToken || !expiresAt) {
       return false;
     }
 
@@ -290,17 +330,20 @@ class LineAuthService {
   logout() {
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.USER);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.PROFILE);
+    localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.TOKEN_PROFILE);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.REFRESH_TOKEN);
+    localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.ACCESS_TOKEN);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.EXPIRES_AT);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.AUTH_STATE);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.AUTH_NONCE);
+    window.location.href = APP_CONFIG.PUBLIC_URL;
   }
 
   // 撤銷 Access Token
   async revokeToken() {
     try {
-      const accessToken = this.getIdToken();
+      const accessToken = this.getStoredUserAccessToken();
       if (!accessToken) {
         return;
       }
@@ -310,6 +353,8 @@ class LineAuthService {
         headers: {
           "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON,
           AUTHORIZATION: `Bearer ${accessToken}`,
+          [HTTP_HEADERS.NGROK_SKIP_WARNING]: "true",
+          "Access-Control-Allow-Origin": "*",
         },
       });
     } catch (error) {
@@ -320,25 +365,13 @@ class LineAuthService {
   }
 
   // 獲取用戶Token
-  async getUserToken(IdToken = null, state) {
+  async getUserToken(code = null, state = null, aud = null, nonce = null) {
     try {
-      if (!IdToken) {
-        const IdToken = this.getIdToken();
-        if (!IdToken) {
-          return {
-            success: false,
-            message: "Failed to fetch user token",
-          };
-        }
-      }
-
-      const redirectUrl = this.getAuthRedirectUrl(this.state);
-      // console.log(redirectUrl);
-
+      const redirectUrl = this.getAuthRedirectUrl(state, nonce);
       const params = new URLSearchParams({
-        code: IdToken,
+        code: code,
         redirect_uri: redirectUrl,
-        client_id: this.channelId,
+        client_id: aud,
       });
 
       const response = await fetch(
@@ -364,7 +397,74 @@ class LineAuthService {
         };
       }
 
-      return response;
+      const data = await response.json();
+      console.log(data);
+      return {
+        success: true,
+        message: data,
+      };
+    } catch (error) {
+      console.error("獲取用戶資料失敗:", error);
+      return {
+        success: false,
+        message: "API 獲取用戶資料失敗",
+      };
+    }
+  }
+
+  async getTokenProfile(idToken = null, nonce = null, iss = null) {
+    try {
+      if (!idToken) {
+        const idToken = this.getIdToken();
+        if (!idToken) {
+          return {
+            success: false,
+            message: "Failed to fetch user Token Profile",
+          };
+        }
+      }
+
+      if (!nonce || !iss) {
+        return {
+          success: false,
+          message: "Failed to fetch user Token Profile",
+        };
+      }
+
+      const params = new URLSearchParams({
+        id_token: idToken,
+        nonce: nonce,
+        iss: iss,
+      });
+
+      const response = await fetch(
+        `${this.apiBaseUrl}${
+          API_ENDPOINTS.LINE_AUTH_TOKEN_PROFILE
+        }?${params.toString()}`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            [HTTP_HEADERS.NGROK_SKIP_WARNING]: "true",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch user verify");
+        return {
+          success: false,
+          message: "Failed to fetch user verify",
+        };
+      }
+
+      const data = await response.json();
+      console.log(data);
+      return {
+        success: true,
+        message: data,
+      };
     } catch (error) {
       console.error("獲取用戶資料失敗:", error);
       return {
@@ -375,11 +475,11 @@ class LineAuthService {
   }
 
   // 獲取用戶資料
-  async getUserVerify(IdToken = null) {
+  async getUserVerify(idToken = null) {
     try {
-      if (!IdToken) {
-        const IdToken = this.getIdToken();
-        if (!IdToken) {
+      if (!idToken) {
+        const idToken = this.getIdToken();
+        if (!idToken) {
           return {
             success: false,
             message: "Failed to fetch user verify",
@@ -388,7 +488,7 @@ class LineAuthService {
       }
 
       const params = new URLSearchParams({
-        code: IdToken,
+        code: idToken,
         client_id: this.channelId,
         type: "ID",
         redirect_uri: window.location.href,
