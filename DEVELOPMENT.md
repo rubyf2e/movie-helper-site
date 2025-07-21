@@ -126,9 +126,6 @@ TMDB_API_KEY = os.environ.get('REACT_APP_TMDB_API_KEY') or os.environ.get('TMDB_
 ### 前端 (.env.local)
 
 ```env
-# 後端 API（可選）
-REACT_APP_API_URL=http://localhost:5000/api
-
 # 直接 TMDB（必需）
 REACT_APP_TMDB_API_KEY=你的TMDB_API金鑰
 

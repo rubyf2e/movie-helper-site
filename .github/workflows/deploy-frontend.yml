@@ -61,7 +61,6 @@ jobs:
           REACT_APP_TMDB_MOVIE_LANGUAGE=${{ vars.REACT_APP_TMDB_MOVIE_LANGUAGE }}
           REACT_APP_TMDB_IMG_URL=${{ vars.REACT_APP_TMDB_IMG_URL }}
           REACT_APP_TMDB_BASE_URL=${{ vars.REACT_APP_TMDB_BASE_URL }}
-          REACT_APP_API_URL=${{ vars.REACT_APP_API_URL || '/data/content.json' }}
           GENERATE_SOURCEMAP=false
           EOF
 
