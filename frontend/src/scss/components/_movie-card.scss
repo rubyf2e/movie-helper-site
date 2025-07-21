@@ -147,6 +147,18 @@
           display: block;
         }
 
+        &.full svg {
+          fill: $color-accent-star;
+        }
+
+        &.half svg {
+          fill: $color-accent-star;
+        }
+
+        &.empty svg {
+          fill: $color-accent-star-inactive;
+        }
+
         &.gray svg {
           fill: $color-accent-star-inactive;
         }
