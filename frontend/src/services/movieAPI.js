@@ -70,6 +70,16 @@ export class MovieAPI {
     }
   }
 
+  static async getMovieVideos(movieId) {
+    try {
+      const response = await this.fetchFromAPI(`/movies/videos/${movieId}`);
+      return response;
+    } catch (error) {
+      console.error("無法獲取電影預告資料:", error);
+      return null;
+    }
+  }
+
   static async fetchGenres() {
     try {
       return await this.fetchFromAPI("/movies/genres");

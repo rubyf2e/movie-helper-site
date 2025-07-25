@@ -1,11 +1,48 @@
 from flask import Blueprint, request, jsonify, current_app
 import requests, json
+from functools import partial
 from datetime import datetime, timedelta
 from service.tmdb_service import TMDBService
 from service.azure.openai_service import get_openai_service
+from concurrent.futures import ThreadPoolExecutor
 
 movies_bp = Blueprint('movies', __name__)
 
+
+@movies_bp.route('/videos/<movie_ids>')
+def get_movie_videos(movie_ids):
+    if request.method == 'OPTIONS':
+        return '', 200 
+    
+    try:
+        movie_id_list = [int(x) for x in str(movie_ids).split(",")]
+        process_func = partial(
+            TMDBService.process_movie_data,
+            api_key=current_app.config['TMDB_API_KEY'],
+            base_url=current_app.config['TMDB_BASE_URL'],
+            language=current_app.config['TMDB_MOVIE_LANGUAGE']
+        )
+                
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            processed_movies = list(executor.map(process_func, movie_id_list))
+            
+            data = {}
+            for item in processed_movies:
+                data[item['id']] = item['url']
+                    
+            return jsonify({
+                'success': True,
+                'data': data
+            })
+    
+    except Exception as e:
+        current_app.logger.error(f"獲取預告列表失敗: {e}")
+        return jsonify({
+            'success': False,
+            'error': '無法獲取預告列表',
+            'message': str(e)
+        }), 500
+        
 @movies_bp.route('/coming_soon')
 def get_coming_soon_movies():
     if request.method == 'OPTIONS':

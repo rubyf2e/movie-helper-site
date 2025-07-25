@@ -34,6 +34,7 @@ export const API_ENDPOINTS = {
   HEALTH: "/health",
   MOVIES: "/movies",
   POPULAR: "/movies/popular",
+  VIDEOS: "/movies/videos",
   COMING_SOON: "/movies/coming_soon",
   SEARCH: "/movies/search",
   GENRES: "/movies/genres",

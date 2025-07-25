@@ -4,13 +4,13 @@
 
 .movie {
   @include card-base;
-  padding: 1.8rem $spacing-lg $spacing-lg $spacing-lg;
   width: 300px;
   @include flex-column;
   justify-content: space-between;
   position: relative;
   background: $color-bg-card;
   @include card-hover;
+  align-self: stretch;
 
   .icon {
     @include icon-container;
@@ -21,13 +21,6 @@
     top: $spacing-md;
     right: $spacing-md;
     @include badge-style;
-  }
-
-  button {
-    @include button-primary;
-    padding: 0.7rem 1.8rem;
-    font-size: $font-size-sm;
-    margin-top: $spacing-md;
   }
 
   // Theme variations
@@ -51,6 +44,46 @@
     color: $color-secondary-dark;
   }
 
+  h3 {
+    font-size: 20px;
+    font-weight: $font-weight-bold;
+    color: $color-neutral-white;
+  }
+
+  .meta {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+
+  p {
+    color: $color-text-primary;
+    font-size: $font-size-sm;
+  }
+
+  .tmdb-movie-card-info-box {
+    align-self: stretch;
+  }
+
+  .tmdb-movie-card-info {
+    padding: 1.8rem $spacing-lg $spacing-lg $spacing-lg;
+  }
+
+  .tmdb-movie-card-button {
+    margin-top: auto;
+    padding: 0 $spacing-lg $spacing-lg $spacing-lg;
+    display: flex;
+    justify-content: center;
+    align-self: stretch;
+
+    button {
+      width: 100%;
+      @include button-primary;
+      padding: 0.7rem 1.8rem;
+      font-size: $font-size-sm;
+      margin-top: $spacing-md;
+    }
+  }
+
   // Upcoming movie styles
   &.upcoming {
     background: $color-bg-card-dark;
@@ -58,7 +91,6 @@
     border-radius: $radius-md;
     box-shadow: $shadow-lg;
     position: relative;
-    padding: $spacing-md $spacing-lg;
     width: 100%;
     min-width: 0px;
     max-width: 608px;
@@ -66,6 +98,10 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    .tmdb-movie-card-info-box {
+      padding: $spacing-md $spacing-lg;
+    }
 
     h3 {
       font-size: 20px;

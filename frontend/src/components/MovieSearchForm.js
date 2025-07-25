@@ -237,12 +237,13 @@ const MovieSearchForm = ({
 
       {/* LINE 登入區域 */}
       <div className="movie-search-form__line-login">
-        {
-          user ? "" : ""
-          // <div className="movie-search-form__line-login-header">
-          //   <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
-          // </div>
-        }
+        {user ? (
+          ""
+        ) : (
+          <div className="movie-search-form__line-login-header">
+            <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
+          </div>
+        )}
         <LineLoginButton
           onLoginSuccess={(user) => {
             if (user) {

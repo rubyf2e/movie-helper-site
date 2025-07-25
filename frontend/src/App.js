@@ -27,7 +27,7 @@ function App() {
       const upcomingMovies = await MovieAPI.getComingSoonMovies();
 
       setPopular((popularMovies || []).slice(0, 4));
-      setComingSoon((upcomingMovies || []).slice(0, 4));
+      setComingSoon((upcomingMovies || []).slice(0, 3));
     } catch (error) {
     } finally {
     }
