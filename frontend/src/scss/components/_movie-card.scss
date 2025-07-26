@@ -96,10 +96,16 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
+    align-self: stretch;
 
     .tmdb-movie-card-info-box {
-      padding: $spacing-md $spacing-lg;
+      margin-bottom: auto;
+      padding: 0 $spacing-lg $spacing-md $spacing-lg;
+    }
+
+    .tmdb-movie-card-info {
+      padding: 0;
     }
 
     h3 {
@@ -135,67 +141,70 @@
       line-height: 1.7;
     }
 
-    .remind-row {
-      @include flex-between;
-      margin-top: auto;
-      width: 100%;
-      gap: 1rem;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      white-space: nowrap;
-    }
+    .tmdb-movie-card-button {
+      .remind-row {
+        @include flex-between;
+        margin-top: auto;
+        width: 100%;
+        gap: 1rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+      }
 
-    button {
-      @include button-outline;
-      padding: 0.6rem 0rem;
-      font-size: 16px;
-      white-space: nowrap;
-      min-width: 98px;
-      max-width: 100%;
-      margin-top: 0;
-      margin-bottom: 0;
-      display: inline-block;
-    }
+      button {
+        @include button-outline;
+        padding: 0.6rem 0rem;
+        font-size: 16px;
+        white-space: nowrap;
+        width: 98px;
+        min-width: 98px;
+        max-width: 100%;
+        margin-top: 0;
+        margin-bottom: 0;
+        display: inline-block;
+      }
 
-    .expect {
-      color: $color-text-secondary;
-      font-size: 1.08rem;
-      @include flex-center;
-    }
-
-    .stars {
-      @include flex-center;
-      gap: 0.18em;
-      font-size: 1.15rem;
-      margin-left: 0;
-      letter-spacing: 0;
-
-      .star {
+      .expect {
+        color: $color-text-secondary;
+        font-size: 1.08rem;
         @include flex-center;
-        padding: 0;
-        margin: 0;
+      }
 
-        svg {
-          width: 1.25em;
-          height: 1.25em;
-          fill: $color-accent-star;
-          display: block;
-        }
+      .stars {
+        @include flex-center;
+        gap: 0.18em;
+        font-size: 1.15rem;
+        margin-left: 0;
+        letter-spacing: 0;
 
-        &.full svg {
-          fill: $color-accent-star;
-        }
+        .star {
+          @include flex-center;
+          padding: 0;
+          margin: 0;
 
-        &.half svg {
-          fill: $color-accent-star;
-        }
+          svg {
+            width: 1.25em;
+            height: 1.25em;
+            fill: $color-accent-star;
+            display: block;
+          }
 
-        &.empty svg {
-          fill: $color-accent-star-inactive;
-        }
+          &.full svg {
+            fill: $color-accent-star;
+          }
 
-        &.gray svg {
-          fill: $color-accent-star-inactive;
+          &.half svg {
+            fill: $color-accent-star;
+          }
+
+          &.empty svg {
+            fill: $color-accent-star-inactive;
+          }
+
+          &.gray svg {
+            fill: $color-accent-star-inactive;
+          }
         }
       }
     }

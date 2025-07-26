@@ -38,6 +38,7 @@ function MovieCard({ movie, video, onClick, upcoming, index }) {
 
     return (
       <div className="movie upcoming">
+        <span className="badge">即將上映</span>
         <div className="tmdb-movie-card" onClick={() => onClick(id)}>
           <img
             src={MovieAPI.getImageURL(poster_path)}
@@ -46,15 +47,19 @@ function MovieCard({ movie, video, onClick, upcoming, index }) {
           />
         </div>
 
-        <span className="badge">即將上映</span>
         <div className="tmdb-movie-card-info-box">
-          <h3>{movie.title}</h3>
-          <div className="meta">
-            上映日期: {movie.release_date || ""}
-            <br />
-            類型: {movie.genre_ids || ""}
+          <div className="tmdb-movie-card-info">
+            <h3>{movie.title}</h3>
+            <div className="meta">
+              上映日期: {movie.release_date || ""}
+              <br />
+              類型: {movie.genre_ids || ""}
+            </div>
+            <p>{movie.overview}</p>
           </div>
-          <p>{movie.overview}</p>
+        </div>
+
+        <div className="tmdb-movie-card-button">
           <div className="remind-row">
             <button>設定提醒</button>
             <span className="expect">
