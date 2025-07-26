@@ -3,11 +3,7 @@ import { StarIcon } from "./Icons";
 import { MovieAPI } from "../services/movieAPI";
 
 function MovieCard({ movie, video, onClick, upcoming, index }) {
-  const { title, poster_path, vote_average, id } = movie;
-  const voteAverage =
-    typeof movie.vote_average === "number"
-      ? movie.vote_average.toFixed(1)
-      : "N/A";
+  const { title, poster_path, id } = movie;
   // 主題色與 icon 對應（用於熱門電影）
   const cardThemes = [
     { color: "yellow", icon: "" },
@@ -76,7 +72,11 @@ function MovieCard({ movie, video, onClick, upcoming, index }) {
     return (
       <div className={`movie ${theme.color}`}>
         <div className="tmdb-movie-card">
-          <span className="rating-badge">{movie.rating}</span>
+          <span className="rating-badge">
+            {typeof movie.vote_average === "number"
+              ? movie.vote_average.toFixed(1)
+              : "N/A"}
+          </span>
           {video ? (
             <div className="aspect-w-16 aspect-h-9 w-full rounded-lg overflow-hidden shadow-xl mb-6">
               <iframe
