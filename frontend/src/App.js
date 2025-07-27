@@ -9,6 +9,7 @@ import About from "./components/About";
 import Explore from "./components/Explore";
 import FloatingAIBot from "./components/FloatingAIBot";
 import Watchlist from "./components/Watchlist";
+import ChatRoom from "./components/ChatRoom";
 import "./scss/style.scss";
 
 function App() {
@@ -84,6 +85,9 @@ function App() {
         </section>
 
         <Watchlist />
+
+        {/* 聊天室組件 */}
+        <ChatRoom />
 
         <About />
         <Footer />
