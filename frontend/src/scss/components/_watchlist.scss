@@ -841,7 +841,7 @@
 
   // 響應式設計
   @media (max-width: 768px) {
-    padding: $spacing-lg;
+    padding: $spacing-lg $spacing-md;
 
     &__header {
       padding: $spacing-lg;
@@ -900,7 +900,8 @@
   }
 
   @media (max-width: 480px) {
-    padding: $spacing-md;
+    border: 1.5px solid rgba(102, 126, 234, 0.5) !important;
+    padding: $spacing-md $spacing-sm;
 
     &__header {
       padding: $spacing-md;

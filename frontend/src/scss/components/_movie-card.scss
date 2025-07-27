@@ -12,6 +12,15 @@
   @include card-hover;
   align-self: stretch;
 
+  .h-full {
+    height: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
   .icon {
     @include icon-container;
   }
@@ -93,11 +102,11 @@
     width: 100%;
     min-width: 0px;
     max-width: 608px;
-    margin: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-self: stretch;
+    height: -webkit-fill-available;
 
     .tmdb-movie-card-info-box {
       margin-bottom: auto;
@@ -219,6 +228,16 @@
   justify-content: center;
   margin-bottom: $spacing-xl;
   padding: 0 $spacing-sm;
+
+  .movie {
+    @include card-base;
+  }
+
+  .tmdb-movie-card {
+    background: transparent;
+    border-radius: 0px;
+    box-shadow: none;
+  }
 }
 
 #coming-soon-movies {

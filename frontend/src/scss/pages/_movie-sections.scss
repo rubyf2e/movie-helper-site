@@ -4,13 +4,11 @@
 
 #popular {
   background-color: $color-bg-popular;
-  padding-top: $spacing-md;
-  padding-bottom: 4rem;
+  padding: $spacing-md $spacing-md $spacing-3xl $spacing-md;
   box-sizing: border-box;
 }
 
 #coming-soon {
   background-color: $color-bg-coming-soon;
-  padding-top: $spacing-md;
-  padding-bottom: $spacing-xl;
+  padding: $spacing-md $spacing-md $spacing-xl $spacing-md;
 }

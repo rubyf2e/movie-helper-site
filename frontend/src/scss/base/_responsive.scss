@@ -4,7 +4,13 @@
 
 // Large screens (1025px+)
 @media (min-width: 1025px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
   #popular-movies {
+    .w-full,
     .movie {
       width: 300px;
       flex: 0 0 auto;
@@ -23,10 +29,16 @@
 
 // Medium-Large screens (1025px - 1400px)
 @media (min-width: 1025px) and (max-width: 1400px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
   #popular-movies {
     gap: 1rem;
     padding: 0 1rem;
 
+    .w-full,
     .movie {
       width: calc(25% - 0.75rem);
       min-width: 220px;
@@ -53,14 +65,20 @@
 
 // Medium screens (641px - 1024px)
 @media (max-width: 1024px) and (min-width: 641px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
   #popular-movies {
     gap: 1.5rem;
     padding: 0 1rem;
 
+    .w-full,
     .movie {
-      width: calc(50% - 0.75rem);
-      min-width: 280px;
-      max-width: 400px;
+      width: 90%;
+      min-width: 350px;
+      max-width: 500px;
     }
   }
 
@@ -84,6 +102,11 @@
 
 // Small-Medium screens (900px and below)
 @media (max-width: 900px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
   .tags {
     flex-wrap: wrap;
     gap: 1rem;
@@ -132,6 +155,11 @@
 
 // Medium screens (760px+)
 @media (min-width: 760px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
   .movie.upcoming {
     min-width: 320px;
     max-width: 480px;
@@ -142,10 +170,27 @@
     justify-content: center;
     margin: 0 auto 2rem auto;
   }
+
+  #popular-movies {
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 0 auto 2rem auto;
+
+    .w-full,
+    .movie {
+      width: 100%;
+      min-width: 320px;
+    }
+  }
 }
 
 // Small screens (640px and below)
 @media (max-width: 640px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
   .header-inner {
     padding: 0 1rem;
   }
@@ -185,10 +230,6 @@
     position: relative;
   }
 
-  .movie {
-    width: 90%;
-  }
-
   #popular-movies,
   #coming-soon-movies {
     gap: 1.2rem;
@@ -197,6 +238,7 @@
     padding: 0 0.5rem;
   }
 
+  .w-full,
   .movie {
     margin: auto;
     width: 100%;
@@ -209,6 +251,11 @@
 
 // Extra small screens (600px and below)
 @media (max-width: 600px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
   #search h2 {
     font-size: 2rem;
     margin: 1.2rem 0 1.2rem 0;
@@ -250,6 +297,20 @@
 
 // Very small screens (500px and below)
 @media (max-width: 500px) {
+  .h-full {
+    height: auto;
+    min-height: 200px;
+  }
+
+  #popular-movies {
+    .w-full,
+    .movie {
+      width: 100%;
+      min-width: 0px;
+      max-width: 608px;
+    }
+  }
+
   .movie.upcoming {
     .remind-row {
       gap: 0.7rem;

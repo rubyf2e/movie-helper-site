@@ -115,7 +115,7 @@
 
   .movie-results-section {
     margin-top: 3rem;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
   }
 
   .movie-grid-title {
@@ -152,7 +152,7 @@
   }
 
   .tmdb-movie-card {
-    background: $color-overlay-tmdb-card;
+    background: $color-bg-card-dark;
     @include card-base;
     cursor: pointer;
     @include slide-up-hover;
