@@ -11,6 +11,30 @@
   background: $color-bg-card;
   @include card-hover;
   align-self: stretch;
+  .movie-genres-box {
+    display: flex;
+    padding: 0.5rem 0 0 0;
+
+    .title {
+      padding: 0.1rem 0.5rem 0 0;
+    }
+
+    .movie-genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+
+      .genre-tag {
+        background: $color-overlay-genre-tag;
+        color: $color-text-primary;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+    }
+  }
 
   .h-full {
     height: 100%;
@@ -30,6 +54,7 @@
     top: $spacing-md;
     right: $spacing-md;
     @include badge-style;
+    padding: 0.2rem $spacing-sm;
   }
 
   // Theme variations
@@ -237,6 +262,44 @@
     background: transparent;
     border-radius: 0px;
     box-shadow: none;
+  }
+
+  .rating-badge .stars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.18em;
+    margin-left: 0;
+    letter-spacing: 0;
+
+    .star {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      svg {
+        width: 1.25em;
+        height: 1.25em;
+        fill: #facc15;
+        display: block;
+      }
+    }
+  }
+
+  .genre-tag {
+    display: inline-block;
+    margin: 0 0.1em;
+
+    &::after {
+      content: "/";
+      margin-left: 0.2em;
+    }
+
+    &:last-child::after {
+      content: "";
+      margin: 0;
+    }
   }
 }
 

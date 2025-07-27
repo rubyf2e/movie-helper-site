@@ -1,21 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { MovieAPI } from "../services/movieAPI";
+import React from "react";
+import { useGenres } from "../contexts/GenreContext";
 
 function GenreFilter({ onGenreChange, activeGenre }) {
-  const [genres, setGenres] = useState([]);
-
-  useEffect(() => {
-    const loadGenres = async () => {
-      try {
-        const genreList = await MovieAPI.fetchGenres();
-        setGenres(genreList);
-      } catch (error) {
-        console.error("載入類型失敗:", error);
-      }
-    };
-
-    loadGenres();
-  }, []);
+  const genres = useGenres();
 
   const handleGenreClick = (genreId, genreName) => {
     onGenreChange(genreId, genreName);

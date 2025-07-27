@@ -1,4 +1,5 @@
 import React from "react";
+import MovieGenres from "./MovieGenres";
 import { StarIcon } from "./Icons";
 import { MovieAPI } from "../services/movieAPI";
 
@@ -49,7 +50,10 @@ function MovieCard({ movie, video, onClick, upcoming, index }) {
             <div className="meta">
               上映日期: {movie.release_date || ""}
               <br />
-              類型: {movie.genre_ids || ""}
+              <div className="movie-genres-box">
+                <div className="title">類型: </div>
+                <MovieGenres genres={movie.genre_ids || []} type="render" />
+              </div>
             </div>
             <p>{movie.overview}</p>
           </div>
@@ -73,9 +77,16 @@ function MovieCard({ movie, video, onClick, upcoming, index }) {
       <div className={`movie ${theme.color}`}>
         <div className="tmdb-movie-card">
           <span className="rating-badge">
-            {typeof movie.vote_average === "number"
-              ? movie.vote_average.toFixed(1)
-              : "N/A"}
+            <span className="stars">
+              <span className="rating">
+                {typeof movie.vote_average === "number"
+                  ? movie.vote_average.toFixed(1)
+                  : ""}
+              </span>
+              <span className="star full">
+                <StarIcon type="full" className={`h-5 w-5 full`} />
+              </span>
+            </span>
           </span>
           {video ? (
             <div className="aspect-w-16 aspect-h-9 w-full rounded-lg overflow-hidden shadow-xl mb-6">
@@ -98,10 +109,12 @@ function MovieCard({ movie, video, onClick, upcoming, index }) {
         <div className="tmdb-movie-card-info-box">
           <div className="tmdb-movie-card-info">
             <h3>{movie.title}</h3>
-            <p>
-              {movie.release_date ? movie.release_date.slice(0, 4) : ""}｜
-              {movie.genre_ids || ""}
-            </p>
+            <div>
+              <p>
+                {movie.release_date ? movie.release_date.slice(0, 4) : ""}｜
+                <MovieGenres genres={movie.genre_ids || []} type="render" />
+              </p>
+            </div>
             <p>{movie.overview}</p>
           </div>
         </div>

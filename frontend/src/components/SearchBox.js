@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MovieAPI } from "../services/movieAPI";
+import { useGenres } from "../contexts/GenreContext";
 import TMDBMovieCard from "./TMDBMovieCard";
 import MovieModal from "./MovieModal";
 import { SearchIcon } from "./Icons";
@@ -13,23 +14,14 @@ function SearchBox() {
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [noResults, setNoResults] = useState(false);
-  // GenreFilter 相關狀態
-  const [genres, setGenres] = useState([]);
+  // 使用全域 genres
+  const genres = useGenres();
   const [activeGenre, setActiveGenre] = useState(null);
 
   useEffect(() => {
     loadPopularMovies();
-    loadGenres();
   }, []);
 
-  const loadGenres = async () => {
-    try {
-      const genreList = await MovieAPI.fetchGenres();
-      setGenres(genreList);
-    } catch (error) {
-      console.error("載入類型失敗:", error);
-    }
-  };
 
   const loadPopularMovies = async () => {
     setLoading(true);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import MovieGenres from "./MovieGenres";
 import { MovieAPI } from "../services/movieAPI";
 
 function MovieModal({ movieId, isOpen, onClose }) {
@@ -62,13 +63,7 @@ function MovieModal({ movieId, isOpen, onClose }) {
                   {movieData.vote_average.toFixed(1)} ⭐
                 </span>
               </div>
-              <div className="movie-genres">
-                {movieData.genres.map((genre) => (
-                  <span key={genre.id} className="genre-tag">
-                    {genre.name}
-                  </span>
-                ))}
-              </div>
+              <MovieGenres genres={movieData.genres} type="map" />
               <p className="movie-overview">
                 {movieData.overview || "暫無劇情簡介。"}
               </p>
