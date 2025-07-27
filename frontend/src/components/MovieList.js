@@ -26,7 +26,6 @@ function MovieList({ movies = [], upcoming }) {
           const movieIdList = movies.map((movie) => movie.id).join(",");
           const videos = await MovieAPI.getMovieVideos(movieIdList);
           setVideos(videos);
-          console.log("影片資料:", videos);
         } catch (error) {
           console.error("載入類型失敗:", error);
         }
