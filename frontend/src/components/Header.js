@@ -22,6 +22,7 @@ function Header() {
         "coming-soon",
         "search",
         "watchlist",
+        "chat",
         "about",
       ];
       const headerHeight = APP_CONFIG.HEADER_HEIGHT;
@@ -53,7 +54,11 @@ function Header() {
       <div className="header-inner">
         <div className="logo">
           <span className="logo-icon">
-            <MovieIcon />
+            <MovieIcon 
+              width="36px"
+              height="36px"
+              className="logo-movie-icon"
+            />
           </span>
           <span className="logo-text">{appTitle}</span>
         </div>
@@ -151,11 +156,29 @@ function Header() {
             </li>
             <li>
               <a
-                href="#about"
+                href="#chat"
                 className={activeLink === 5 ? "active" : ""}
                 onClick={(e) =>
                   handleLinkClick(
                     5,
+                    e,
+                    "chat",
+                    setActiveLink,
+                    setMenuOpen,
+                    APP_CONFIG.HEADER_HEIGHT
+                  )
+                }
+              >
+                聊天室
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                className={activeLink === 6 ? "active" : ""}
+                onClick={(e) =>
+                  handleLinkClick(
+                    6,
                     e,
                     "about",
                     setActiveLink,

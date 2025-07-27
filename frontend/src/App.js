@@ -8,6 +8,7 @@ import About from "./components/About";
 import Explore from "./components/Explore";
 import FloatingAIBot from "./components/FloatingAIBot";
 import Watchlist from "./components/Watchlist";
+import ChatRoom from "./components/ChatRoom";
 import "./scss/style.scss";
 
 function App() {
@@ -16,10 +17,13 @@ function App() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+
   useEffect(() => {
     document.title = process.env.REACT_APP_TITLE || "電影小幫手";
     loadPopularMovies();
   }, []);
+
+
 
   const loadPopularMovies = async () => {
     try {
@@ -88,6 +92,9 @@ function App() {
       </section>
 
       <Watchlist />
+      
+      {/* 聊天室組件 */}
+      <ChatRoom />
 
       <About />
       <Footer />
