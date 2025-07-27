@@ -64,6 +64,11 @@ function App() {
               onError={() => setImageError(true)}
               loading="lazy"
             />
+            {imageError && (
+              <div className="robot-fallback">
+                <span className="robot-emoji">🤖</span>
+              </div>
+            )}
           </div>
         </div>
 
