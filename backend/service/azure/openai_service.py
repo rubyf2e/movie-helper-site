@@ -55,6 +55,7 @@ class OpenAiService:
 
             print(this_arguments)
             
+            content = completion_message.content
             function_name = completion_message.function_call.name
             
             if 'title' in this_arguments:
@@ -67,7 +68,7 @@ class OpenAiService:
                 movie_title = this_arguments["text"]
                 movie_target = None
           
-            return True, "need to call funcation", movie_title, movie_target
+            return True, content, movie_title, movie_target
         else:
             if function_call == "auto":
                 content = completion_message.content

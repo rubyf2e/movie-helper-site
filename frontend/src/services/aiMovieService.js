@@ -49,15 +49,6 @@ class AIMovieService {
 
       if (!data.success) {
         throw new Error(data.message || "AI 分析失敗");
-      } else if (!data.keywords === "") {
-        return {
-          success: false,
-          error: "根據您的喜好找不到相關電影，請嘗試不同的描述",
-          analysis: "",
-          keywords: [],
-          movies: [],
-          totalCount: 0,
-        };
       }
 
       const movies = await this.fetchMoviesByKeywords(data.keywords);
@@ -66,21 +57,10 @@ class AIMovieService {
         success: true,
         analysis: data.analysis,
         keywords: data.keywords,
+        bot_content: data.bot_content,
         movies,
         totalCount: movies.length,
       };
-      // // 根據 AI 分析結果搜尋推薦電影
-      // const movieRecommendations = await MovieAPI.getRecommendedMovies(
-      //   data.keywords
-      // );
-
-      // return {
-      //   success: true,
-      //   analysis: data.analysis,
-      //   keywords: data.keywords,
-      //   movies: movieRecommendations || [],
-      //   totalCount: movieRecommendations?.length || 0,
-      // };
     } catch (error) {
       console.error("AI 分析失敗:", error);
 
@@ -90,6 +70,11 @@ class AIMovieService {
   }
 
   async fetchMoviesByKeywords(keywords) {
+    if (keywords.length === 0) {
+      return []; // 如果沒有關鍵字，返回空陣列
+    }
+
+    keywords = !Array.isArray(keywords) ? [keywords] : keywords;
     // 並行查詢每個關鍵字
     const results = await Promise.all(
       keywords.map((kw) => MovieAPI.searchMovies(kw))

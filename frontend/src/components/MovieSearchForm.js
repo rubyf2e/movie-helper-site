@@ -11,6 +11,7 @@ import {
 import { NOTIFICATION_TYPES } from "../utils/constants";
 
 const MovieSearchForm = ({
+  botRef,
   onMovieAdd,
   placeholder = "描述您想看的電影類型或心情...",
 }) => {
@@ -68,11 +69,18 @@ const MovieSearchForm = ({
         setAnalysisResult(result.analysis);
         setRecommendedMovies(data);
 
+        console.log(result.bot_content);
+        botRef.current?.setMessage(result.bot_content);
+        botRef.current?.open();
+
+        setTimeout(() => {
+          botRef.current?.close();
+          botRef.current?.setMessage();
+        }, 3000);
+
         if (result.totalCount === 0) {
-          showMessage(
-            "根據您的喜好找不到相關電影，請嘗試不同的描述",
-            NOTIFICATION_TYPES.WARNING
-          );
+          let words = "根據您的喜好找不到相關電影，請嘗試不同的描述";
+          showMessage(words, NOTIFICATION_TYPES.WARNING);
         } else {
           const message = data.isFallback
             ? `使用關鍵字搜尋為您推薦了 ${num} 部電影`
@@ -167,11 +175,6 @@ const MovieSearchForm = ({
     setInputValue("");
     setRecommendedMovies([]);
     setAnalysisResult("");
-  };
-
-  // 重新分析
-  const handleReAnalyze = () => {
-    handleAnalyzeAndRecommend();
   };
 
   return (
@@ -276,25 +279,6 @@ const MovieSearchForm = ({
           例如：「我想看輕鬆搞笑的電影」、「推薦一些科幻動作片」、「心情不好想看療癒的電影」
         </span>
       </div>
-
-      {/* AI 分析結果 */}
-      {analysisResult && (
-        <div className="movie-search-form__analysis">
-          <div className="movie-search-form__analysis-header">
-            <h3>🎯 AI 分析結果</h3>
-            <button
-              onClick={handleReAnalyze}
-              className="movie-search-form__reanalyze-btn"
-              disabled={isAnalyzing}
-            >
-              重新分析
-            </button>
-          </div>
-          <div className="movie-search-form__analysis-content">
-            {analysisResult}
-          </div>
-        </div>
-      )}
 
       {/* 推薦結果 */}
       {recommendedMovies.length > 0 && (

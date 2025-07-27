@@ -330,12 +330,13 @@ def analyze_movie_preference():
     data = request.get_json(silent=True) or {}
     userInput = data.get('userInput', '').strip()
     language = data.get('language', "zh-TW").strip()
-    
-    print(data, userInput, language)
+    bot_response = ''
     
     isFunctionCall, response, movie_title, movie_target = get_openai_service(current_app).azure_openai(
         userInput
     )
+    
+    bot_response = response
     
     if isFunctionCall:
         movie_title = call_tmdb(movie_title)
@@ -364,6 +365,7 @@ def analyze_movie_preference():
         
     return jsonify({
                 'success': True,
+                'bot_content': bot_response,
                 'keywords': movie_title,
     
             })

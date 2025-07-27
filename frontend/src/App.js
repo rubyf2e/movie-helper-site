@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { GenreProvider } from "./contexts/GenreContext";
 import { MovieAPI } from "./services/movieAPI";
 import Header from "./components/Header";
@@ -17,6 +17,7 @@ function App() {
   const [comingSoon, setComingSoon] = useState([]);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const botRef = useRef();
 
   useEffect(() => {
     document.title = process.env.REACT_APP_TITLE || "電影小幫手";
@@ -89,14 +90,14 @@ function App() {
           <SearchBox />
         </section>
 
-        <Watchlist />
+        <Watchlist botRef={botRef} />
 
         {/* 聊天室組件 */}
         <ChatRoom />
 
         <About />
         <Footer />
-        <FloatingAIBot />
+        <FloatingAIBot ref={botRef} />
       </div>
     </GenreProvider>
   );

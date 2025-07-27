@@ -1,10 +1,39 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 
-const FloatingAIBot = () => {
+const FloatingAIBot = forwardRef((props, ref) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [lottieLoaded, setLottieLoaded] = useState(false);
   const lottieRef = useRef(null);
+  const defaultMessage = `
+      👋 嗨！我是AI電影小幫手 ，歡迎加入電影小幫手Line頻道 @122zvykv
+      和我聊天喔～
+    `;
+  const [message, setMessage] = useState({
+    words: defaultMessage,
+    chatOptionShow: true,
+  });
+
+  useImperativeHandle(ref, () => ({
+    toggleExpanded: () => setIsExpanded((prev) => !prev),
+    open: () => setIsExpanded(true),
+    close: () => setIsExpanded(false),
+    setMessage: (words) => {
+      if (!words) {
+        setMessage({ words: defaultMessage, chatOptionShow: true });
+      } else if (typeof words === "string") {
+        setMessage({ words, chatOptionShow: false });
+      } else {
+        setMessage(words);
+      }
+    },
+  }));
 
   // 載入 Lottie 動畫檔案
   useEffect(() => {
@@ -73,27 +102,26 @@ const FloatingAIBot = () => {
             </div>
             <div className="chat-content">
               <div className="chat-message bot-message">
-                <p>
-                  👋 嗨！我是AI電影小幫手 ，歡迎加入電影小幫手Line頻道 @122zvykv
-                  和我聊天喔～
-                </p>
+                <p dangerouslySetInnerHTML={{ __html: message.words }} />
               </div>
-              <div className="chat-options">
-                <a href="https://line.me/R/ti/p/%40122zvykv">
-                  <img
-                    src={`${
-                      process.env.PUBLIC_URL || ""
-                    }/images/line_qrcode.png`}
-                    alt="qrcode"
-                  />
-                </a>
-              </div>
+              {message.chatOptionShow && (
+                <div className="chat-options">
+                  <a href="https://line.me/R/ti/p/%40122zvykv">
+                    <img
+                      src={`${
+                        process.env.PUBLIC_URL || ""
+                      }/images/line_qrcode.png`}
+                      alt="qrcode"
+                    />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
     </div>
   );
-};
+});
 
 export default FloatingAIBot;

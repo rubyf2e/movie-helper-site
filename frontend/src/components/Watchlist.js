@@ -8,7 +8,7 @@ import {
 
 import { lineAuthService } from "../services/globalServices";
 
-const Watchlist = () => {
+const Watchlist = ({ botRef }) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
@@ -261,6 +261,7 @@ const Watchlist = () => {
           <div className="watchlist__search">
             <div className="watchlist__form">
               <MovieSearchForm
+                botRef={botRef}
                 onMovieAdd={handleAddMovie}
                 placeholder="搜尋或輸入電影名稱..."
               />
