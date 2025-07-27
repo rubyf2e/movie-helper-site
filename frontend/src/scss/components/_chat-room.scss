@@ -112,6 +112,13 @@
   @media (max-width: 600px) {
     padding: $spacing-sm;
 
+    .model-selector {
+      top: 0.5rem;
+      .model-toggle {
+        padding: 0rem 0.1rem;
+      }
+    }
+
     .header-content {
       margin: 0 0 0 0;
 
@@ -254,12 +261,6 @@
   @media (max-width: 768px) {
     top: $spacing-md;
     right: $spacing-md;
-
-    .model-menu {
-      left: 0;
-      right: 0;
-      min-width: auto;
-    }
   }
 }
 
