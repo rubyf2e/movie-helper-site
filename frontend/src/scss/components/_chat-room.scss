@@ -108,6 +108,41 @@
       font-size: 0.9rem;
     }
   }
+
+  @media (max-width: 600px) {
+    padding: $spacing-sm;
+
+    .header-content {
+      margin: 0 0 0 0;
+
+      .header-title {
+        flex-direction: column; // 標題與 icon 垂直排列
+        align-items: flex-start;
+        gap: $spacing-xs;
+
+        .chat-room-subtitle {
+          font-size: 1rem;
+          padding: 0;
+          margin-top: 0;
+          text-align: center;
+          word-break: break-all;
+        }
+
+        h2 {
+          font-size: 1.1rem;
+          flex-wrap: wrap;
+          word-break: break-all;
+          gap: $spacing-xs;
+          margin: 0;
+
+          .chat-logo-icon img {
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+    }
+  }
 }
 
 // 模型選擇器
