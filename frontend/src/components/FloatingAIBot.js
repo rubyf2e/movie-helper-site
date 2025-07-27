@@ -87,18 +87,6 @@ const FloatingAIBot = () => {
                     alt="qrcode"
                   />
                 </a>
-                {/* <button className="chat-option" onClick={handleChatClick}>
-                  🎬 推薦電影
-                </button>
-                <button className="chat-option" onClick={handleChatClick}>
-                  ⭐ 評分查詢
-                </button>
-                <button className="chat-option" onClick={handleChatClick}>
-                  📅 上映時間
-                </button>
-                <button className="chat-option" onClick={handleChatClick}>
-                  💬 其他問題
-                </button> */}
               </div>
             </div>
           </div>

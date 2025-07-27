@@ -5,11 +5,18 @@ const ChatRoom = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "嗨！我是您的AI 電影小幫手，我可以幫您：\n\n🎬 推薦電影\n⭐ 分析電影評價\n📅 查詢上映資訊\n💭 討論電影情節\n🎭 介紹演員導演\n\n請選擇您想使用的 AI 模型，然後開始聊天吧！",
+      text: `嗨！我是您的AI 電影小幫手，我可以幫您：<div class="chat-content"><div class="chat-options">
+                <button class="chat-option">🎬 推薦電影</button>
+                <button class="chat-option">⭐ 分析電影評價</button> 
+                <button class="chat-option">📅 查詢上映資訊</button>
+                <button class="chat-option">💬 討論電影情節</button>
+                <button class="chat-option">🎭 介紹演員導演</button> 
+                </div></div>請選擇您想使用的 AI 模型，然後開始聊天吧！`,
       sender: "assistant",
       timestamp: new Date(),
     },
   ]);
+
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [selectedModel, setSelectedModel] = useState("gpt-4");
@@ -22,25 +29,25 @@ const ChatRoom = () => {
       id: "gpt-4",
       name: "GPT-4",
       description: "最強大的模型，適合深度電影分析",
-      icon: "🧠"
+      icon: "🧠",
     },
     {
       id: "gpt-3.5-turbo",
       name: "GPT-3.5 Turbo",
       description: "快速回應，適合一般電影討論",
-      icon: "⚡"
+      icon: "⚡",
     },
     {
       id: "claude-3",
       name: "Claude 3",
       description: "創意豐富，適合電影評論",
-      icon: "🎨"
-    }
+      icon: "🎨",
+    },
   ];
 
   // 自動滾動到最新消息
   const scrollToBottom = () => {
-    const messagesContainer = document.querySelector('.chat-room-messages');
+    const messagesContainer = document.querySelector(".chat-room-messages");
     if (messagesContainer) {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
@@ -74,7 +81,7 @@ const ChatRoom = () => {
     setMessages((prev) => [...prev, userMessage]);
     setNewMessage("");
     setIsTyping(true);
-    
+
     // 延遲滾動，確保消息已更新
     setTimeout(() => {
       scrollToBottom();
@@ -92,17 +99,18 @@ const ChatRoom = () => {
         `根據 ${selectedModel.toUpperCase()} 的資料庫，這個演員的其他作品也很值得一看。`,
         `這個導演的作品風格很獨特。您想了解他的其他電影嗎？`,
         `從 ${selectedModel.toUpperCase()} 的角度分析，這個結局確實很有深意。`,
-        `我推薦您也可以看看這個類型的其他經典作品。需要我列出一些嗎？`
+        `我推薦您也可以看看這個類型的其他經典作品。需要我列出一些嗎？`,
       ];
-      
-      const randomReply = aiReplies[Math.floor(Math.random() * aiReplies.length)];
-      
+
+      const randomReply =
+        aiReplies[Math.floor(Math.random() * aiReplies.length)];
+
       const aiMessage = {
         id: Date.now() + 1,
         text: randomReply,
         sender: "assistant",
         timestamp: new Date(),
-        model: selectedModel
+        model: selectedModel,
       };
       setMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
@@ -126,7 +134,7 @@ const ChatRoom = () => {
   };
 
   const getCurrentModel = () => {
-    return aiModels.find(model => model.id === selectedModel);
+    return aiModels.find((model) => model.id === selectedModel);
   };
 
   return (
@@ -135,27 +143,29 @@ const ChatRoom = () => {
         {/* 聊天室標題 */}
         <div className="chat-room-header">
           <div className="header-content">
-            <h2>
-              <span className="chat-logo-icon">
-                <MovieIcon />
-              </span>
-              AI 電影小幫手
-            </h2>
-            <p className="chat-room-subtitle">與 AI 討論電影，獲得專業見解</p>
+            <div className="header-title">
+              <h2>
+                <span className="chat-logo-icon">
+                  <MovieIcon />
+                </span>
+                AI 電影小幫手
+              </h2>
+              <p className="chat-room-subtitle">與 AI 討論電影，獲得專業見解</p>
+            </div>
           </div>
-          
+
           {/* 模型選擇器 */}
           <div className="model-selector">
-            <button 
+            <button
               className="model-toggle"
               onClick={() => setIsModelMenuOpen(!isModelMenuOpen)}
             >
               <span className="model-icon">{getCurrentModel().icon}</span>
               <span className="model-name">{getCurrentModel().name}</span>
-              <svg 
-                className={`dropdown-arrow ${isModelMenuOpen ? 'open' : ''}`}
-                width="12" 
-                height="12" 
+              <svg
+                className={`dropdown-arrow ${isModelMenuOpen ? "open" : ""}`}
+                width="12"
+                height="12"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -164,13 +174,15 @@ const ChatRoom = () => {
                 <polyline points="6,9 12,15 18,9"></polyline>
               </svg>
             </button>
-            
+
             {isModelMenuOpen && (
               <div className="model-menu">
                 {aiModels.map((model) => (
                   <button
                     key={model.id}
-                    className={`model-option ${selectedModel === model.id ? 'active' : ''}`}
+                    className={`model-option ${
+                      selectedModel === model.id ? "active" : ""
+                    }`}
                     onClick={() => {
                       setSelectedModel(model.id);
                       setIsModelMenuOpen(false);
@@ -179,7 +191,9 @@ const ChatRoom = () => {
                     <span className="model-icon">{model.icon}</span>
                     <div className="model-info">
                       <span className="model-name">{model.name}</span>
-                      <span className="model-description">{model.description}</span>
+                      <span className="model-description">
+                        {model.description}
+                      </span>
                     </div>
                   </button>
                 ))}
@@ -201,10 +215,14 @@ const ChatRoom = () => {
                   <div className="message-header">
                     {message.sender === "assistant" && (
                       <div className="ai-info">
-                        <span className="ai-icon"><MovieIcon /></span>
+                        <span className="ai-icon">
+                          <MovieIcon />
+                        </span>
                         <span className="ai-name">AI 電影小幫手</span>
                         {message.model && (
-                          <span className="model-badge">{message.model.toUpperCase()}</span>
+                          <span className="model-badge">
+                            {message.model.toUpperCase()}
+                          </span>
                         )}
                       </div>
                     )}
@@ -215,23 +233,30 @@ const ChatRoom = () => {
                       </div>
                     )}
                   </div>
-                  <div className="message-text">{message.text}</div>
+                  <div
+                    className="message-text"
+                    dangerouslySetInnerHTML={{ __html: message.text }}
+                  />
                   <div className="message-time">
                     {formatTime(message.timestamp)}
                   </div>
                 </div>
               </div>
             ))}
-            
+
             {/* 輸入中指示器 */}
             {isTyping && (
               <div className="chat-message assistant-message">
                 <div className="message-content">
                   <div className="typing-indicator">
                     <div className="ai-info">
-                      <span className="ai-icon"><MovieIcon /></span>
+                      <span className="ai-icon">
+                        <MovieIcon />
+                      </span>
                       <span className="ai-name">AI 電影小幫手</span>
-                      <span className="model-badge">{selectedModel.toUpperCase()}</span>
+                      <span className="model-badge">
+                        {selectedModel.toUpperCase()}
+                      </span>
                     </div>
                     <div className="typing-dots">
                       <span></span>
@@ -242,7 +267,7 @@ const ChatRoom = () => {
                 </div>
               </div>
             )}
-            
+
             <div ref={messagesEndRef} />
           </div>
 
@@ -285,4 +310,4 @@ const ChatRoom = () => {
   );
 };
 
-export default ChatRoom; 
+export default ChatRoom;
