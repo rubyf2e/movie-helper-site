@@ -9,6 +9,7 @@ import About from "./components/About";
 import Explore from "./components/Explore";
 import FloatingAIBot from "./components/FloatingAIBot";
 import Watchlist from "./components/Watchlist";
+import ChatRoom from "./components/ChatRoom";
 import "./scss/style.scss";
 
 function App() {
@@ -17,10 +18,13 @@ function App() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+
   useEffect(() => {
     document.title = process.env.REACT_APP_TITLE || "電影小幫手";
     loadPopularMovies();
   }, []);
+
+
 
   const loadPopularMovies = async () => {
     try {
@@ -89,6 +93,33 @@ function App() {
         <Footer />
         <FloatingAIBot />
       </div>
+
+      <Explore />
+
+      <section id="popular">
+        <h2>熱門電影</h2>
+        <MovieList movies={popular} />
+      </section>
+
+      <section id="coming-soon">
+        <h2>即將上映</h2>
+        <MovieList movies={comingSoon} upcoming />
+      </section>
+
+      <section id="search">
+        <h2>電影搜尋</h2>
+        <SearchBox />
+      </section>
+
+      <Watchlist />
+      
+      {/* 聊天室組件 */}
+      <ChatRoom />
+
+      <About />
+      <Footer />
+      <FloatingAIBot />
+    </div>
     </GenreProvider>
   );
 }
