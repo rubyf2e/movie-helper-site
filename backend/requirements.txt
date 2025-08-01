@@ -14,3 +14,8 @@ pytest-flask==1.3.0
 
 # SQLAlchemy 依賴
 greenlet==3.2.3
+
+ipython
+langchain_openai
+langchain_ollama
+langchain_google_genai
