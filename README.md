@@ -17,9 +17,7 @@
 為了不讓經驗變成框架，我選擇用「初學者的方式」去與 AI 協作，並調整心態，讓自己站在和初學者一樣的角度去使用 AI 撰寫這個專案。
 
 <details>
-<summary><strong> 🌱 2025.07.10 調整電影待看清單</strong></summary>
-
-##### 完成工時：一天
+<summary><strong> 🌱 2025.07.17 調整電影待看清單</strong></summary>
 
 - **1️⃣ 電影待看清單新增電影搜尋功能**
 
@@ -75,8 +73,6 @@
 <details>
 <summary><strong> 🌱 2025.07.10 將 TMDB API 串接從 React 轉移到 Flask</strong></summary>
 
-##### 完成工時：半天
-
 - **1️⃣ 跟 Copilot 討論 Flask 與 React 專案部署策略**
 
   - Copilot 建議兩種常見方案：
@@ -95,8 +91,6 @@
 
 <details>
   <summary><strong> 🌱 2025.07.09 整合 Gemini 生成的網頁元件</strong></summary>
-
-##### 完成工時：一天
 
 - **1️⃣ 使用 Gemini Canvas 生成元件雛形**
   - 用 prompt 請 Gemini 擔任前端工程師，提供工程師專業術語描述的 prompt 要求 Gemini 用 Canvas 生成電影待看清單元件雛形
@@ -120,8 +114,6 @@
 </details>
 <details>
   <summary><strong> 🌱 2025.07.09 整合 Gemini 專案企劃書雛形程式</strong></summary>
-
-##### 完成工時：因為是整理學到的東西所以難以估計
 
 - **1️⃣ 使用 Gemini Canvas 生成系統雛形**
 
@@ -182,8 +174,6 @@
 <details>
 <summary><strong> 🌱 2025.07.08 專案導入 ENV、Scss、AI客服介面 完成</strong></summary>
 
-##### 完成工時：一天
-
 - **1️⃣ 新增 ENV 請 Copilot 改寫程式**
 
   - 新增環境配置的 .env
@@ -237,8 +227,6 @@
 
 <details>
 <summary><strong>🌱 2025.07.07 靜態頁轉 React 完成</strong></summary>
-
-##### 完成工時：一天
 
 - **1️⃣ 初始化與轉換開始**
 
@@ -318,8 +306,6 @@
 <details>
 <summary><strong>🌱 2025.06.24 靜態頁完成</strong></summary>
 
-##### 完成工時：兩天
-
 這是第一次用生成式 AI 協作生成的網站，也是將慣用工具從 Sublime Text 轉 VScode 中產生的作品。在協作過程中，發現生成式 AI 比較適合雛形開發，Canva AI 可以幫工程師先行設計畫面和文案，但其網站為壓縮編寫的程式碼不可直接套用，但可透過瀏覽器開發者工具觀看其樣式重新雕刻，ChatGPT 及 VScode GitHub Copilot 可以使用上傳截圖分析產生雛形程式碼和專案規格，完成率可以達到 50%，剩餘的 50%就是需要工程師進行微調修改。
 
 結論：生成式 AI 的出現讓工程師在前端頁面刻板可以有快速的雛形，並且在查詢相關語法時可以節省大量時間，甚至可以透過生成式 AI 的回覆間接學習到最新的程式寫法，越使用生成式 AI，程式能力會跟著提升，但如果要完成可商用的專案，還是非常需要工程師的基礎功和實力。
@@ -334,7 +320,6 @@
 - **模組化架構**: SCSS 元件化設計、React 組件化開發、服務導向架構
 - **前後端分離**: React 前端 + Flask 後端，支援 TMDB API 與 AI 服務整合
 - **環境變數管理**: 安全的 API 密鑰管理與多環境配置
-- **完整測試覆蓋**: Jest + React Testing Library 單元測試，包含錯誤處理測試
 - **自動化部署**: GitHub Actions 整合與部署，支援前後端分離部署
 - **AI 協作開發**: 使用 Google NotebookLM + Canva AI + ChatGPT + Google Gemini + GitHub Copilot 協作生成
 
@@ -351,7 +336,6 @@
 - **互動式搜尋**: 搜尋框與標籤篩選功能
 - **平滑導航**: 錨點連結與平滑滾動效果
 - **組件化架構**: 高度模組化的 React 組件設計
-- **完整測試**: Jest + React Testing Library 單元測試
 - **PWA 支援**: 漸進式網頁應用配置
 - **SEO 優化**: 語意化 HTML 與 meta 標籤優化
 - **浮動 AI 客服**: 智能客服介面與互動體驗
@@ -365,8 +349,6 @@
 - **身份驗證**：LINE Login OAuth 2.0
 - **資料管理**：統一常數管理系統 (constants.js)、localStorage 本地儲存
 - **動畫**：Lottie Animation (@lottiefiles/lottie-player)
-- **測試**：Jest + React Testing Library
-- **部署**：GitHub Pages (前端) + Render/Heroku (後端) + GitHub Actions
 - **跨域處理**：Flask-CORS、ngrok 隧道支援
 - **環境管理**：多環境變數配置 (.env)
 
@@ -490,114 +472,3 @@ App.js (主應用)
 - **movies.py**: 電影相關 API、AI 推薦端點、LINE 整合
 - **tmdb_service.py**: TMDB API 後端整合、資料處理
 - **config.py**: 後端配置管理、環境變數處理
-
-### 🧪 測試覆蓋
-
-專案包含完整的單元測試，覆蓋所有 React 組件：
-
-- **組件測試**: 10 個組件測試文件
-- **整合測試**: App.js 主應用測試
-- **測試工具**: Jest + React Testing Library
-- **測試類型**: 渲染測試、交互測試、快照測試
-
-運行測試：
-
-```bash
-npm test                # 運行所有測試
-npm test -- --coverage # 運行測試並生成覆蓋率報告
-npm test -- --watch    # 監聽模式運行測試
-```
-
-## 🚀 使用方式
-
-### 開發環境設置
-
-1. **安裝依賴**：
-
-   ```bash
-   npm install
-   ```
-
-2. **啟動開發伺服器**：
-
-   ```bash
-   npm start
-   ```
-
-3. **運行測試**：
-
-   ```bash
-   npm test
-   ```
-
-4. **構建生產版本**：
-
-   ```bash
-   npm run build
-   ```
-
-### 本地部署方式
-
-#### 方式一：使用 React 開發伺服器（推薦）
-
-```bash
-# 克隆專案
-git clone https://github.com/rubyf2e/movie-helper-site.git
-cd movie-helper-site
-
-# 安裝依賴
-npm install
-
-# 啟動開發伺服器
-npm start
-```
-
-瀏覽器會自動開啟 `http://localhost:3000`
-
-#### 方式二：生產版本部署
-
-```bash
-# 構建生產版本
-npm run build
-
-# 使用靜態伺服器運行
-npx serve -s build
-```
-
-或使用其他靜態伺服器：
-
-```bash
-# Python HTTP Server
-cd build && python3 -m http.server 8000
-
-# Node.js http-server
-npm install -g http-server
-cd build && http-server -p 8000
-```
-
-#### 方式三：VS Code Live Server
-
-1. 在 VS Code 中安裝 "Live Server" 擴展
-2. 構建專案：`npm run build`
-3. 右鍵點擊 `build/index.html`
-4. 選擇 "Open with Live Server"
-
-#### 瀏覽地址
-
-- **開發模式**：`http://localhost:3000`
-- **生產模式**：`http://localhost:8000` 或 `http://localhost:5000`（依使用的伺服器而定）
-
-```bash
-ngrok http 5000 --host-header="localhost:5000"
-# 這樣 ngrok 會：
-# 1. 接收外部請求（Host: 99bce85b0333.ngrok-free.app）
-# 2. 將 Host header 改寫為 localhost:5000
-# 3. 轉發給本地伺服器（Host: localhost:5000）
-```
-
-### 手動觸發部署
-
-```bash
-git commit --allow-empty -m "Force rebuild to update environment variables"
-git push
-```
