@@ -14,7 +14,7 @@ class ChatService:
     def __init__(self, config):
         self.config = config
 
-    def chat(self, user_input, type='azure'):
+    def chat(self, user_input, type='gemini'):
         chat_map = {
             'azure': self.azure_chat,
             'azure_completions': self.azure_completions_chat,

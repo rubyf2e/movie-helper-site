@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { MovieIcon } from "./Icons";
+import { ChatAPI } from "../services/chatAPI";
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState([
@@ -19,29 +20,29 @@ const ChatRoom = () => {
 
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("gpt-4");
+  const [selectedModel, setSelectedModel] = useState("gemini");
   const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
   const aiModels = [
     {
-      id: "gpt-4",
-      name: "GPT-4",
-      description: "最強大的模型，適合深度電影分析",
+      id: "gemini",
+      name: "Gemini",
+      description: "",
+      icon: "✨",
+    },
+    {
+      id: "azure",
+      name: "Azure",
+      description: "",
       icon: "🧠",
     },
     {
-      id: "gpt-3.5-turbo",
-      name: "GPT-3.5 Turbo",
-      description: "快速回應，適合一般電影討論",
+      id: "ollama",
+      name: "Ollama",
+      description: "",
       icon: "⚡",
-    },
-    {
-      id: "claude-3",
-      name: "Claude 3",
-      description: "創意豐富，適合電影評論",
-      icon: "🎨",
     },
   ];
 
@@ -79,6 +80,7 @@ const ChatRoom = () => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const currentMessage = newMessage.trim();
     setNewMessage("");
     setIsTyping(true);
 
@@ -87,34 +89,39 @@ const ChatRoom = () => {
       scrollToBottom();
     }, 100);
 
-    // 模擬 AI 回覆（實際應用中這裡會調用 ChatGPT API）
-    setTimeout(() => {
-      const aiReplies = [
-        `我使用 ${selectedModel.toUpperCase()} 模型來回答您的問題。這部電影確實很精彩！您想了解更多關於劇情、演員還是導演的信息嗎？`,
-        `根據 ${selectedModel.toUpperCase()} 的分析，這部電影在技術層面表現出色。您對哪個方面特別感興趣？`,
-        `作為您的AI 電影小幫手，我推薦您也可以看看同類型的其他作品。需要我為您推薦一些嗎？`,
-        `這個問題很有趣！讓我用 ${selectedModel.toUpperCase()} 的視角來分析一下這個電影情節。`,
-        `我理解您對這部電影的感受。從 ${selectedModel.toUpperCase()} 的角度來看，這個觀點很有見地。`,
-        `這部電影的配樂確實很棒！您想了解更多關於電影音樂的信息嗎？`,
-        `根據 ${selectedModel.toUpperCase()} 的資料庫，這個演員的其他作品也很值得一看。`,
-        `這個導演的作品風格很獨特。您想了解他的其他電影嗎？`,
-        `從 ${selectedModel.toUpperCase()} 的角度分析，這個結局確實很有深意。`,
-        `我推薦您也可以看看這個類型的其他經典作品。需要我列出一些嗎？`,
-      ];
+    try {
+      // 將前端模型 ID 轉換為後端格式
+      const backendModel = ChatAPI.mapModelToBackend(selectedModel);
 
-      const randomReply =
-        aiReplies[Math.floor(Math.random() * aiReplies.length)];
+      // 調用真實的 chat API
+      const response = await ChatAPI.sendMessage(currentMessage, backendModel);
 
       const aiMessage = {
         id: Date.now() + 1,
-        text: randomReply,
+        text: response.response || "抱歉，我現在無法回應您的問題。",
         sender: "assistant",
         timestamp: new Date(),
         model: selectedModel,
       };
+
       setMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
-    }, 1000 + Math.random() * 2000);
+    } catch (error) {
+      console.error("發送訊息失敗:", error);
+
+      // 錯誤處理：顯示錯誤訊息
+      const errorMessage = {
+        id: Date.now() + 1,
+        text: `抱歉，${error.message || "系統發生錯誤，請稍後再試。"}`,
+        sender: "assistant",
+        timestamp: new Date(),
+        model: selectedModel,
+        isError: true,
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+      setIsTyping(false);
+    }
   };
 
   const formatTime = (timestamp) => {

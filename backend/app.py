@@ -1,9 +1,13 @@
 from flask_cors import CORS
 import os
-from config import config
+from config import config, config_ini
 from flask import Flask
 from api.movies import movies_bp
 from api.line import line_bp
+from flask import request, jsonify
+from service.chat_service import ChatService
+
+
 
 def create_app(config_name=None):
     app = Flask(__name__)
@@ -14,6 +18,31 @@ def create_app(config_name=None):
    
     app.register_blueprint(movies_bp, url_prefix='/api/movies')
     app.register_blueprint(line_bp, url_prefix='/api/line')
+    
+    @app.route('/api/chat', methods=['POST'])
+    def chat():
+        if request.method == 'OPTIONS':
+            return '', 200 
+    
+        try:
+            user_input = request.json.get('user_input')
+            chat_model = request.json.get('chat_model', 'gemini')
+            
+            # 建立 ChatService 實例並傳入配置
+            chat_service = ChatService(config_ini)
+            response_text = chat_service.chat(user_input, chat_model)
+            
+            return jsonify({
+                'response': response_text,
+                'model': chat_model,
+                'status': 'success'
+            })
+        except Exception as e:
+            return jsonify({
+                'response': 'chat 模型需要升級，暫時無法提供服務',
+                'error': str(e),
+                'status': 'error'
+            }), 500
 
     @app.route('/health')
     def health_check():
