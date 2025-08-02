@@ -49,6 +49,7 @@ export const API_ENDPOINTS = {
   LINE_AUTH_TOKEN_PROFILE: "/line/auth/line/token_profile",
   LINE_LOGIN_CALLBACK: "/line/login/callback",
   CHAT: "/chat",
+  CHAT_STREAM: "/chat/stream",
 };
 
 // HTTP 請求標頭常數

@@ -89,38 +89,125 @@ const ChatRoom = () => {
       scrollToBottom();
     }, 100);
 
+    // 創建一個即時更新的 AI 訊息
+    const aiMessageId = Date.now() + 1;
+    const aiMessage = {
+      id: aiMessageId,
+      text: "",
+      sender: "assistant",
+      timestamp: new Date(),
+      model: selectedModel,
+      isStreaming: true,
+    };
+
+    setMessages((prev) => [...prev, aiMessage]);
+    setIsTyping(false);
+
     try {
       // 將前端模型 ID 轉換為後端格式
       const backendModel = ChatAPI.mapModelToBackend(selectedModel);
 
-      // 調用真實的 chat API
-      const response = await ChatAPI.sendMessage(currentMessage, backendModel);
+      // 調用流式 chat API
+      await ChatAPI.sendMessageStream(
+        currentMessage,
+        backendModel,
+        // onChunk - 每次收到新內容時調用
+        (chunk, fullResponse) => {
+          let chunkObj;
+          try {
+            chunkObj = typeof chunk === "string" ? JSON.parse(chunk) : chunk;
+          } catch {
+            chunkObj = {};
+          }
 
-      const aiMessage = {
-        id: Date.now() + 1,
-        text: response.response || "抱歉，我現在無法回應您的問題。",
-        sender: "assistant",
-        timestamp: new Date(),
-        model: selectedModel,
-      };
+          if (chunkObj.type === "start") {
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === aiMessageId
+                  ? {
+                      ...msg,
+                      text: "AI 正在思考中...",
+                      isStreaming: true,
+                    }
+                  : msg
+              )
+            );
+            return;
+          }
 
-      setMessages((prev) => [...prev, aiMessage]);
-      setIsTyping(false);
+          if (chunkObj.type === "error") {
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === aiMessageId
+                  ? {
+                      ...msg,
+                      text: `抱歉，${
+                        chunkObj.message || "系統發生錯誤，請稍後再試。"
+                      }`,
+                      isError: true,
+                      isStreaming: false,
+                    }
+                  : msg
+              )
+            );
+            return; // 不再更新後續 chunk
+          }
+
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId
+                ? { ...msg, text: fullResponse, isStreaming: true }
+                : msg
+            )
+          );
+          // 每次更新後滾動到底部
+          setTimeout(scrollToBottom, 50);
+        },
+        // onComplete - 完成時調用
+        (fullResponse) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId
+                ? { ...msg, text: fullResponse, isStreaming: false }
+                : msg
+            )
+          );
+          setTimeout(scrollToBottom, 50);
+        },
+        // onError - 錯誤時調用
+        (error) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId
+                ? {
+                    ...msg,
+                    text: `抱歉，${
+                      error.message || "系統發生錯誤，請稍後再試。"
+                    }`,
+                    isError: true,
+                    isStreaming: false,
+                  }
+                : msg
+            )
+          );
+        }
+      );
     } catch (error) {
       console.error("發送訊息失敗:", error);
 
-      // 錯誤處理：顯示錯誤訊息
-      const errorMessage = {
-        id: Date.now() + 1,
-        text: `抱歉，${error.message || "系統發生錯誤，請稍後再試。"}`,
-        sender: "assistant",
-        timestamp: new Date(),
-        model: selectedModel,
-        isError: true,
-      };
-
-      setMessages((prev) => [...prev, errorMessage]);
-      setIsTyping(false);
+      // 錯誤處理：更新 AI 訊息為錯誤狀態
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === aiMessageId
+            ? {
+                ...msg,
+                text: `抱歉，${error.message || "系統發生錯誤，請稍後再試。"}`,
+                isError: true,
+                isStreaming: false,
+              }
+            : msg
+        )
+      );
     }
   };
 
@@ -244,6 +331,11 @@ const ChatRoom = () => {
                     className="message-text"
                     dangerouslySetInnerHTML={{ __html: message.text }}
                   />
+                  {message.isStreaming && (
+                    <div className="streaming-indicator">
+                      <span className="streaming-dot"></span>
+                    </div>
+                  )}
                   <div className="message-time">
                     {formatTime(message.timestamp)}
                   </div>
