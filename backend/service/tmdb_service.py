@@ -87,6 +87,7 @@ class TMDBService:
         """獲取熱門電影"""
         endpoint = "/discover/movie"
         params = {
+            'region':'TW',
             'sort_by': 'popularity.desc',
             'with_release_type':'2|3',
             'release_date.gte':min_date,
