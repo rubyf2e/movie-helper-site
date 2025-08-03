@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import MovieGenres from "./MovieGenres";
 import { MovieAPI } from "../services/movieAPI";
 import { DEFAULT_STORAGE_KEY, NOTIFICATION_TYPES } from "../utils/constants";
@@ -41,7 +42,6 @@ function MovieModal({ movieId, isOpen, onClose }) {
       const savedMovies = localStorage.getItem(DEFAULT_STORAGE_KEY);
       const movies = savedMovies ? JSON.parse(savedMovies) : [];
 
-      // 檢查是否已存在
       const exists = movies.some(
         (movie) => movie.id === movieData.id || movie.title === movieData.title
       );
@@ -51,7 +51,6 @@ function MovieModal({ movieId, isOpen, onClose }) {
         return;
       }
 
-      // 添加到清單
       const movieToAdd = {
         id: movieData.id,
         title: movieData.title,
@@ -88,7 +87,6 @@ function MovieModal({ movieId, isOpen, onClose }) {
 
       localStorage.setItem(DEFAULT_STORAGE_KEY, JSON.stringify(updatedMovies));
 
-      // 觸發自定義事件通知其他組件
       window.dispatchEvent(new Event("watchlistUpdated"));
 
       setIsInWatchlist(false);
@@ -109,7 +107,6 @@ function MovieModal({ movieId, isOpen, onClose }) {
         const data = await MovieAPI.getMovieDetails(movieId);
         setMovieData(data);
 
-        // 檢查是否已在待看清單中
         setIsInWatchlist(checkIfInWatchlist(data));
       } catch (error) {
         console.error("載入電影詳情失敗:", error);
@@ -123,6 +120,25 @@ function MovieModal({ movieId, isOpen, onClose }) {
     }
   }, [isOpen, movieId]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+
+      const handleEscape = (e) => {
+        if (e.key === "Escape") {
+          onClose();
+        }
+      };
+
+      document.addEventListener("keydown", handleEscape);
+
+      return () => {
+        document.body.style.overflow = "auto";
+        document.removeEventListener("keydown", handleEscape);
+      };
+    }
+  }, [isOpen, onClose]);
+
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -131,9 +147,9 @@ function MovieModal({ movieId, isOpen, onClose }) {
 
   if (!isOpen) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div className="modal-backdrop" onClick={handleBackdropClick}>
-      <div className="movie-modal">
+      <div className="movie-modal" onClick={(e) => e.stopPropagation()}>
         {/* 通知訊息 */}
         {notification.show && (
           <div className={`notification notification-${notification.type}`}>
@@ -217,7 +233,8 @@ function MovieModal({ movieId, isOpen, onClose }) {
           <div className="modal-error">無法載入電影詳細資訊</div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
