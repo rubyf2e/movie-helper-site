@@ -340,161 +340,98 @@
 
 ## 📦 特點
 
-- **RWD 響應式設計**: 完美適配桌面版、平板、手機等各種裝置
-- **AI 電影推薦系統**: 智能分析用戶喜好並推薦相關電影，整合 Azure OpenAI 服務
-- **LINE 登入整合**: 完整的 LINE 身份驗證流程、令牌管理與社群功能
-- **模組化架構**: SCSS 元件化設計、React 組件化開發、服務導向架構
-- **前後端分離**: React 前端 + Flask 後端，支援 TMDB API 與 AI 服務整合
-- **環境變數管理**: 安全的 API 密鑰管理與多環境配置
-- **自動化部署**: GitHub Actions 整合與部署，支援前後端分離部署
-- **AI 協作開發**: 使用 Google NotebookLM + Canva AI + ChatGPT + Google Gemini + GitHub Copilot 協作生成
+### 🎯 核心功能特色
 
-## 💡 功能
-
-- **響應式設計**: 支援桌面版、平板、手機等各種裝置
-- **AI 電影推薦**: 智能分析使用者電影喜好，提供個人化推薦清單
-- **LINE 社群整合**: LINE 登入認證、電影清單分享到 LINE 官方帳號
-- **電影待看清單**: 新增、移除、管理個人電影清單，支援本地儲存
-- **TMDB API 整合**: 真實電影資料搜尋、類型篩選、詳情查看
-- **智能搜尋**: 支援電影名稱關鍵字搜尋，即時結果顯示
-- **類型篩選**: 動態載入電影類型，一鍵篩選特定類型電影
-- **電影詳情彈窗**: 顯示完整電影資訊（導演、演員、劇情、評分）
-- **互動式搜尋**: 搜尋框與標籤篩選功能
-- **平滑導航**: 錨點連結與平滑滾動效果
-- **組件化架構**: 高度模組化的 React 組件設計
-- **PWA 支援**: 漸進式網頁應用配置
-- **SEO 優化**: 語意化 HTML 與 meta 標籤優化
-- **浮動 AI 客服**: 智能客服介面與互動體驗
+- **🎬 AI 智能電影推薦**: 整合 Azure OpenAI、Gemini 多模型，提供個人化電影推薦與即時串流聊天
+- **📱 LINE 社群生態**: 完整 LINE Login OAuth 2.0 認證、官方帳號通知、電影清單分享
+- **🎭 TMDB 電影資料庫**: 真實電影資料搜尋、類型篩選、詳情查看、預告片播放
+- **📝 個人化清單管理**: 電影待看清單、收藏功能、本地儲存、LINE 提醒通知
+- **🤖 浮動 AI 客服**: Lottie 動畫互動、智能對話、即時回應
 
 ## 🛠 技術架構
 
-- **前端框架**：React 19.1.0
-- **後端框架**：Flask (Python) - 處理 AI 推薦與 LINE 整合
-- **樣式**：SCSS + Responsive Design（模組化架構）
-- **API 整合**：TMDB (The Movie Database) API v3、Azure OpenAI API、LINE Bot API
-- **身份驗證**：LINE Login OAuth 2.0
-- **資料管理**：統一常數管理系統 (constants.js)、localStorage 本地儲存
-- **動畫**：Lottie Animation (@lottiefiles/lottie-player)
-- **跨域處理**：Flask-CORS、ngrok 隧道支援
-- **環境管理**：多環境變數配置 (.env)
+### 💻 前端技術棧
 
-## 🗂 專案結構
+- **核心框架**: React 19.1.0
+- **樣式系統**: SCSS 模組化架構 + 響應式設計 + CSS Grid/Flexbox
+- **動畫效果**: Lottie Animation + CSS Transitions
 
-```text
-movie-helper-site/
-├── frontend/                        # React 前端應用
-│   ├── public/                      # 靜態資源
-│   │   ├── data/
-│   │   │   └── content.json        # 電影資料
-│   │   ├── images/
-│   │   │   ├── MovieIcon.svg       # 應用圖標
-│   │   │   ├── AI_bot.lottie       # AI 客服動畫
-│   │   │   └── line_qrcode.png     # LINE QR Code
-│   │   ├── index.html              # 主 HTML 文件
-│   │   ├── manifest.json           # PWA 配置
-│   │   └── robots.txt              # SEO 爬蟲配置
-│   ├── src/                        # 源碼目錄
-│   │   ├── components/             # React 組件
-│   │   │   ├── About.js           # 關於我們組件
-│   │   │   ├── Explore.js         # 探索數據組件
-│   │   │   ├── FloatingAIBot.js   # 浮動 AI 客服組件
-│   │   │   ├── Footer.js          # 頁尾組件
-│   │   │   ├── GenreFilter.js     # TMDB 類型篩選組件
-│   │   │   ├── Header.js          # 頁首與導航組件
-│   │   │   ├── Icons.js           # SVG 圖標集合
-│   │   │   ├── MovieCard.js       # 電影卡片組件
-│   │   │   ├── MovieList.js       # 電影列表組件
-│   │   │   ├── MovieModal.js      # TMDB 電影詳情彈窗組件
-│   │   │   ├── MovieSearchForm.js # AI 電影搜尋表單組件
-│   │   │   ├── MovieTags.js       # 電影標籤組件
-│   │   │   ├── SearchBox.js       # 搜尋框組件
-│   │   │   ├── TMDBMovieCard.js   # TMDB 電影卡片組件
-│   │   │   ├── Watchlist.js       # 電影待看清單組件
-│   │   │   └── __tests__/         # 組件測試
-│   │   ├── services/              # 服務層
-│   │   │   ├── aiMovieService.js  # AI 電影推薦服務
-│   │   │   ├── lineAuthService.js # LINE 認證服務
-│   │   │   ├── movieAPI.js        # TMDB API 整合服務
-│   │   │   └── globalServices.js  # 全域服務管理
-│   │   ├── utils/                 # 工具函數
-│   │   │   └── constants.js       # 統一常數管理
-│   │   ├── scss/                  # 樣式系統（SCSS 模組化）
-│   │   │   ├── abstracts/         # 抽象層（變數、混合、動畫）
-│   │   │   ├── base/              # 基礎層
-│   │   │   ├── components/        # 組件樣式
-│   │   │   ├── layout/            # 佈局樣式
-│   │   │   ├── pages/             # 頁面樣式
-│   │   │   └── style.scss         # 主樣式文件
-│   │   ├── App.js                 # 主應用組件
-│   │   └── index.js               # 應用入口點
-│   └── package.json               # 前端依賴與腳本
-├── backend/                        # Flask 後端應用
-│   ├── api/                       # API 路由
-│   │   ├── movies.py             # 電影相關 API
-│   │   └── tmdb_service.py       # TMDB 服務整合
-│   ├── tests/                     # 後端測試
-│   │   ├── conftest.py           # 測試配置
-│   │   └── test_api.py           # API 測試
-│   ├── app.py                     # Flask 主應用
-│   ├── config.py                  # 配置管理
-│   ├── requirements.txt           # Python 依賴
-│   └── runtime.txt                # Python 版本配置
-├── .github/workflows/             # GitHub Actions
-│   └── deploy-frontend.yml        # 前端部署腳本
-├── doc/                           # 專案文件
-│   └── images/                    # 說明圖片
-├── DEVELOPMENT.md                 # 開發說明文件
-└── README.md                      # 專案說明文件
-```
+### ⚙️ 後端技術棧
 
-### 📦 組件架構
+- **應用框架**: Flask (Python 3.11+)
+- **AI 服務整合**: Azure OpenAI API + Google Gemini API + Ollama API + 串流回應處理
+- **資料處理**: TMDB API v3
+- **即時通訊**: Server-Sent Events (SSE) + 多模型串流支援
+- **Docker 容器化**: Docker 部署
 
-```text
-App.js (主應用)
-├── Header.js (頁首導航)
-├── Hero Section (主視覺區塊)
-├── Explore.js (數據統計)
-├── MovieList.js (電影列表)
-│   └── MovieCard.js (電影卡片)
-├── Watchlist.js (電影待看清單)
-│   └── MovieSearchForm.js (AI 電影搜尋表單)
-├── TMDB Movie Search (TMDB 電影搜尋)
-│   ├── GenreFilter.js (類型篩選)
-│   ├── TMDBMovieCard.js (TMDB 電影卡片)
-│   └── MovieModal.js (電影詳情彈窗)
-├── SearchBox.js (搜尋功能)
-│   └── MovieTags.js (標籤篩選)
-├── FloatingAIBot.js (浮動 AI 客服)
-├── About.js (關於我們)
-└── Footer.js (頁尾)
-```
+### 🔗 API 與整合服務
+
+- **TMDB API**: 電影資料庫整合、搜尋、篩選、詳情查詢
+- **LINE Bot API**: 官方帳號通知、收藏分享、提醒服務
+- **LINE Login API**: OAuth 2.0 認證、用戶資料、令牌管理
+- **AI 模型 API**: Azure OpenAI + Gemini + Ollama + 多模型切換 + 串流回應
 
 ### 🎯 核心功能模組
 
-- **Header.js**: 響應式導航、漢堡選單、平滑滾動錨點
-- **Watchlist.js**: 電影待看清單管理、本地儲存、統計資訊、LINE 分享
-- **MovieSearchForm.js**: AI 電影推薦搜尋、偏好分析、智能推薦
-- **MovieCard.js**: 熱門電影卡片、即將上映卡片、星級評分
-- **TMDBMovieCard.js**: TMDB API 電影卡片、評分顯示、詳情觸發
-- **GenreFilter.js**: 動態類型篩選、API 驅動的類型選項
-- **MovieModal.js**: 電影詳情彈窗、完整資訊展示
-- **SearchBox.js**: 搜尋輸入框、類型標籤篩選
-- **FloatingAIBot.js**: Lottie 動畫 AI 客服、互動式選單
-- **Icons.js**: 統一管理所有 SVG 圖標（CheckIcon, MovieIcon, SearchIcon, StarIcon）
-- **Explore.js**: 數據統計展示卡片
-- **About.js**: 功能特色列表展示
+#### 🤖 AI 聊天與推薦系統
 
-### 🔧 服務層架構
+- **ChatRoom.js**: SSE 串流聊天室、多 AI 模型支援
+- **MovieSearchForm.js**: AI 電影推薦搜尋、偏好分析、智能推薦算法
+- **FloatingAIBot.js**: Lottie 動畫 AI 客服、智能引導
 
-- **aiMovieService.js**: AI 電影推薦核心服務、偏好分析、推薦算法
-- **lineAuthService.js**: LINE OAuth 認證、令牌管理、用戶資料處理
-- **movieAPI.js**: TMDB API 整合服務、電影資料獲取
-- **globalServices.js**: 全域服務實例管理、避免循環依賴
-- **constants.js**: 統一常數管理、API 端點、配置參數
+#### 🎬 電影管理功能
 
-### 🛡️ 後端 API 架構
+- **Watchlist.js**: 電影待看清單管理、本地儲存、統計資訊、LINE 分享整合
+- **MovieModal.js**: Portal 渲染電影詳情彈窗、完整資訊展示、收藏功能
+- **TMDBMovieCard.js**: TMDB API 電影卡片、評分顯示、詳情觸發、預告片播放
 
-- **app.py**: Flask 主應用、CORS 配置、路由管理
-- **movies.py**: 電影相關 API、AI 推薦端點、LINE 整合
-- **tmdb_service.py**: TMDB API 後端整合、資料處理
-- **config.py**: 後端配置管理、環境變數處理
+#### 🔍 搜尋與篩選
+
+- **GenreFilter.js**: 動態類型篩選、API 驅動選項
+- **SearchBox.js**: 智能搜尋輸入框、關鍵字建議
+- **MovieTags.js**: 標籤篩選系統
+
+#### 🔐 認證與社群
+
+- **LineLoginButton.js**: LINE OAuth 2.0 登入、令牌管理、用戶資料處理
+
+## 🚀 快速開始
+
+### 🐳 Docker 一鍵部署（推薦）
+
+```bash
+# 1. 克隆專案
+git clone https://github.com/rubyf2e/movie-helper-site.git
+cd movie-helper-site
+
+# 2. 初始化環境
+./docker-manage.sh setup
+
+# 3. 編輯 .env 文件，填入你的 API 金鑰
+nano .env
+
+# 4. 啟動開發環境
+./docker-manage.sh dev-up
+# 前端：http://localhost:3000
+# 後端：http://localhost:5000
+
+# 5. 或啟動生產環境
+./docker-manage.sh prod-up
+# 應用程式：http://localhost:80
+```
+
+### 💻 本地開發部署
+
+```bash
+# 前端開發
+cd frontend
+npm install
+npm start
+
+# 後端開發（另一個終端）
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
