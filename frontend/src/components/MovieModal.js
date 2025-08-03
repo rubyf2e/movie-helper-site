@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import MovieGenres from "./MovieGenres";
 import { MovieAPI } from "../services/movieAPI";
 import { DEFAULT_STORAGE_KEY, NOTIFICATION_TYPES } from "../utils/constants";
+import { lineAuthService } from "../services/globalServices";
 
 function MovieModal({ movieId, isOpen, onClose }) {
   const [movieData, setMovieData] = useState(null);
@@ -27,20 +28,37 @@ function MovieModal({ movieId, isOpen, onClose }) {
       if (!savedMovies) return false;
 
       const movies = JSON.parse(savedMovies);
+      
+      // 確保 movies 是陣列
+      if (!Array.isArray(movies)) {
+        console.warn("待看清單資料格式錯誤，重置為空陣列");
+        localStorage.removeItem(DEFAULT_STORAGE_KEY);
+        return false;
+      }
+      
       return movies.some(
         (savedMovie) =>
           savedMovie.id === movie.id || savedMovie.title === movie.title
       );
     } catch (error) {
       console.error("檢查待看清單時發生錯誤:", error);
+      // 如果解析失敗，清除損壞的資料
+      localStorage.removeItem(DEFAULT_STORAGE_KEY);
       return false;
     }
   };
 
-  const addToWatchlist = () => {
+  const addToWatchlist = async () => {
     try {
       const savedMovies = localStorage.getItem(DEFAULT_STORAGE_KEY);
-      const movies = savedMovies ? JSON.parse(savedMovies) : [];
+      let movies = savedMovies ? JSON.parse(savedMovies) : [];
+      
+      // 確保 movies 是陣列
+      if (!Array.isArray(movies)) {
+        console.warn("待看清單資料格式錯誤，重置為空陣列");
+        movies = [];
+        localStorage.removeItem(DEFAULT_STORAGE_KEY);
+      }
 
       const exists = movies.some(
         (movie) => movie.id === movieData.id || movie.title === movieData.title
@@ -65,10 +83,35 @@ function MovieModal({ movieId, isOpen, onClose }) {
       localStorage.setItem(DEFAULT_STORAGE_KEY, JSON.stringify(updatedMovies));
       window.dispatchEvent(new Event("watchlistUpdated"));
       setIsInWatchlist(true);
-      showMessage(
-        `成功新增「${movieData.title}」到待看清單！`,
-        NOTIFICATION_TYPES.SUCCESS
-      );
+      
+      // 發送 LINE 通知（如果用戶已登入）
+      if (lineAuthService.isAuthenticated()) {
+        try {
+          const lineResult = await lineAuthService.sendMovieListToLine([movieToAdd]);
+          if (lineResult.success) {
+            showMessage(
+              `成功新增「${movieData.title}」到待看清單並發送到 LINE！`,
+              NOTIFICATION_TYPES.SUCCESS
+            );
+          } else {
+            showMessage(
+              `已新增「${movieData.title}」到待看清單，但 LINE 發送失敗`,
+              NOTIFICATION_TYPES.WARNING
+            );
+          }
+        } catch (lineError) {
+          console.error("LINE 通知發送失敗:", lineError);
+          showMessage(
+            `已新增「${movieData.title}」到待看清單，但 LINE 發送失敗`,
+            NOTIFICATION_TYPES.WARNING
+          );
+        }
+      } else {
+        showMessage(
+          `成功新增「${movieData.title}」到待看清單！`,
+          NOTIFICATION_TYPES.SUCCESS
+        );
+      }
     } catch (error) {
       console.error("添加到待看清單失敗:", error);
       showMessage("添加失敗，請稍後再試。", NOTIFICATION_TYPES.ERROR);
@@ -80,7 +123,16 @@ function MovieModal({ movieId, isOpen, onClose }) {
       const savedMovies = localStorage.getItem(DEFAULT_STORAGE_KEY);
       if (!savedMovies) return;
 
-      const movies = JSON.parse(savedMovies);
+      let movies = JSON.parse(savedMovies);
+      
+      // 確保 movies 是陣列
+      if (!Array.isArray(movies)) {
+        console.warn("待看清單資料格式錯誤，重置為空陣列");
+        localStorage.removeItem(DEFAULT_STORAGE_KEY);
+        setIsInWatchlist(false);
+        return;
+      }
+      
       const updatedMovies = movies.filter(
         (movie) => movie.id !== movieData.id && movie.title !== movieData.title
       );
