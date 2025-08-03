@@ -1,10 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import MovieGenres from "./MovieGenres";
 import { StarIcon } from "./Icons";
 import { MovieAPI } from "../services/movieAPI";
+import { lineAuthService } from "../services/globalServices";
 
 function MovieCard({ movie, video, onClick, upcoming, index }) {
+  const [isSettingReminder, setIsSettingReminder] = useState(false);
+  const [reminderSet, setReminderSet] = useState(false);
+
   const { title, poster_path, id } = movie;
+
+  // 處理設定提醒
+  const handleSetReminder = async (e) => {
+    e.stopPropagation(); // 防止觸發電影卡片點擊
+
+    if (!lineAuthService.isAuthenticated()) {
+      alert("請先登入 LINE 帳號以設定提醒");
+      return;
+    }
+
+    setIsSettingReminder(true);
+
+    try {
+      // 計算提醒日期（上映前一天）
+      const releaseDate = new Date(movie.release_date);
+      const reminderDate = new Date(releaseDate);
+      reminderDate.setDate(reminderDate.getDate() - 1);
+
+      const result = await lineAuthService.sendMovieReminderToLine(
+        movie,
+        reminderDate.toISOString()
+      );
+
+      if (result.success) {
+        setReminderSet(true);
+        alert(`已設定「${movie.title}」的上映提醒！`);
+      } else {
+        alert(`提醒設定失敗：${result.message}`);
+      }
+    } catch (error) {
+      console.error("設定提醒失敗:", error);
+      alert("設定提醒失敗，請稍後再試");
+    } finally {
+      setIsSettingReminder(false);
+    }
+  };
   // 主題色與 icon 對應（用於熱門電影）
   const cardThemes = [
     { color: "yellow", icon: "" },
@@ -61,7 +101,17 @@ function MovieCard({ movie, video, onClick, upcoming, index }) {
 
         <div className="tmdb-movie-card-button">
           <div className="remind-row">
-            <button>設定提醒</button>
+            <button
+              onClick={handleSetReminder}
+              disabled={isSettingReminder || reminderSet}
+              className={reminderSet ? "reminder-set" : ""}
+            >
+              {isSettingReminder
+                ? "設定中..."
+                : reminderSet
+                ? "✓ 已設提醒"
+                : "設定提醒"}
+            </button>
             <span className="expect">
               期待度：<span className="stars">{stars}</span>
             </span>

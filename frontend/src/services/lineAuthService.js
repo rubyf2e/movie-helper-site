@@ -715,6 +715,67 @@ class LineAuthService {
       };
     }
   }
+
+  // 發送電影提醒到 LINE
+  async sendMovieReminderToLine(movie, reminderDate) {
+    try {
+      const accessToken = this.getIdToken();
+      if (!accessToken) {
+        console.error("Line 用戶未登入:");
+        return { success: false, message: "請先登入 LINE 帳號" };
+      }
+
+      if (!movie) {
+        return { success: false, message: "沒有電影資訊可以發送" };
+      }
+
+      const movieList = [
+        {
+          ...movie,
+          reminderDate: reminderDate,
+          isReminder: true,
+        },
+      ];
+
+      const response = await fetch(
+        `${this.apiBaseUrl}${API_ENDPOINTS.SEND_TO_LINE}`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            [HTTP_HEADERS.NGROK_SKIP_WARNING]: "true",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            movieList: movieList,
+            line_login_channel_user_id: this.getStoredUser().userId,
+            isReminder: true,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        console.warn("Line 提醒發送失敗:", response.statusText);
+        return {
+          success: false,
+          message: "提醒發送失敗",
+        };
+      } else {
+        const data = await response.json();
+        console.log("Line 提醒發送成功:", data);
+        return {
+          success: true,
+          message: "提醒設定成功",
+        };
+      }
+    } catch (error) {
+      console.error("Line 提醒發送錯誤:", error);
+      return {
+        success: false,
+        message: "提醒發送失敗",
+      };
+    }
+  }
 }
 
 export { LineAuthService };

@@ -106,19 +106,30 @@ def send_to_line():
 
     current_app.logger.info(data)
     
-    movie_title = ''
-    for movie in data['movieList']:
-        if 'title' in movie:
-            movie_title += '\n' + movie['title']
-        else:
-            movie_title = "未知電影"
-            
+    is_reminder = data.get('isReminder', False)
     line_login_channel_user_id = data['line_login_channel_user_id']
-
-    current_app.logger.info("movie_title: " + movie_title)
+    
+    if is_reminder:
+        movie = data['movieList'][0]
+        movie_title = movie.get('title', '未知電影')
+        release_date = movie.get('release_date', '')
+        reminder_date = movie.get('reminderDate', '')
+        
+        message = f"✅ 已為您設定電影提醒！\n\n🎬 電影：{movie_title}\n📅 上映日期：{release_date}\n🔔 將在上映前一天提醒您"
+        
+        current_app.logger.info(f"Setting reminder for movie: {movie_title}, release date: {release_date}")
+    else:
+        movie_title = ''
+        for movie in data['movieList']:
+            if 'title' in movie:
+                movie_title += '\n' + movie['title']
+            else:
+                movie_title = "未知電影"
+        
+        message = f"電影待看清單新增了：{movie_title}"
+    
+    current_app.logger.info("message: " + message)
     current_app.logger.info("line_login_channel_user_id: " + str(line_login_channel_user_id))
-
-    message = f"電影待看清單新增了：{movie_title}"
     
     return get_line_service(current_app).send_push_message_api(message, line_login_channel_user_id)
 

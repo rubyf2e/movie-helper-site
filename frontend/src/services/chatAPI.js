@@ -67,6 +67,7 @@ export class ChatAPI {
                 const data = JSON.parse(line.slice(6));
 
                 switch (data.type) {
+                  default:
                   case "start":
                     // 開始接收消息
                     break;

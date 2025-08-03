@@ -196,6 +196,22 @@
         margin-top: 0;
         margin-bottom: 0;
         display: inline-block;
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        &.reminder-set {
+          @include button-secondary;
+          color: $color-status-success;
+          border-color: $color-status-success;
+
+          &:hover {
+            background-color: $color-status-success;
+            color: white;
+          }
+        }
       }
 
       .expect {
