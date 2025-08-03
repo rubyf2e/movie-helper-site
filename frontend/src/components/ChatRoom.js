@@ -67,6 +67,26 @@ const ChatRoom = () => {
     }
   }, []);
 
+  const formatTime = (timestamp) => {
+    return timestamp.toLocaleTimeString("zh-TW", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage(e);
+      // 防止頁面滾動
+      e.stopPropagation();
+    }
+  };
+
+  const getCurrentModel = () => {
+    return aiModels.find((model) => model.id === selectedModel);
+  };
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -101,7 +121,6 @@ const ChatRoom = () => {
     };
 
     setMessages((prev) => [...prev, aiMessage]);
-    setIsTyping(false);
 
     try {
       // 將前端模型 ID 轉換為後端格式
@@ -116,55 +135,61 @@ const ChatRoom = () => {
           let chunkObj;
           try {
             chunkObj = typeof chunk === "string" ? JSON.parse(chunk) : chunk;
+            console.log(chunkObj);
+
+            // 收到 start chunk 時顯示等待中指示器
+            if (chunkObj.type === "start") {
+              setIsTyping(false); // 關閉底部的打字指示器
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.id === aiMessageId
+                    ? {
+                        ...msg,
+                        text: "", // 保持空文字，會顯示輸入中指示器
+                        isStreaming: true,
+                      }
+                    : msg
+                )
+              );
+              return;
+            }
+
+            if (chunkObj.type === "error") {
+              setIsTyping(false);
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.id === aiMessageId
+                    ? {
+                        ...msg,
+                        text: `抱歉，${
+                          chunkObj.message || "系統發生錯誤，請稍後再試。"
+                        }`,
+                        isError: true,
+                        isStreaming: false,
+                      }
+                    : msg
+                )
+              );
+              return; // 不再更新後續 chunk
+            }
+
+            setMessages((prev) =>
+              prev.map((msg) =>
+                msg.id === aiMessageId
+                  ? { ...msg, text: fullResponse, isStreaming: true }
+                  : msg
+              )
+            );
           } catch {
             chunkObj = {};
           }
 
-          if (chunkObj.type === "start") {
-            setMessages((prev) =>
-              prev.map((msg) =>
-                msg.id === aiMessageId
-                  ? {
-                      ...msg,
-                      text: "AI 正在思考中...",
-                      isStreaming: true,
-                    }
-                  : msg
-              )
-            );
-            return;
-          }
-
-          if (chunkObj.type === "error") {
-            setMessages((prev) =>
-              prev.map((msg) =>
-                msg.id === aiMessageId
-                  ? {
-                      ...msg,
-                      text: `抱歉，${
-                        chunkObj.message || "系統發生錯誤，請稍後再試。"
-                      }`,
-                      isError: true,
-                      isStreaming: false,
-                    }
-                  : msg
-              )
-            );
-            return; // 不再更新後續 chunk
-          }
-
-          setMessages((prev) =>
-            prev.map((msg) =>
-              msg.id === aiMessageId
-                ? { ...msg, text: fullResponse, isStreaming: true }
-                : msg
-            )
-          );
           // 每次更新後滾動到底部
           setTimeout(scrollToBottom, 50);
         },
         // onComplete - 完成時調用
         (fullResponse) => {
+          setIsTyping(false);
           setMessages((prev) =>
             prev.map((msg) =>
               msg.id === aiMessageId
@@ -209,26 +234,6 @@ const ChatRoom = () => {
         )
       );
     }
-  };
-
-  const formatTime = (timestamp) => {
-    return timestamp.toLocaleTimeString("zh-TW", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage(e);
-      // 防止頁面滾動
-      e.stopPropagation();
-    }
-  };
-
-  const getCurrentModel = () => {
-    return aiModels.find((model) => model.id === selectedModel);
   };
 
   return (
@@ -314,7 +319,11 @@ const ChatRoom = () => {
                         </span>
                         <span className="ai-name">AI 電影小幫手</span>
                         {message.model && (
-                          <span className="model-badge">
+                          <span
+                            className={`model-badge  ${
+                              message.isStreaming ? "active" : ""
+                            }`}
+                          >
                             {message.model.toUpperCase()}
                           </span>
                         )}
@@ -327,11 +336,29 @@ const ChatRoom = () => {
                       </div>
                     )}
                   </div>
-                  <div
-                    className="message-text"
-                    dangerouslySetInnerHTML={{ __html: message.text }}
-                  />
-                  {message.isStreaming && (
+
+                  {/* 如果是 AI 且 isStreaming 且 text 為空，顯示輸入中指示器 */}
+                  {message.sender === "assistant" &&
+                  message.isStreaming &&
+                  !message.text ? (
+                    <div className="typing-indicator">
+                      <div className="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                  ) : (
+                    /* 否則顯示訊息內容 */
+                    message.text && (
+                      <div
+                        className="message-text"
+                        dangerouslySetInnerHTML={{ __html: message.text }}
+                      />
+                    )
+                  )}
+
+                  {message.isStreaming && message.text && (
                     <div className="streaming-indicator">
                       <span className="streaming-dot"></span>
                     </div>
@@ -342,30 +369,6 @@ const ChatRoom = () => {
                 </div>
               </div>
             ))}
-
-            {/* 輸入中指示器 */}
-            {isTyping && (
-              <div className="chat-message assistant-message">
-                <div className="message-content">
-                  <div className="typing-indicator">
-                    <div className="ai-info">
-                      <span className="ai-icon">
-                        <MovieIcon />
-                      </span>
-                      <span className="ai-name">AI 電影小幫手</span>
-                      <span className="model-badge">
-                        {selectedModel.toUpperCase()}
-                      </span>
-                    </div>
-                    <div className="typing-dots">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
 
             <div ref={messagesEndRef} />
           </div>
