@@ -113,14 +113,14 @@ def send_to_line():
         else:
             movie_title = "未知電影"
             
-    user_id_token = data['userIdToken']
-    profile = data['profile']
+    line_login_channel_user_id = data['line_login_channel_user_id']
 
     current_app.logger.info("movie_title: " + movie_title)
-    current_app.logger.info("user_id_token: " + user_id_token)
-    current_app.logger.info("profile: " + str(profile))
+    current_app.logger.info("line_login_channel_user_id: " + str(line_login_channel_user_id))
 
-    return get_line_service(current_app).send_push_message_api(f"電影待看清單新增了：{movie_title}")
+    message = f"電影待看清單新增了：{movie_title}"
+    
+    return get_line_service(current_app).send_push_message_api(message, line_login_channel_user_id)
 
 
 @line_bp.route("/login/callback", methods=['GET', 'OPTIONS'])
@@ -145,6 +145,18 @@ def line_profile():
         return '', 200 
     return get_line_service(current_app).profile_api(request)
 
+@line_bp.route("/auth/line/bot/profile/<user_id>", methods=['GET', 'POST', 'OPTIONS'])
+def line_profile_bot(user_id):
+    if request.method == 'OPTIONS':
+        return '', 200 
+    return get_line_service(current_app).profile_bot_api(user_id)
+
+@line_bp.route("/auth/line/revoke", methods=['POST', 'OPTIONS'])
+def line_revoke():
+    if request.method == 'OPTIONS':
+        return '', 200 
+    return get_line_service(current_app).revoke_api(request)
+
 @line_bp.route("/auth/line/verify", methods=['GET', 'POST', 'OPTIONS'])
 def line_verify():
     if request.method == 'OPTIONS':
@@ -157,7 +169,7 @@ def line_token():
         return '', 200 
     return get_line_service(current_app).get_token_api(request)
     
-@line_bp.route("/auth/line/token_profile", methods=['GET', 'POST', 'OPTIONS'])
+@line_bp.route("/auth/line/token_profile", methods=['GET', 'OPTIONS'])
 def line_token_profile():
     id_token = request.args.get('id_token', '')
     nonce = request.args.get('nonce', '')

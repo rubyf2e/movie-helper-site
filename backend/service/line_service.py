@@ -1,3 +1,4 @@
+import token
 from urllib import response
 from flask import request, abort, jsonify
 import requests, json
@@ -21,17 +22,18 @@ class LineService:
     configuration = None
     handler = None
     LINE_LOGIN_CHANNEL_SECRET = None
-    LINE_LOGIN_CHANNEL_USER_ID = None
     LINE_LOGIN_CHANNEL_ID = None
     LINE_BOT_CHANNEL_ACCESS_TOKEN = None
     LINE_BOT_CHANNEL_SECRET = None
     LINE_LOGIN_REDIRECT_URI = None
     LINE_ISSUER = "https://access.line.me"
     LINE_JWKS_URL = "https://access.line.me/.well-known/openid-configuration"
+    LINE_REVOKE_API_URL = "https://api.line.me/oauth2/v2.1/revoke"
     LINE_PUSH_MESSAGE_API_URL = "https://api.line.me/v2/bot/message/push"
     LINE_GET_VERIFY_ACCESS_TOKEN_API_URL = "https://api.line.me/oauth2/v2.1/verify"
     LINE_POST_VERIFY_ID_API_URL = "https://api.line.me/oauth2/v2.1/verify"
     LINE_PROFILE_API_URL = "https://api.line.me/v2/profile"
+    LINE_PROFILE_BOT_API_URL = "https://api.line.me/v2/bot/profile"
     LINE_TOKEN_API_URL = "https://api.line.me/oauth2/v2.1/token"
     
     def __init__(self, app=None):
@@ -39,7 +41,6 @@ class LineService:
             self.LINE_LOGIN_REDIRECT_URI = app.config['LINE_LOGIN_REDIRECT_URI']
             self.LINE_LOGIN_CHANNEL_SECRET = app.config['LINE_LOGIN_CHANNEL_SECRET']
             self.LINE_LOGIN_CHANNEL_ID = app.config['LINE_LOGIN_CHANNEL_ID']
-            self.LINE_LOGIN_CHANNEL_USER_ID = app.config['LINE_LOGIN_CHANNEL_USER_ID']
             self.LINE_BOT_CHANNEL_ACCESS_TOKEN = app.config['LINE_BOT_CHANNEL_ACCESS_TOKEN']
             self.LINE_BOT_CHANNEL_SECRET = app.config['LINE_BOT_CHANNEL_SECRET']
             
@@ -102,14 +103,15 @@ class LineService:
         except Exception as e:
             return jsonify({'error': 'Invalid token', 'details': str(e)}), 400
 
-    def send_push_message_api(self, message):
+    def send_push_message_api(self, message, line_login_channel_user_id=None):
+        token = self.LINE_BOT_CHANNEL_ACCESS_TOKEN
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.LINE_BOT_CHANNEL_ACCESS_TOKEN}"
-        }   
+            "Authorization": f"Bearer {token}"
+        }
         
         payload = {
-            "to": self.LINE_LOGIN_CHANNEL_USER_ID,
+            "to": line_login_channel_user_id,
             "messages": [{
                 "type": "text",
                 "text": message
@@ -135,8 +137,37 @@ class LineService:
 
         return jwt_token
 
+    def revoke_api(self, request):
+        content = request.json
+        access_token = content['access_token']
+        client_id = content['client_id']
+        
+        if not access_token or not client_id:
+            return jsonify({"error": "Missing access_token or client_id"}), 400
+
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }   
+        
+        payload = {
+            "access_token": access_token,
+            "client_id": client_id
+        }
+
+        response = requests.post(
+            self.LINE_REVOKE_API_URL,
+            headers=headers,
+            data=payload
+        )
+        
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({"status": "ERROR", "detail": response.text}), 400
+        
+        
     def profile_api(self, request):
-        access_token = request.args.get('code')
+        access_token = request.args.get('access_token')
         
         if not access_token:
             return jsonify({"error": "Missing access_token"}), 400
@@ -149,10 +180,27 @@ class LineService:
         response = requests.get(self.LINE_PROFILE_API_URL,
                         headers=headers)
         
-        print(access_token)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({"status": "ERROR", "detail": response.text}), 400
+        
+        
+    def profile_bot_api(self, userId):
+        token = self.LINE_BOT_CHANNEL_ACCESS_TOKEN
+        
+        if not userId:
+            return jsonify({"error": "Missing userId"}), 400
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}"
+        }   
+   
+        response = requests.get(self.LINE_PROFILE_BOT_API_URL + '/' + userId,
+                        headers=headers)
         
         if response.status_code == 200:
-            print(response.json())
             return jsonify(response.json())
         else:
             return jsonify({"status": "ERROR", "detail": response.text}), 400

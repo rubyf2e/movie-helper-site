@@ -19,7 +19,6 @@ const ChatRoom = () => {
   ]);
 
   const [newMessage, setNewMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   const [selectedModel, setSelectedModel] = useState("gemini");
   const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
   const messagesEndRef = useRef(null);
@@ -102,7 +101,6 @@ const ChatRoom = () => {
     setMessages((prev) => [...prev, userMessage]);
     const currentMessage = newMessage.trim();
     setNewMessage("");
-    setIsTyping(true);
 
     // 延遲滾動，確保消息已更新
     setTimeout(() => {
@@ -139,7 +137,6 @@ const ChatRoom = () => {
 
             // 收到 start chunk 時顯示等待中指示器
             if (chunkObj.type === "start") {
-              setIsTyping(false); // 關閉底部的打字指示器
               setMessages((prev) =>
                 prev.map((msg) =>
                   msg.id === aiMessageId
@@ -155,7 +152,6 @@ const ChatRoom = () => {
             }
 
             if (chunkObj.type === "error") {
-              setIsTyping(false);
               setMessages((prev) =>
                 prev.map((msg) =>
                   msg.id === aiMessageId
@@ -189,7 +185,6 @@ const ChatRoom = () => {
         },
         // onComplete - 完成時調用
         (fullResponse) => {
-          setIsTyping(false);
           setMessages((prev) =>
             prev.map((msg) =>
               msg.id === aiMessageId

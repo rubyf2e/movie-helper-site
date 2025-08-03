@@ -44,6 +44,7 @@ export const API_ENDPOINTS = {
   LINE_AUTH_REFRESH: "/line/auth/line/refresh",
   LINE_AUTH_REVOKE: "/line/auth/line/revoke",
   LINE_AUTH_PROFILE: "/line/auth/line/profile",
+  LINE_AUTH_BOT_PROFILE: "/line/auth/line/bot/profile",
   LINE_AUTH_VERIFY: "/line/auth/line/verify",
   LINE_AUTH_TOKEN: "/line/auth/line/token",
   LINE_AUTH_TOKEN_PROFILE: "/line/auth/line/token_profile",
@@ -66,6 +67,7 @@ export const LINE_CONFIG = {
   STORAGE_KEYS: {
     USER: "line_user",
     PROFILE: "line_profile",
+    BOT_PROFILE: "line_bot_profile",
     ACCESS_TOKEN: "line_access_token",
     ID_TOKEN: "line_id_token",
     REFRESH_TOKEN: "line_refresh_token",

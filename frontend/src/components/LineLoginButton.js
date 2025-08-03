@@ -11,7 +11,7 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
       const isAuthenticated = lineAuthService.isAuthenticated();
       console.log("isAuthenticated:", lineAuthService.isAuthenticated());
       if (isAuthenticated) {
-        const userData = lineAuthService.getStoredProfile();
+        const userData = lineAuthService.getStoredUser();
         setUser(userData);
       } else {
         const userData = await lineAuthService.initFromUrlParams();
@@ -63,7 +63,7 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
   if (user) {
     return (
       <div className={`line-login-status ${className}`}>
-        {/* <div className="line-user-info">
+        <div className="line-user-info">
           <img
             src={user.pictureUrl}
             alt={user.displayName}
@@ -71,9 +71,8 @@ const LineLoginButton = ({ onLoginSuccess, onLoginError, className = "" }) => {
           />
           <div className="line-user-details">
             <span className="line-user-name">{user.displayName}</span>
-            <span className="line-user-id">@{user.userId}</span>
           </div>
-        </div> */}
+        </div>
         <button
           onClick={handleLogout}
           disabled={isLoading}

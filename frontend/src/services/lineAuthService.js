@@ -48,14 +48,22 @@ class LineAuthService {
         };
       }
 
-      this.setStoredTokenProfile(tokenProfile);
+      if (this.getStoredTokenProfile()) {
+        return {
+          success: true,
+        };
+      }
 
-      console.log("Token Profile:", tokenProfile);
+      this.setStoredTokenProfile(tokenProfile.message);
+
+      console.log("Token Profile:", tokenProfile.message);
       if (!this.getStoredUserAccessToken() && this.getStoredProfile()) {
+        const userId = tokenProfile.message.code;
+        const userChannelId = tokenProfile.message.aud;
         const userTokenData = await this.getUserToken(
-          tokenProfile.message.code,
+          userId,
           state,
-          tokenProfile.message.aud,
+          userChannelId,
           nonce
         );
 
@@ -65,9 +73,13 @@ class LineAuthService {
             message: "Failed to fetch user token",
           };
         }
+        let access_token = userTokenData.message.access_token;
 
-        this.setStoredUser(userTokenData, tokenProfile.message);
-        console.log("access_token:", userTokenData.message);
+        const userdata = await this.getUserProfile(access_token);
+
+        console.log("getUserProfile:", userdata.message);
+        this.setStoredUser(userTokenData, userdata.message);
+
         window.location.href = APP_CONFIG.PUBLIC_URL;
       }
 
@@ -194,6 +206,10 @@ class LineAuthService {
     );
   }
 
+  getStoredTokenProfile() {
+    localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.TOKEN_PROFILE);
+  }
+
   // 儲存用戶資料
   setStoredProfile(userData, idToken) {
     localStorage.setItem(
@@ -201,6 +217,13 @@ class LineAuthService {
       JSON.stringify(userData)
     );
     localStorage.setItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN, idToken);
+  }
+
+  setStoredBotProfile(userData) {
+    localStorage.setItem(
+      LINE_CONFIG.STORAGE_KEYS.BOT_PROFILE,
+      JSON.stringify(userData)
+    );
   }
 
   // 儲存用戶資料
@@ -232,6 +255,19 @@ class LineAuthService {
     }
   }
 
+  getStoredBotProfile() {
+    try {
+      const userData = localStorage.getItem(
+        LINE_CONFIG.STORAGE_KEYS.BOT_PROFILE
+      );
+
+      return userData ? JSON.parse(userData) : null;
+    } catch (error) {
+      console.error("無法獲取用戶資料:", error);
+      return null;
+    }
+  }
+
   getStoredUserIdToken() {
     const idToken = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN);
 
@@ -250,7 +286,7 @@ class LineAuthService {
 
   getStoredUser() {
     try {
-      const userData = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.User);
+      const userData = localStorage.getItem(LINE_CONFIG.STORAGE_KEYS.USER);
       console.log("用戶資料:", userData);
       return userData ? JSON.parse(userData) : null;
     } catch (error) {
@@ -327,9 +363,10 @@ class LineAuthService {
   }
 
   // 登出
-  logout() {
+  async logout() {
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.USER);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.PROFILE);
+    localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.BOT_PROFILE);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.TOKEN_PROFILE);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.ID_TOKEN);
     localStorage.removeItem(LINE_CONFIG.STORAGE_KEYS.REFRESH_TOKEN);
@@ -356,6 +393,10 @@ class LineAuthService {
           [HTTP_HEADERS.NGROK_SKIP_WARNING]: "true",
           "Access-Control-Allow-Origin": "*",
         },
+        body: JSON.stringify({
+          client_id: this.channelId,
+          access_token: this.getStoredUserAccessToken(),
+        }),
       });
     } catch (error) {
       console.error("Token 撤銷失敗:", error);
@@ -398,7 +439,7 @@ class LineAuthService {
       }
 
       const data = await response.json();
-      console.log(data);
+
       return {
         success: true,
         message: data,
@@ -460,7 +501,7 @@ class LineAuthService {
       }
 
       const data = await response.json();
-      console.log(data);
+
       return {
         success: true,
         message: data,
@@ -517,7 +558,7 @@ class LineAuthService {
       }
 
       const data = await response.json();
-      console.log(data);
+
       return {
         success: true,
         message: data,
@@ -532,7 +573,7 @@ class LineAuthService {
   }
 
   // 獲取用戶資料
-  async getUserProfile(accessToken = null, state = null) {
+  async getUserProfile(accessToken = null) {
     try {
       if (!accessToken) {
         const accessToken = this.getIdToken();
@@ -545,10 +586,7 @@ class LineAuthService {
       }
 
       const params = new URLSearchParams({
-        code: accessToken,
-        client_id: this.channelId,
-        state: state,
-        scope: LINE_CONFIG.SCOPE,
+        access_token: accessToken,
       });
 
       const response = await fetch(
@@ -573,7 +611,50 @@ class LineAuthService {
         };
       }
 
-      return response;
+      const data = await response.json();
+
+      return {
+        success: true,
+        message: data,
+      };
+    } catch (error) {
+      console.error("獲取用戶資料失敗:", error);
+      return {
+        success: false,
+        message: "API 獲取用戶資料失敗",
+      };
+    }
+  }
+
+  // 獲取用戶資料
+  async getUserBotProfile(user_id) {
+    try {
+      const response = await fetch(
+        `${this.apiBaseUrl}${API_ENDPOINTS.LINE_AUTH_BOT_PROFILE}/${user_id}`,
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            [HTTP_HEADERS.NGROK_SKIP_WARNING]: "true",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch user profile");
+        return {
+          success: false,
+          message: "Failed to fetch user profile",
+        };
+      }
+
+      const data = await response.json();
+
+      return {
+        success: true,
+        message: data,
+      };
     } catch (error) {
       console.error("獲取用戶資料失敗:", error);
       return {
@@ -600,14 +681,14 @@ class LineAuthService {
         `${this.apiBaseUrl}${API_ENDPOINTS.SEND_TO_LINE}`,
         {
           method: "POST",
+          mode: "cors",
           headers: {
-            "Content-Type": HTTP_HEADERS.CONTENT_TYPE_JSON,
-            AUTHORIZATION: `Bearer ${accessToken}`,
+            [HTTP_HEADERS.NGROK_SKIP_WARNING]: "true",
+            "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify({
             movieList: movieList,
-            userIdToken: this.getStoredUserIdToken(),
-            profile: this.getStoredProfile(),
+            line_login_channel_user_id: this.getStoredUser().userId,
           }),
         }
       );

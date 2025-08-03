@@ -26,7 +26,6 @@ class Config:
     
     LINE_LOGIN_CHANNEL_ID = config_ini['LineLogin']['CHANNEL_ID']
     LINE_LOGIN_CHANNEL_SECRET = config_ini['LineLogin']['CHANNEL_SECRET']
-    LINE_LOGIN_CHANNEL_USER_ID = config_ini['LineLogin']['CHANNEL_USER_ID']
     LINE_LOGIN_REDIRECT_URI = config_ini['LineLogin']['REDIRECT_URI']
     
     AZURE_CHAT_API_KEY = config_ini['AzureChat']['API_KEY']
