@@ -74,7 +74,7 @@ button.modal-close {
   }
 
   .movie-meta {
-    @include flex-center;
+    @include flex-between;
     gap: 0.5rem;
     margin-bottom: 1rem;
     color: $color-text-secondary;
@@ -135,4 +135,63 @@ button.modal-close {
 
 .modal-error {
   color: $color-status-error;
+}
+
+// 待看清單按鈕樣式
+.watchlist-actions {
+  margin: 0;
+
+  .btn-watchlist {
+    @include button-primary;
+    @include button-rounded;
+    padding: 0.2rem 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &.btn-secondary {
+      @include button-secondary;
+      color: $color-status-success;
+      border-color: $color-status-success;
+
+      &:hover {
+        background-color: $color-status-success;
+        color: white;
+      }
+    }
+  }
+}
+
+// 通知樣式
+.notification {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem;
+  border-radius: $radius-md;
+  font-weight: 500;
+  z-index: 20;
+  min-width: 200px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  &-success {
+    background-color: $color-status-success;
+    color: white;
+  }
+
+  &-error {
+    background-color: $color-status-error;
+    color: white;
+  }
+
+  &-warning {
+    background-color: $color-status-warning;
+    color: white;
+  }
+
+  &-info {
+    background-color: $color-status-info;
+    color: white;
+  }
 }

@@ -27,26 +27,50 @@ const Watchlist = ({ botRef }) => {
   }, []);
 
   useEffect(() => {
-    try {
-      const savedMovies = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (savedMovies) {
-        const parsedMovies = JSON.parse(savedMovies);
+    const loadMovies = () => {
+      try {
+        const savedMovies = localStorage.getItem(LOCAL_STORAGE_KEY);
 
-        if (Array.isArray(parsedMovies)) {
-          setMovies(parsedMovies);
-        } else {
-          console.warn("載入的資料不是陣列格式，重置為空陣列");
-          setMovies([]);
-          localStorage.removeItem(LOCAL_STORAGE_KEY);
+        if (savedMovies) {
+          const parsedMovies = JSON.parse(savedMovies);
+
+          if (Array.isArray(parsedMovies)) {
+            setMovies(parsedMovies);
+          } else {
+            setMovies([]);
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+          }
         }
-      }
-    } catch (error) {
-      console.error("載入電影清單失敗:", error);
-      showMessage("載入資料失敗，已重置清單。", NOTIFICATION_TYPES.ERROR);
+      } catch (error) {
+        showMessage("載入資料失敗，已重置清單。", NOTIFICATION_TYPES.ERROR);
 
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-      setMovies([]);
-    }
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+        setMovies([]);
+      }
+    };
+
+    // 初始載入
+    loadMovies();
+
+    // 監聽 storage 變化（當其他組件修改 localStorage 時）
+    const handleStorageChange = (e) => {
+      if (e.key === LOCAL_STORAGE_KEY) {
+        loadMovies();
+      }
+    };
+
+    // 監聽自定義事件（同一頁面內的變化）
+    const handleWatchlistUpdate = () => {
+      loadMovies();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("watchlistUpdated", handleWatchlistUpdate);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("watchlistUpdated", handleWatchlistUpdate);
+    };
   }, [showMessage, LOCAL_STORAGE_KEY]);
 
   const handleSendToLine = useCallback(
