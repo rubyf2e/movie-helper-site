@@ -82,6 +82,7 @@ def create_app(config_name=None):
             headers={
                 'Cache-Control': 'no-cache',
                 'Connection': 'keep-alive',
+                'X-Accel-Buffering': 'no', 
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Headers': 'Content-Type',
             }
@@ -97,7 +98,8 @@ def create_app(config_name=None):
         
     return app 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = create_app()
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    debug = os.environ.get('FLASK_DEBUG', '0') == '1'
+    app.run(host='0.0.0.0', port=port, debug=debug)

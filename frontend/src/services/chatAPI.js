@@ -36,6 +36,7 @@ export class ChatAPI {
         method: "POST",
         headers: this.getHeaders(),
         mode: "cors",
+        cache: "no-store",
         body: JSON.stringify({
           user_input: userInput,
           chat_model: chatModel,

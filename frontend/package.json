@@ -2,7 +2,7 @@
   "name": "movie-helper-site",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rubyf2e.github.io/movie-helper-site",
+  "homepage": "/movie-helper-site",
   "dependencies": {
     "@lottiefiles/lottie-player": "^2.0.12",
     "@testing-library/dom": "^10.4.0",

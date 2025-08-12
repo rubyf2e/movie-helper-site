@@ -19,3 +19,6 @@ ipython
 langchain_openai
 langchain_ollama
 langchain_google_genai
+
+gunicorn
+gevent
