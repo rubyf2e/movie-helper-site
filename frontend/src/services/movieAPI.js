@@ -37,7 +37,7 @@ export class MovieAPI {
         throw new Error(data.error || "請求失敗");
       }
 
-      return data.data;
+      return data;
     } catch (error) {
       console.error("API 請求失敗:", error);
       throw error;
@@ -45,25 +45,40 @@ export class MovieAPI {
   }
 
   static async getPopularMovies() {
-    return this.fetchFromAPI("/movies/popular");
+    const response = await this.fetchFromAPI("/movies/popular");
+    return response.data;
   }
 
   static async getComingSoonMovies() {
-    return this.fetchFromAPI("/movies/coming_soon");
+    const response = await this.fetchFromAPI("/movies/coming_soon");
+    return response.data;
   }
 
-  static async searchMovies(query) {
-    return this.fetchFromAPI(`/movies/search?q=${encodeURIComponent(query)}`);
+  static async searchMovies(query, searchType = "movie") {
+    const typeParam =
+      searchType !== "movie" ? `&type=${encodeURIComponent(searchType)}` : "";
+    const response = await this.fetchFromAPI(
+      `/movies/search?q=${encodeURIComponent(query)}${typeParam}`
+    );
+
+    if (searchType === "person") {
+      // 對於人物搜尋，回傳完整的回應物件
+      return response;
+    } else {
+      // 對於電影搜尋，只回傳資料陣列
+      return response.data;
+    }
   }
 
   static async getMoviesByGenre(genreId) {
-    return this.fetchFromAPI(`/movies/genre/${genreId}`);
+    const response = await this.fetchFromAPI(`/movies/genre/${genreId}`);
+    return response.data;
   }
 
   static async getMovieDetails(movieId) {
     try {
       const response = await this.fetchFromAPI(`/movies/${movieId}`);
-      return response;
+      return response.data;
     } catch (error) {
       console.error("無法獲取電影詳細資料:", error);
       return null;
@@ -73,7 +88,7 @@ export class MovieAPI {
   static async getMovieVideos(movieId) {
     try {
       const response = await this.fetchFromAPI(`/movies/videos/${movieId}`);
-      return response;
+      return response.data;
     } catch (error) {
       console.error("無法獲取電影預告資料:", error);
       return null;
@@ -82,7 +97,8 @@ export class MovieAPI {
 
   static async fetchGenres() {
     try {
-      return await this.fetchFromAPI("/movies/genres");
+      const response = await this.fetchFromAPI("/movies/genres");
+      return response.data;
     } catch (error) {
       console.error("無法獲取類型列表:", error);
       return [];
@@ -105,10 +121,11 @@ export class MovieAPI {
   // 發送到 LINE 功能
   static async sendToLine(movieData) {
     try {
-      return await this.fetchFromAPI("/send-to-line", {
+      const response = await this.fetchFromAPI("/send-to-line", {
         method: "POST",
         body: JSON.stringify(movieData),
       });
+      return response.data;
     } catch (error) {
       console.error("發送到 LINE 失敗:", error);
       throw error;
@@ -119,9 +136,10 @@ export class MovieAPI {
   static async getRecommendedMovies(keywords) {
     try {
       // 嘗試使用後端 AI 推薦 API
-      return await this.fetchFromAPI(
+      const response = await this.fetchFromAPI(
         `/movies/recommend?keywords=${encodeURIComponent(keywords)}`
       );
+      return response.data;
     } catch (error) {
       console.error("AI 推薦失敗，降級到搜尋功能:", error);
       // 降級到搜尋功能

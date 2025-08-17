@@ -156,6 +156,7 @@ def search_movies():
     """搜尋電影"""
     try:
         query = request.args.get('q', '').strip()
+        search_type = request.args.get('type', 'movie').strip()  # 新增搜尋類型參數
         page = request.args.get('page', 1, type=int)
         
         if not query:
@@ -164,7 +165,11 @@ def search_movies():
                 'error': '搜尋關鍵字不能為空'
             }), 400
         
-        data = TMDBService.search_movies(query, page)
+        # 根據搜尋類型選擇不同的搜尋方法
+        if search_type == 'person':
+            data = TMDBService.search_movies_by_person(query, page)
+        else:
+            data = TMDBService.search_movies(query, page)
         
         # 處理搜尋結果
         movies = []
@@ -184,16 +189,29 @@ def search_movies():
                 'popularity': movie.get('popularity'),
                 'rating_color': TMDBService.get_rating_color(movie.get('vote_average', 0))
             }
+            
+            # 如果是人物搜尋，添加額外資訊
+            if search_type == 'person':
+                movie_data['person_role'] = movie.get('person_role')
+                movie_data['person_name'] = movie.get('person_name')
+            
             movies.append(movie_data)
         
-        return jsonify({
+        response_data = {
             'success': True,
             'data': movies,
             'query': query,
+            'search_type': search_type,
             'page': data.get('page'),
             'total_pages': data.get('total_pages'),
             'total_results': data.get('total_results')
-        })
+        }
+        
+        # 如果是人物搜尋，添加人物資訊
+        if search_type == 'person' and data.get('person_info'):
+            response_data['person_info'] = data['person_info']
+        
+        return jsonify(response_data)
         
     except Exception as e:
         current_app.logger.error(f"搜尋電影失敗: {e}")

@@ -118,6 +118,84 @@ class TMDBService:
         return cls._make_request(endpoint, params)
     
     @classmethod
+    def search_person(cls, query, page=1):
+        """搜尋演員/導演等人物"""
+        endpoint = "/search/person"
+        params = {
+            'query': query,
+            'page': page
+        }
+        return cls._make_request(endpoint, params)
+    
+    @classmethod
+    def get_person_movies(cls, person_id, page=1):
+        """獲取某個人物參與的電影"""
+        endpoint = f"/person/{person_id}/movie_credits"
+        return cls._make_request(endpoint)
+    
+    @classmethod
+    def search_movies_by_person(cls, query, page=1):
+        """根據演員/導演名字搜尋相關電影"""
+        try:
+            # 先搜尋人物
+            person_data = cls.search_person(query, page)
+            if not person_data.get('results'):
+                return {'results': [], 'total_pages': 0, 'total_results': 0}
+            
+            # 取得第一個匹配的人物
+            person = person_data['results'][0]
+            person_id = person['id']
+            
+            # 獲取該人物的電影作品
+            credits = cls.get_person_movies(person_id)
+            
+            # 合併演員和導演作品，去重
+            movies = []
+            movie_ids = set()
+            
+            # 加入演員作品
+            for movie in credits.get('cast', []):
+                if movie['id'] not in movie_ids:
+                    movie_ids.add(movie['id'])
+                    movie['person_role'] = 'actor'
+                    movie['person_name'] = person['name']
+                    movies.append(movie)
+            
+            # 加入導演作品
+            for movie in credits.get('crew', []):
+                if movie.get('job') == 'Director' and movie['id'] not in movie_ids:
+                    movie_ids.add(movie['id'])
+                    movie['person_role'] = 'director'
+                    movie['person_name'] = person['name']
+                    movies.append(movie)
+            
+            # 按受歡迎程度排序
+            movies.sort(key=lambda x: x.get('popularity', 0), reverse=True)
+            
+            # 分頁處理
+            total_results = len(movies)
+            start_index = (page - 1) * 20
+            end_index = start_index + 20
+            page_movies = movies[start_index:end_index]
+            
+            return {
+                'results': page_movies,
+                'page': page,
+                'total_pages': (total_results + 19) // 20,  # 向上取整
+                'total_results': total_results,
+                'person_info': {
+                    'id': person['id'],
+                    'name': person['name'],
+                    'profile_path': person.get('profile_path'),
+                    'known_for_department': person.get('known_for_department')
+                }
+            }
+            
+        except Exception as e:
+            current_app.logger.error(f"根據人物搜尋電影失敗: {e}")
+            return {'results': [], 'total_pages': 0, 'total_results': 0}
+    
+    @classmethod
     def get_movies_by_genre(cls, genre_id, page=1):
         """根據類型獲取電影"""
         endpoint = "/discover/movie"

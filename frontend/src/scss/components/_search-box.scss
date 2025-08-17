@@ -43,6 +43,39 @@
   }
 }
 
+// 搜尋類型選擇器
+.search-type-selector {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: $radius-full;
+  padding: 0.3rem;
+
+  .search-type-btn {
+    padding: 0.5rem 1rem;
+    font-size: $font-size-sm;
+    border: none;
+    border-radius: $radius-full;
+    background: transparent;
+    color: $color-text-secondary;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+
+    &.active {
+      background: $color-primary;
+      color: $color-neutral-white;
+      box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
+    }
+
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      color: $color-text-primary;
+    }
+  }
+}
+
 .search-box {
   background: $color-bg-search;
   border-radius: $radius-md;
@@ -126,6 +159,52 @@
     text-align: center;
   }
 
+  // 人物資訊卡片
+  .person-info {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+
+    .person-card {
+      background: $color-bg-card-dark;
+      border-radius: $radius-md;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+
+      .person-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid $color-primary;
+      }
+
+      .person-details {
+        flex: 1;
+
+        .person-name {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: $color-text-primary;
+          margin-bottom: 0.5rem;
+        }
+
+        .person-department {
+          color: $color-text-secondary;
+          font-size: 0.9rem;
+          padding: 0.2rem 0.5rem;
+          background: rgba(250, 204, 21, 0.2);
+          border-radius: $radius-sm;
+          display: inline-block;
+        }
+      }
+    }
+  }
+
   .loading-indicator {
     text-align: center;
     padding: 2rem;
@@ -148,6 +227,25 @@
 
     @media (min-width: 768px) {
       @include grid-responsive(250px, 1.5rem);
+    }
+  }
+
+  // 電影卡片包裝器（用於顯示演員/導演標籤）
+  .movie-card-wrapper {
+    position: relative;
+
+    .person-role-badge {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: $color-neutral-white;
+      padding: 0.2rem 0.5rem;
+      border-radius: $radius-sm;
+      font-size: 0.7rem;
+      font-weight: 600;
+      z-index: 2;
+      backdrop-filter: blur(4px);
     }
   }
 
