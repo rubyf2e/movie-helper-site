@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   backend:
     build:
@@ -7,13 +5,17 @@ services:
       dockerfile: Dockerfile
     container_name: movie-helper-backend
     ports:
-      - "5000:5000"
+      - "${PORT_MOVIE_HELPER_BACKEND}:${PORT_MOVIE_HELPER_BACKEND}"
     volumes:
       - ./backend:/app
     environment:
       - FLASK_ENV=${FLASK_ENV}
       - FLASK_DEBUG=${FLASK_DEBUG}
+      - DOMAIN=${DOMAIN}
+      - PORT_MOVIE_HELPER_BACKEND=${PORT_MOVIE_HELPER_BACKEND}
+      - PORT_MOVIE_HELPER_FRONTEND=${PORT_MOVIE_HELPER_FRONTEND}
       - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
     env_file:
       - ./backend/.env
     networks:
@@ -25,12 +27,12 @@ services:
       dockerfile: Dockerfile
     container_name: movie-helper-frontend
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "${PORT_MOVIE_HELPER_FRONTEND}:80"
     environment:
       - NODE_ENV=${NODE_ENV}
+      - DOMAIN=${DOMAIN}
+      - PORT_MOVIE_HELPER_BACKEND=${PORT_MOVIE_HELPER_BACKEND}
+      - PORT_MOVIE_HELPER_FRONTEND=${PORT_MOVIE_HELPER_FRONTEND}
     depends_on:
       - backend
     networks:

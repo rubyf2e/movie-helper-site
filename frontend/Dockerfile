@@ -19,17 +19,22 @@ COPY . .
 # 構建應用
 RUN npm run build
 
+
 # 第二階段：運行階段
 FROM nginx:alpine
 
-# 複製自定義 nginx 配置
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# 從構建階段複製構建結果
+# 複製構建好的檔案到 nginx 默認目錄
 COPY --from=build /app/build /usr/share/nginx/html/movie-helper-site
 
-# 暴露端口
-EXPOSE 3000
+# 複製 nginx 配置模板和啟動腳本
+COPY ./nginx.conf.template /etc/nginx/nginx.conf.template
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 
-# 啟動 nginx
-CMD ["nginx", "-g", "daemon off;"]
+# 設定執行權限
+RUN chmod +x /docker-entrypoint.sh
+
+# 設定入口點
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+# 暴露端口
+EXPOSE 80

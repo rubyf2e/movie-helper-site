@@ -7,6 +7,8 @@ WORKDIR /app
 # 設定 Python 環境變數
 ENV FLASK_ENV=${FLASK_ENV} \
     FLASK_DEBUG=${FLASK_DEBUG} \
+    PORT_MOVIE_HELPER_BACKEND=${PORT_MOVIE_HELPER_BACKEND} \
+    PORT_MOVIE_HELPER_FRONTEND=${PORT_MOVIE_HELPER_FRONTEND} \
     PYTHONPATH=/app \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
@@ -28,10 +30,10 @@ COPY . .
 
 # 設定健康檢查
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://127.0.0.1:5000/health || exit 1
+    CMD curl -f http://127.0.0.1:${PORT_MOVIE_HELPER_BACKEND}/health || exit 1
 
 # 暴露端口
-EXPOSE 5000
+EXPOSE ${PORT_MOVIE_HELPER_BACKEND}
 
 # 使用 gunicorn 啟動
 CMD ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:app"]
