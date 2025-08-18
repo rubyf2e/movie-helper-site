@@ -130,61 +130,22 @@ const ChatRoom = () => {
         backendModel,
         // onChunk - 每次收到新內容時調用
         (chunk, fullResponse) => {
-          let chunkObj;
-          try {
-            chunkObj = typeof chunk === "string" ? JSON.parse(chunk) : chunk;
-            console.log(chunkObj);
+          console.log("收到 chunk:", chunk, "完整回應:", fullResponse);
 
-            // 收到 start chunk 時顯示等待中指示器
-            if (chunkObj.type === "start") {
-              setMessages((prev) =>
-                prev.map((msg) =>
-                  msg.id === aiMessageId
-                    ? {
-                        ...msg,
-                        text: "", // 保持空文字，會顯示輸入中指示器
-                        isStreaming: true,
-                      }
-                    : msg
-                )
-              );
-              return;
-            }
-
-            if (chunkObj.type === "error") {
-              setMessages((prev) =>
-                prev.map((msg) =>
-                  msg.id === aiMessageId
-                    ? {
-                        ...msg,
-                        text: `抱歉，${
-                          chunkObj.message || "系統發生錯誤，請稍後再試。"
-                        }`,
-                        isError: true,
-                        isStreaming: false,
-                      }
-                    : msg
-                )
-              );
-              return; // 不再更新後續 chunk
-            }
-
-            setMessages((prev) =>
-              prev.map((msg) =>
-                msg.id === aiMessageId
-                  ? { ...msg, text: fullResponse, isStreaming: true }
-                  : msg
-              )
-            );
-          } catch {
-            chunkObj = {};
-          }
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId
+                ? { ...msg, text: fullResponse, isStreaming: true }
+                : msg
+            )
+          );
 
           // 每次更新後滾動到底部
           setTimeout(scrollToBottom, 50);
         },
         // onComplete - 完成時調用
         (fullResponse) => {
+          console.log("流式完成，最終回應:", fullResponse);
           setMessages((prev) =>
             prev.map((msg) =>
               msg.id === aiMessageId
@@ -196,6 +157,7 @@ const ChatRoom = () => {
         },
         // onError - 錯誤時調用
         (error) => {
+          console.error("流式處理錯誤:", error);
           setMessages((prev) =>
             prev.map((msg) =>
               msg.id === aiMessageId

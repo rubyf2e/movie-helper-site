@@ -141,7 +141,7 @@ export class ChatAPI {
     const modelMapping = {
       azure: "azure",
       gemini: "gemini",
-      ollama: "ollama",
+      ollama: "ollama_client",
     };
 
     return modelMapping[frontendModelId] || "gemini";
