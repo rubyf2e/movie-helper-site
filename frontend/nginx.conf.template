@@ -2,16 +2,17 @@ server {
     listen 80;
     server_name ${DOMAIN};
 
-    location /movie-helper-site {
-        alias /usr/share/nginx/html/movie-helper-site;
-        try_files $uri $uri/ /movie-helper-site/index.html;
+    location / {
+        alias /usr/share/nginx/html/;
+        try_files $uri $uri/ /index.html;
         index index.html;
     }
 
-    location /movie-helper-site/static {
-        alias /usr/share/nginx/html/movie-helper-site/static;
-        expires 30d;
-        add_header Cache-Control "public, no-transform";
+    location /static {
+        root /usr/share/nginx/html;
+        expires -1;
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
     }
 
     # API 代理配置

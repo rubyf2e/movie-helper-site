@@ -7,6 +7,10 @@ WORKDIR /app
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
+# 設定 PUBLIC_URL 以確保正確的靜態資源路徑
+ARG PUBLIC_URL=/movie-helper
+ENV PUBLIC_URL=${PUBLIC_URL}
+
 # 複製 package.json 和 package-lock.json
 COPY package*.json ./
 
@@ -24,7 +28,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # 複製構建好的檔案到 nginx 默認目錄
-COPY --from=build /app/build /usr/share/nginx/html/movie-helper-site
+COPY --from=build /app/build /usr/share/nginx/html
 
 # 複製 nginx 配置模板和啟動腳本
 COPY ./nginx.conf.template /etc/nginx/nginx.conf.template
