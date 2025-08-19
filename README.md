@@ -1,8 +1,6 @@
 # 電影小幫手 Movie Helper
 
-### 線上網址
-
-<https://rubyf2e.github.io/movie-helper-site/>
+### 參考 canva 網址
 
 <https://rubyrubyruby.my.canva.site/dagqiedp8k8>
 
