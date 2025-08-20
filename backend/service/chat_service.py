@@ -8,6 +8,7 @@ from openai import AzureOpenAI
 from langchain_openai import AzureChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_ollama.llms import OllamaLLM
+from config import Config
 
 
 class ChatService:
@@ -160,7 +161,8 @@ class ChatService:
         
         
     def ollama_client_chat(self, user_input, role_description):
-        client = OllamaClient(host=self.config["OllamaLLM"]["OLLAMA_CLIENT"])
+        # 使用 Config 類提供的動態 OLLAMA_CLIENT URL
+        client = OllamaClient(host=Config.OLLAMA_CLIENT)
         
         try:
             response = client.chat(

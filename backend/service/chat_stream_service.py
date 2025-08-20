@@ -4,6 +4,7 @@ from langchain_openai import AzureChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_ollama.llms import OllamaLLM
 from ollama import Client as OllamaClient
+from config import Config
 
 
 class ChatStreamService:
@@ -136,7 +137,8 @@ class ChatStreamService:
     def ollama_client_chat_stream(self, user_input, role_description):
         """Ollama Client 流式聊天"""
         try:
-            client = OllamaClient(host=self.config["OllamaLLM"]["OLLAMA_CLIENT"])
+            # 使用 Config 類提供的動態 OLLAMA_CLIENT URL
+            client = OllamaClient(host=Config.OLLAMA_CLIENT)
             
             stream = client.chat(
                 model=self.config["OllamaLLM"]["MODEL_NAME"],

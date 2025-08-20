@@ -15,7 +15,9 @@ def create_app(config_name=None):
     config_name = config_name or os.getenv('FLASK_ENV', 'development')
     app.config.from_object(config[config_name])
 
-    CORS(app, origins=['*'], supports_credentials=True, allow_headers=["*"])
+    # 使用動態 CORS 設定
+    cors_origins = app.config['CORS_ALLOWED_ORIGINS'] + config[config_name].get_cors_origins()
+    CORS(app, origins=cors_origins, supports_credentials=True, allow_headers=["*"])
    
     app.register_blueprint(movies_bp, url_prefix='/api/movies')
     app.register_blueprint(line_bp, url_prefix='/api/line')

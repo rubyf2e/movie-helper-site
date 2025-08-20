@@ -2,6 +2,22 @@
 
 export const DEFAULT_STORAGE_KEY = "movieWatchlist";
 
+// SSL 配置函數
+const getProtocol = () => {
+  const sslEnabled = process.env.REACT_APP_SSL_ENABLED === 'true';
+  return sslEnabled ? 'https' : 'http';
+};
+
+export const convertUrlProtocol = (url) => {
+  if (!url) return url;
+  const protocol = getProtocol();
+  // 如果 URL 已經包含協議，先移除
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    url = url.split('://', 1)[1];
+  }
+  return `${protocol}://${url}`;
+};
+
 // 其他全域常數
 export const APP_CONFIG = {
   HEADER_HEIGHT: 72,
@@ -11,6 +27,8 @@ export const APP_CONFIG = {
   TMDB_IMG_URL: process.env.REACT_APP_TMDB_IMG_URL,
   LINE_LOGIN_CHANNEL_ID: process.env.REACT_APP_LINE_LOGIN_CHANNEL_ID,
   DEFAULT_LANGUAGE: process.env.REACT_APP_TMDB_MOVIE_LANGUAGE,
+  SSL_ENABLED: process.env.REACT_APP_SSL_ENABLED === 'true',
+  PROTOCOL: getProtocol(),
 };
 
 // 通知類型常數
