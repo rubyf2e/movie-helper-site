@@ -2,7 +2,7 @@
   "name": "movie-helper-site",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/movie-helper-site",
+  "homepage": "/movie-helper",
   "dependencies": {
     "@lottiefiles/lottie-player": "^2.0.12",
     "@testing-library/dom": "^10.4.0",
