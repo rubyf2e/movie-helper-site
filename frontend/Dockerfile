@@ -4,14 +4,6 @@ FROM node:18-alpine AS build
 
 # 設定工作目錄
 WORKDIR /app
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-# 設定 PUBLIC_URL 以確保正確的靜態資源路徑
-ENV PUBLIC_URL=${PUBLIC_URL}
-
-# 設定 API_BASE_URL
-ENV REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
 
 # 複製 package.json 和 package-lock.json
 COPY package*.json ./
@@ -19,12 +11,13 @@ COPY package*.json ./
 # 安裝依賴
 RUN if [ "$NODE_ENV" = "production" ]; then npm ci --only=production; else npm ci; fi
 
+# 複製 .env 檔案
+COPY .env .env
+
 # 複製源代碼
 COPY . .
 
-# 構建應用
 RUN npm run build
-
 
 # 第二階段：運行階段
 FROM nginx:alpine

@@ -35,6 +35,8 @@ services:
       - REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
       - PORT_MOVIE_HELPER_BACKEND=${PORT_MOVIE_HELPER_BACKEND}
       - PORT_MOVIE_HELPER_FRONTEND=${PORT_MOVIE_HELPER_FRONTEND}
+    env_file:
+      - ./frontend/.env
     depends_on:
       - backend
     networks:
