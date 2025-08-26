@@ -8,11 +8,13 @@ from config import Config
 
 
 class ChatStreamService:
-    def __init__(self, config):
+    def __init__(self, config, custom_logger):
         self.config = config
+        self.custom_logger = custom_logger
 
     def chat_stream(self, user_input, type='gemini'):
         """流式聊天方法，產生流式回應"""
+        self.custom_logger.info('chat_stream')
         chat_map = {
             'azure': self.azure_chat_stream,
             'azure_completions': self.azure_completions_chat_stream,
@@ -26,6 +28,7 @@ class ChatStreamService:
         try:
             yield from func(user_input, role_description)
         except Exception as e:
+            self.custom_logger.error(e)
             yield 'chat 模型需要升級，暫時無法提供服務'
 
     def azure_chat_stream(self, user_input, role_description):
@@ -44,9 +47,11 @@ class ChatStreamService:
             ]
             
             for chunk in llm.stream(messages):
+                self.custom_logger.info(chunk)
                 if hasattr(chunk, 'content') and chunk.content:
                     yield chunk.content
         except Exception as e:
+            self.custom_logger.error(e)
             print(f"Azure Completions Chat Stream Error: {e}")
             yield 'chat 模型需要升級，暫時無法提供服務'
 
@@ -85,26 +90,31 @@ class ChatStreamService:
                     yield chunk.choices[0].delta.content
                     
         except Exception as e:
+            self.custom_logger.error(e)
             print(f"Azure Completions Chat Stream Error: {e}")
             yield 'chat 模型需要升級，暫時無法提供服務'
 
     def gemini_chat_stream(self, user_input, role_description):
         """Gemini 流式聊天"""
         try:
+            self.custom_logger.info('gemini_chat_stream')
+            self.custom_logger.info(user_input)
             llm_gemini = ChatGoogleGenerativeAI(
                 model=self.config["GeminiChat"]["MODEL_NAME"],
                 google_api_key=self.config["GeminiChat"]["KEY"],
-                model_kwargs={"streaming": True}
             )
             messages = [
                 ("system", role_description),
                 ("human", user_input),
             ]
             
+            self.custom_logger.info(messages)
             for chunk in llm_gemini.stream(messages):
+                self.custom_logger.info(chunk)
                 if hasattr(chunk, 'content') and chunk.content:
                     yield chunk.content
         except Exception as e:
+            self.custom_logger.error(e)
             yield 'chat 模型需要升級，暫時無法提供服務'
         
     def ollama_chat_stream(self, user_input, role_description):
@@ -132,6 +142,7 @@ class ChatStreamService:
                 time.sleep(0.1)  # 模擬網路延遲
                 
         except Exception as e:
+            self.custom_logger.error(e)
             yield 'chat 模型需要升級，暫時無法提供服務'
 
     def ollama_client_chat_stream(self, user_input, role_description):
@@ -156,8 +167,10 @@ class ChatStreamService:
             )
             
             for chunk in stream:
+                self.custom_logger.info(chunk)
                 if chunk.get("message", {}).get("content"):
                     yield chunk["message"]["content"]
                     
         except Exception as e:
+            self.custom_logger.error(e)
             yield 'chat 模型需要升級，暫時無法提供服務'

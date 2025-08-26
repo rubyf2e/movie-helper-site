@@ -36,7 +36,7 @@ def get_movie_videos(movie_ids):
             })
     
     except Exception as e:
-        current_app.logger.error(f"獲取預告列表失敗: {e}")
+        current_app.custom_logger.error(f"獲取預告列表失敗: {e}")
         return jsonify({
             'success': False,
             'error': '無法獲取預告列表',
@@ -94,7 +94,7 @@ def get_coming_soon_movies():
         })
         
     except Exception as e:
-        current_app.logger.error(f"獲取即將上映電影失敗: {e}")
+        current_app.custom_logger.error(f"獲取即將上映電影失敗: {e}")
         return jsonify({
             'success': False,
             'error': '無法獲取即將上映電影',
@@ -141,7 +141,7 @@ def get_popular_movies():
         })
         
     except Exception as e:
-        current_app.logger.error(f"獲取熱門電影失敗: {e}")
+        current_app.custom_logger.error(f"獲取熱門電影失敗: {e}")
         return jsonify({
             'success': False,
             'error': '無法獲取熱門電影',
@@ -214,7 +214,7 @@ def search_movies():
         return jsonify(response_data)
         
     except Exception as e:
-        current_app.logger.error(f"搜尋電影失敗: {e}")
+        current_app.custom_logger.error(f"搜尋電影失敗: {e}")
         return jsonify({
             'success': False,
             'error': '搜尋電影失敗',
@@ -235,7 +235,7 @@ def get_genres():
         })
         
     except Exception as e:
-        current_app.logger.error(f"獲取類型列表失敗: {e}")
+        current_app.custom_logger.error(f"獲取類型列表失敗: {e}")
         return jsonify({
             'success': False,
             'error': '無法獲取類型列表',
@@ -282,7 +282,7 @@ def get_movies_by_genre(genre_id):
         })
         
     except Exception as e:
-        current_app.logger.error(f"根據類型獲取電影失敗: {e}")
+        current_app.custom_logger.error(f"根據類型獲取電影失敗: {e}")
         return jsonify({
             'success': False,
             'error': '無法獲取該類型的電影',
@@ -333,7 +333,7 @@ def get_movie_details(movie_id):
         })
         
     except Exception as e:
-        current_app.logger.error(f"獲取電影詳細資訊失敗: {e}")
+        current_app.custom_logger.error(f"獲取電影詳細資訊失敗: {e}")
         return jsonify({
             'success': False,
             'error': '無法獲取電影詳細資訊',
@@ -374,7 +374,7 @@ def analyze_movie_preference():
             print(isFunctionCall, response, movie_title, movie_target)
             print('')
         except Exception as e:
-            current_app.logger.error(f"解析 OpenAI 回應失敗: {e}")
+            current_app.custom_logger.error(f"解析 OpenAI 回應失敗: {e}")
             return jsonify({
                 'success': False,
                 'error': '無法解析 OpenAI 回應',

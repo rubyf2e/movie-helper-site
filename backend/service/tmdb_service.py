@@ -34,7 +34,7 @@ class TMDBService:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            current_app.logger.error(f"TMDB API 請求失敗: {e}")
+            current_app.custom_logger.error(f"TMDB API 請求失敗: {e}")
             raise
 
 
@@ -192,7 +192,7 @@ class TMDBService:
             }
             
         except Exception as e:
-            current_app.logger.error(f"根據人物搜尋電影失敗: {e}")
+            current_app.custom_logger.error(f"根據人物搜尋電影失敗: {e}")
             return {'results': [], 'total_pages': 0, 'total_results': 0}
     
     @classmethod

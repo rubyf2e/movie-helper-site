@@ -104,7 +104,7 @@ def send_to_line():
     if not data:
         return jsonify({"status": "ERROR", "detail": "Invalid JSON format"}), 400
 
-    current_app.logger.info(data)
+    current_app.custom_logger.info(data)
     
     is_reminder = data.get('isReminder', False)
     line_login_channel_user_id = data['line_login_channel_user_id']
@@ -117,7 +117,7 @@ def send_to_line():
         
         message = f"✅ 已為您設定電影提醒！\n\n🎬 電影：{movie_title}\n📅 上映日期：{release_date}\n🔔 將在上映前一天提醒您"
         
-        current_app.logger.info(f"Setting reminder for movie: {movie_title}, release date: {release_date}")
+        current_app.custom_logger.info(f"Setting reminder for movie: {movie_title}, release date: {release_date}")
     else:
         movie_title = ''
         for movie in data['movieList']:
@@ -128,8 +128,8 @@ def send_to_line():
         
         message = f"電影待看清單新增了：{movie_title}"
     
-    current_app.logger.info("message: " + message)
-    current_app.logger.info("line_login_channel_user_id: " + str(line_login_channel_user_id))
+    current_app.custom_logger.info("message: " + message)
+    current_app.custom_logger.info("line_login_channel_user_id: " + str(line_login_channel_user_id))
     
     return get_line_service(current_app).send_push_message_api(message, line_login_channel_user_id)
 
@@ -145,10 +145,13 @@ def line_login_callback():
         client_id = request.args.get('client_id', '')
         scope = request.args.get('scope', '')
         nonce = request.args.get('nonce', '')
+        url = redirect_uri+'?response='+jwt_token+'&state='+state+'&client_id='+client_id+'&scope='+scope+'&nonce='+nonce
     
-        print(request.args.to_dict())
+        current_app.custom_logger.info(redirect_uri)
+        current_app.custom_logger.info(request.args.to_dict())
+        current_app.custom_logger.info(url)
 
-        return redirect(redirect_uri+'?response='+jwt_token+'&state='+state+'&client_id='+client_id+'&scope='+scope+'&nonce='+nonce)
+        return redirect(url)
 
 @line_bp.route("/auth/line/profile", methods=['GET', 'POST', 'OPTIONS'])
 def line_profile():
@@ -200,12 +203,12 @@ def line_bot_callback():
     elif request.method == 'POST':
         signature = request.headers['X-Line-Signature']
         body = request.get_data(as_text=True)
-        current_app.logger.info("Request body: " + body)
+        current_app.custom_logger.info("Request body: " + body)
 
         try:
             get_line_handler().handle(body, signature)
         except InvalidSignatureError:
-            current_app.logger.info("Invalid signature. Please check your channel access token/channel secret.")
+            current_app.custom_logger.info("Invalid signature. Please check your channel access token/channel secret.")
             abort(400)
 
         return 'ok'
