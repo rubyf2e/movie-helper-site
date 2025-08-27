@@ -5,6 +5,16 @@ from concurrent.futures import ThreadPoolExecutor
 
 class TMDBService:
     """TMDB API 服務類"""
+    """
+    Available Regions
+    {
+      "language": "zh-TW"
+      "iso_3166_1": "TW",
+      "english_name": "Taiwan",
+      "native_name": "臺灣"
+    }
+    """
+        
     YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/'
 
     @staticmethod
@@ -20,8 +30,9 @@ class TMDBService:
         # 基本參數
         request_params = {
             'api_key': api_key,
-            "include_adult": False,
-            'language': language
+            'include_adult': False,
+            'language': language,
+            'region': 'TW',
         }
         
         # 合併額外參數

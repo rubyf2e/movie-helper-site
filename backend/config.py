@@ -31,7 +31,7 @@ class Config:
     TMDB_API_TOKEN = config_ini['TMDB']['API_TOKEN']
     TMDB_BASE_URL = os.environ.get('REACT_APP_TMDB_BASE_URL', 'https://api.themoviedb.org/3')
     TMDB_IMG_URL = os.environ.get('REACT_APP_TMDB_IMG_URL', 'https://image.tmdb.org/t/p/w500')
-    TMDB_MOVIE_LANGUAGE = os.environ.get('REACT_APP_TMDB_MOVIE_LANGUAGE', 'zh-tw')
+    TMDB_MOVIE_LANGUAGE = os.environ.get('REACT_APP_TMDB_MOVIE_LANGUAGE', 'zh-TW')
 
     APP_TITLE = os.environ.get('REACT_APP_TITLE', '電影小幫手')
     APP_VERSION = os.environ.get('REACT_APP_VERSION', '1.0.0')
