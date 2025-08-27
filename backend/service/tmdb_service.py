@@ -100,7 +100,8 @@ class TMDBService:
         endpoint = "/discover/movie"
         params = {
             'region':'TW',
-            'sort_by': 'popularity.desc',
+            'sort_by': 'revenue.desc',
+            'watch_region':'with_watch_monetization_types',
             'with_release_type':'2|3',
             'release_date.gte':min_date,
             'release_date.lte':max_date,
@@ -114,7 +115,8 @@ class TMDBService:
         """獲取熱門電影"""
         endpoint = "/discover/movie"
         params = {
-            'sort_by': 'popularity.desc',
+            'watch_region':'with_watch_monetization_types',
+            'sort_by': 'revenue.desc',
             'page': page
         }
         return cls._make_request(endpoint, params)
@@ -212,8 +214,11 @@ class TMDBService:
         """根據類型獲取電影"""
         endpoint = "/discover/movie"
         params = {
+            'sort_by':'primary_release_date.desc',
+            'primary_release_date.gte':'1990-01-01',
+            'release_date.gte':'1990-01-01',
+            'watch_region':'with_watch_monetization_types',
             'with_genres': genre_id,
-            'sort_by': 'popularity.desc',
             'page': page
         }
         return cls._make_request(endpoint, params)
