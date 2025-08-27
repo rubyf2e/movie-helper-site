@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MovieIcon } from "./Icons";
 import TMDBMovieCard from "./TMDBMovieCard";
 import MovieModal from "./MovieModal";
-import LineLoginButton from "./LineLoginButton";
+import LineLoginButtonPKCE from "./LineLoginButtonPKCE";
 import {
   aiMovieService,
   lineAuthService,
@@ -247,7 +247,7 @@ const MovieSearchForm = ({
             <span>連結 LINE 帳號可將電影清單發送到 LINE</span>
           </div>
         )}
-        <LineLoginButton
+        <LineLoginButtonPKCE
           onLoginSuccess={(user) => {
             if (user) {
               setUser(user);

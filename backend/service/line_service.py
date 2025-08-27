@@ -1,7 +1,11 @@
 import token
 from urllib import response
-from flask import request, abort, jsonify
+import urllib.parse
+from flask import request, abort, jsonify, session
 import requests, json
+import hashlib
+import base64
+import secrets
 from jwt import PyJWKClient
 import jwt
 from linebot.v3 import (
@@ -18,6 +22,25 @@ from linebot.v3.messaging import (
 )
 
                        
+class MockRequest:
+    """Mock request object for reusing profile_api method"""
+    def __init__(self, access_token):
+        self._access_token = access_token
+    
+    @property
+    def args(self):
+        return MockArgs(self._access_token)
+
+class MockArgs:
+    """Mock args object for mock request"""
+    def __init__(self, access_token):
+        self._access_token = access_token
+    
+    def get(self, key, default=None):
+        if key == 'access_token':
+            return self._access_token
+        return default
+
 class LineService:
     configuration = None
     handler = None
@@ -64,6 +87,21 @@ class LineService:
     
     def get_line_login_channel_id(self):
         return self.LINE_LOGIN_CHANNEL_ID   
+    
+    def generate_code_verifier(self, length=128):
+        """生成隨機的 code verifier"""
+        token = secrets.token_urlsafe(length)
+        return token[:length]
+
+    def generate_code_challenge(self, code_verifier):
+        """生成 code challenge (SHA256 hash of code verifier)"""
+        sha256_hash = hashlib.sha256(code_verifier.encode('utf-8')).digest()
+        code_challenge = base64.urlsafe_b64encode(sha256_hash).decode('utf-8')
+        return code_challenge.rstrip('=')
+
+    def generate_state(self):
+        """生成隨機的 state 參數"""
+        return secrets.token_urlsafe(32)   
     
     def get_line_jwks(self):
         openid_config = requests.get(self.LINE_JWKS_URL).json()
@@ -240,6 +278,106 @@ class LineService:
         else:
             return jsonify({"status": "ERROR", "detail": response.text}), 400
 
+    def handle_auth_callback(self, request):
+        if request.method == 'POST':
+            data = request.get_json()
+            code = data.get('code')
+            state = data.get('state')
+            redirect_uri = data.get('redirect_uri')
+            code_verifier = data.get('code_verifier')
+        else:
+            code = request.args.get('code')
+            state = request.args.get('state')
+            redirect_uri = request.args.get('redirect_uri')
+            code_verifier = request.args.get('code_verifier')
+        
+        line_login_redirect_uri = self.get_line_login_redirect_uri()
+            
+        try:
+            if request.method == 'POST':
+                if not all([code, state, redirect_uri, code_verifier]):
+                    return jsonify({"success": False, "error": "缺乏參數"}), 400
+            else:
+                if not all([code, state]):
+                    error_message = urllib.parse.quote("Missing required parameters")
+                    state = state or "unknown"
+                    url = f"{line_login_redirect_uri}?error={error_message}&state={state}&success=false"
+                    return url
+                redirect_uri = line_login_redirect_uri
+            
+            headers = {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+            
+            payload = {
+                "grant_type": "authorization_code",
+                "code": code,
+                "redirect_uri": redirect_uri,
+                "client_id": self.LINE_LOGIN_CHANNEL_ID,
+                "client_secret": self.LINE_LOGIN_CHANNEL_SECRET,
+            }
+            
+            if code_verifier:
+                payload["code_verifier"] = code_verifier
+   
+            response = requests.post(
+                self.LINE_TOKEN_API_URL,
+                headers=headers,
+                data=payload
+            )
+            
+            if response.status_code == 200:
+                token_data = response.json()
+                
+                if 'access_token' in token_data:
+                    try:
+                        mock_request = MockRequest(token_data['access_token'])
+                        profile_response = self.profile_api(mock_request)
+                        
+                        if hasattr(profile_response, 'json'):
+                            profile_data = profile_response.get_json()
+                            if profile_response.status_code == 200:
+                                token_data['profile'] = profile_data
+                        else:
+                            token_data['profile'] = profile_response
+                            
+                    except Exception as e:
+                        print(f"Profile fetch error: {str(e)}")
+                
+                if request.method == 'POST':
+                    return jsonify({
+                        "success": True,
+                        "data": token_data
+                    })
+                else:
+                    response_data = urllib.parse.quote(json.dumps(token_data))
+                    url = f"{line_login_redirect_uri}?response={response_data}&state={state}&success=true"
+                    return url
+            else:
+                if request.method == 'POST':
+                    return jsonify({
+                        "success": False,
+                        "error": "Token exchange failed",
+                        "details": response.text
+                    }), 400
+                else:
+                    error_message = urllib.parse.quote(f"Token exchange failed: {response.text}")
+                    url = f"{line_login_redirect_uri}?error={error_message}&state={state}&success=false"
+                    return url
+                
+        except Exception as e:
+            print(f"PKCE auth callback error: {str(e)}")
+            if request.method == 'POST':
+                return jsonify({
+                    "success": False,
+                    "error": "Internal server error",
+                    "details": str(e)
+                }), 500
+            else:
+                error_message = urllib.parse.quote(f"Internal error: {str(e)}")
+                url = f"{line_login_redirect_uri}?error={error_message}&state={state}&success=false"
+                return url
+    
     def get_token_api(self, request):
         # 取得必要參數
         access_token = request.args.get('code')

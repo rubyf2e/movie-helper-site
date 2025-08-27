@@ -1,8 +1,8 @@
 import { AIMovieService } from "./aiMovieService";
 import { DEFAULT_STORAGE_KEY } from "../utils/constants";
-import { LineAuthService } from "./lineAuthService";
+import LineAuthServicePKCE from "./lineAuthServicePKCE";
 
-export const lineAuthService = new LineAuthService();
+export const lineAuthService = new LineAuthServicePKCE();
 export const aiMovieService = new AIMovieService(DEFAULT_STORAGE_KEY);
 export const LOCAL_STORAGE_KEY = aiMovieService.getStoredKey();
 

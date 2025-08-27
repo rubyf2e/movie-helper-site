@@ -411,3 +411,36 @@
     }
   }
 }
+
+// Android Chrome 特定修復
+@supports (-webkit-appearance: none) {
+  @media (max-width: 768px) {
+    .line-login-btn,
+    .line-login-status {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: flex !important;
+      position: relative !important;
+      z-index: 100 !important;
+    }
+  }
+}
+
+// 額外的 WebKit 引擎修復
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (max-width: 768px) {
+  .line-login-btn,
+  .line-login-status {
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    contain: layout style paint;
+  }
+}

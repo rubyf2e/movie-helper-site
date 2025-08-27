@@ -1291,3 +1291,80 @@
     }
   }
 }
+
+// Android Chrome 特定修復 - textarea 和 LINE 登入區域
+@supports (-webkit-appearance: none) {
+  @media (max-width: 768px) {
+    .movie-search-form {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      will-change: transform;
+      
+      &__textarea {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        position: relative !important;
+        z-index: 10 !important;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+        min-height: 100px;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px; // 防止縮放
+        line-height: 1.4;
+      }
+      
+      &__line-login {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+        position: relative !important;
+        z-index: 15 !important;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      &__line-login-btn {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        position: relative !important;
+        z-index: 20 !important;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        width: 100%;
+        min-height: 48px;
+        box-sizing: border-box;
+      }
+    }
+  }
+}
+
+// 額外的 Android Chrome 修復
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (max-width: 768px) {
+  .movie-search-form {
+    &__textarea,
+    &__line-login {
+      -webkit-perspective: 1000px;
+      perspective: 1000px;
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+      contain: layout style paint;
+    }
+  }
+}

@@ -4,16 +4,16 @@ export const DEFAULT_STORAGE_KEY = "movieWatchlist";
 
 // SSL 配置函數
 const getProtocol = () => {
-  const sslEnabled = process.env.REACT_APP_SSL_ENABLED === 'true';
-  return sslEnabled ? 'https' : 'http';
+  const sslEnabled = process.env.REACT_APP_SSL_ENABLED === "true";
+  return sslEnabled ? "https" : "http";
 };
 
 export const convertUrlProtocol = (url) => {
   if (!url) return url;
   const protocol = getProtocol();
   // 如果 URL 已經包含協議，先移除
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    url = url.split('://', 1)[1];
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    url = url.split("://", 1)[1];
   }
   return `${protocol}://${url}`;
 };
@@ -27,7 +27,7 @@ export const APP_CONFIG = {
   TMDB_IMG_URL: process.env.REACT_APP_TMDB_IMG_URL,
   LINE_LOGIN_CHANNEL_ID: process.env.REACT_APP_LINE_LOGIN_CHANNEL_ID,
   DEFAULT_LANGUAGE: process.env.REACT_APP_TMDB_MOVIE_LANGUAGE,
-  SSL_ENABLED: process.env.REACT_APP_SSL_ENABLED === 'true',
+  SSL_ENABLED: process.env.REACT_APP_SSL_ENABLED === "true",
   PROTOCOL: getProtocol(),
 };
 
@@ -58,7 +58,6 @@ export const API_ENDPOINTS = {
   GENRES: "/movies/genres",
   ANALYZE: "/movies/analyze-movie-preference",
   SEND_TO_LINE: "/line/bot/send-to-line",
-  LINE_AUTH_CALLBACK: "/line/auth/line/callback",
   LINE_AUTH_REFRESH: "/line/auth/line/refresh",
   LINE_AUTH_REVOKE: "/line/auth/line/revoke",
   LINE_AUTH_PROFILE: "/line/auth/line/profile",
@@ -66,7 +65,8 @@ export const API_ENDPOINTS = {
   LINE_AUTH_VERIFY: "/line/auth/line/verify",
   LINE_AUTH_TOKEN: "/line/auth/line/token",
   LINE_AUTH_TOKEN_PROFILE: "/line/auth/line/token_profile",
-  LINE_LOGIN_CALLBACK: "/line/login/callback",
+  LINE_AUTH_CALLBACK: "/line/auth/line/login/callback",
+  LINE_LOGIN_CALLBACK: "/line/auth/line/login/callback",
   CHAT: "/chat",
   CHAT_STREAM: "/chat/stream",
 };
@@ -80,8 +80,9 @@ export const HTTP_HEADERS = {
 // LINE 相關常數
 export const LINE_CONFIG = {
   AUTH_URL: "https://access.line.me/oauth2/v2.1/authorize",
+  TOKEN_URL: "https://api.line.me/oauth2/v2.1/token",
   RESPONSE_TYPE: "code",
-  SCOPE: "profile",
+  SCOPE: "profile openid",
   STORAGE_KEYS: {
     USER: "line_user",
     PROFILE: "line_profile",
@@ -93,6 +94,8 @@ export const LINE_CONFIG = {
     AUTH_STATE: "line_auth_state",
     AUTH_NONCE: "line_auth_nonce",
     TOKEN_PROFILE: "line_token_profile",
+    CODE_VERIFIER: "line_code_verifier",
+    CODE_CHALLENGE: "line_code_challenge",
   },
 };
 

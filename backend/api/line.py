@@ -152,6 +152,31 @@ def line_login_callback():
         current_app.custom_logger.info(url)
 
         return redirect(url)
+    
+@line_bp.route("/auth/line/login/callback", methods=['GET', 'POST', 'OPTIONS'])
+def line_auth_callback():
+    if request.method == 'OPTIONS':
+        return '', 200
+    
+    if request.method == 'GET':
+        code = request.args.get('code')
+        state = request.args.get('state')
+        error = request.args.get('error')
+        
+        line_service = get_line_service(current_app)
+        frontend_url = line_service.get_line_login_redirect_uri()
+        
+        if error:
+            redirect_url = f"{frontend_url}?error={error}"
+        elif code and state:
+            redirect_url = f"{frontend_url}?code={code}&state={state}"
+        else:
+            redirect_url = f"{frontend_url}?error=missing_parameters"
+        
+        return redirect(redirect_url)
+    
+    elif request.method == 'POST':
+        return get_line_service(current_app).handle_auth_callback(request)
 
 @line_bp.route("/auth/line/profile", methods=['GET', 'POST', 'OPTIONS'])
 def line_profile():
