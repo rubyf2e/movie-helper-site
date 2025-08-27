@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # 安裝 Python 依賴
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 複製應用程式碼

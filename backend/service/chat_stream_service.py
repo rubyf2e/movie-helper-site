@@ -1,5 +1,7 @@
 import time
 from openai import AzureOpenAI
+from google import genai
+from google.genai import types
 from langchain_openai import AzureChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_ollama.llms import OllamaLLM
@@ -18,12 +20,12 @@ class ChatStreamService:
         chat_map = {
             'azure': self.azure_chat_stream,
             'azure_completions': self.azure_completions_chat_stream,
-            'gemini': self.gemini_chat_stream,
+            'gemini': self.gemini_genai_chat_stream,
             'ollama': self.ollama_chat_stream,
             'ollama_client': self.ollama_client_chat_stream,
         }
         
-        func = chat_map.get(type, self.gemini_chat_stream)
+        func = chat_map.get(type, self.gemini_genai_chat_stream)
         role_description = self.config["Base"]["CHAT_ROLE_DESCRIPTION"]
         try:
             yield from func(user_input, role_description)
@@ -94,10 +96,10 @@ class ChatStreamService:
             print(f"Azure Completions Chat Stream Error: {e}")
             yield 'chat 模型需要升級，暫時無法提供服務'
 
-    def gemini_chat_stream(self, user_input, role_description):
+    def gemini_langchain_chat_stream(self, user_input, role_description):
         """Gemini 流式聊天"""
         try:
-            self.custom_logger.info('gemini_chat_stream')
+            self.custom_logger.info('gemini_langchain_chat_stream')
             self.custom_logger.info(user_input)
             llm_gemini = ChatGoogleGenerativeAI(
                 model=self.config["GeminiChat"]["MODEL_NAME"],
@@ -113,6 +115,31 @@ class ChatStreamService:
                 self.custom_logger.info(chunk)
                 if hasattr(chunk, 'content') and chunk.content:
                     yield chunk.content
+        except Exception as e:
+            self.custom_logger.error(e)
+            yield 'chat 模型需要升級，暫時無法提供服務'
+        
+            
+    def gemini_genai_chat_stream(self, user_input, role_description):
+        """Gemini genai 流式聊天"""
+        try:
+            self.custom_logger.info('gemini_genai_chat_stream')
+            self.custom_logger.info(user_input)
+            
+            client = genai.Client(api_key=self.config["GeminiChat"]["KEY"])
+            
+            response = client.models.generate_content_stream(
+                model=self.config["GeminiChat"]["MODEL_NAME"],
+                config=types.GenerateContentConfig(
+                system_instruction=role_description),
+                contents=user_input
+            )
+
+            for chunk in response:
+                self.custom_logger.info(chunk)
+                if hasattr(chunk, 'text') and chunk.text:
+                    yield chunk.text
+        
         except Exception as e:
             self.custom_logger.error(e)
             yield 'chat 模型需要升級，暫時無法提供服務'

@@ -22,3 +22,5 @@ langchain_google_genai
 
 gunicorn
 gevent
+
+google-genai
