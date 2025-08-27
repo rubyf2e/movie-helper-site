@@ -20,6 +20,7 @@ class TMDBService:
         # 基本參數
         request_params = {
             'api_key': api_key,
+            "include_adult": False,
             'language': language
         }
         
